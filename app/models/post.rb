@@ -8,10 +8,10 @@
 #  name         :string           not null
 #  post_comment :text             not null
 #  post_title   :string           not null
-#  visited_date :date             default(NULL), not null
+#  visited_date :date             not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  category_id  :integer          not null
+#  category_id  :integer
 #  user_id      :integer          not null
 #
 # Indexes

@@ -1,1 +1,19 @@
 /MotoTourReview/app/views/public/posts/index.html.erb
+
+<h1>投稿一覧</h1>
+
+<% @posts.each do |post| %>
+
+  <h4>スポット名</h4>
+  <span><%= post.name %></span>
+
+  <h4>タイトル</h4>
+  <span><%= post.post_title %></span>
+
+  <h4>コメント</h4>
+  <span><%= post.post_comment %></span>
+
+  <h4>日付</h4>
+  <span><%= post.visited_date %></span>
+
+<% end %>
