@@ -10,7 +10,18 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="d-flex flex-column vh-100">
+    <header class="shadow-sm">
+      <%= render 'layouts/header' %>
+    </header>
+
+    <main class="mb-auto">
+      <%= yield %>
+    </main>
+
+    <footer class="bg-dark text-white pt-5 pb-4">
+      <%= render 'layouts/footer' %>
+    </footer>
+
   </body>
 </html>
