@@ -6,6 +6,25 @@
 <p>カテゴリ: <%= @post.category.name %></p>
 <p>投稿者: <%= @post.user.name %></p>
 
+  <h4>評価</h4>
+  <div id="star_<%= @post.id %>"></div>
+  <script>
+  $(document).on('turbolinks:load', function() {
+    let elem = document.querySelector('#star_<%= @post.id %>');
+    if (elem == null) return;
+
+    elem.innerHTML = "";
+    let opt = {
+      starOn: "<%= asset_path('star-on.png') %>",
+      starOff: "<%= asset_path('star-off.png') %>",
+      starHalf: "<%= asset_path('star-half.png') %>",
+      score: "<%= @post.star %>",
+      readOnly: true,
+    };
+    raty(elem, opt);
+  });
+  </script>
+
 <% if @post.user == current_user %>
   <%= link_to "修正", edit_post_path(@post) %>
 <% end %>

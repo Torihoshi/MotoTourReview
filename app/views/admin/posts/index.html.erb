@@ -1,1 +1,46 @@
-/MotoTourReview/app/views/public/posts/index.html.erb
+/MotoTourReview/app/views/admin/posts/index.html.erb
+<h1>投稿一覧</h1>
+
+<% @posts.each do |post| %>
+
+  <h4>スポット名</h4>
+  <span><%= post.spot_name %></span>
+
+  <h4>タイトル</h4>
+  <span><%= link_to post.title, admin_post_path(post) %></span>
+
+  <h4>コメント</h4>
+  <span><%= post.comment %></span>
+
+  <h4>日付</h4>
+  <span><%= post.visited_date %></span>
+
+  <h4>カテゴリ</h4>
+  <span><%= post.category.name %></span>
+
+  <h4>評価</h4>
+  <div id="star_<%= post.id %>"></div>
+  <script>
+  $(document).on('turbolinks:load', function() {
+    let elem = document.querySelector('#star_<%= post.id %>');
+    if (elem == null) return;
+
+    elem.innerHTML = "";
+    let opt = {
+      starOn: "<%= asset_path('star-on.png') %>",
+      starOff: "<%= asset_path('star-off.png') %>",
+      starHalf: "<%= asset_path('star-half.png') %>",
+      score: "<%= post.star %>",
+      readOnly: true,
+    };
+    raty(elem, opt);
+  });
+  </script>
+
+<% end %>
+
+<%= form_tag admin_posts_path, method: :get do %>
+  <label for="category_id">カテゴリ：</label>
+  <%= select_tag "category_id", options_from_collection_for_select(Category.all, "id", "name", params[:category_id]), include_blank: "すべてのカテゴリ" %>
+  <%= submit_tag "検索" %>
+<% end %>
