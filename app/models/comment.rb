@@ -20,4 +20,8 @@
 #  user_id  (user_id => users.id)
 #
 class Comment < ApplicationRecord
+  belongs_to :user
+  belongs_to :post
+
+
 end

@@ -19,4 +19,7 @@
 #  user_id  (user_id => users.id)
 #
 class Favorite < ApplicationRecord
+  belongs_to :user
+  belongs_to :post
+
 end

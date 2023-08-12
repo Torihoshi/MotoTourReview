@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_09_163703) do
+ActiveRecord::Schema.define(version: 2023_08_08_152154) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2023_08_09_163703) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string "category", null: false
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -79,10 +79,10 @@ ActiveRecord::Schema.define(version: 2023_08_09_163703) do
 
   create_table "posts", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "category_id"
-    t.string "name", null: false
-    t.string "post_title", null: false
-    t.text "post_comment", null: false
+    t.integer "category_id", null: false
+    t.string "spot_name", null: false
+    t.string "title", null: false
+    t.text "comment", null: false
     t.integer "favorite", default: 0
     t.date "visited_date", null: false
     t.boolean "is_private", default: false, null: false

@@ -1,1 +1,28 @@
 /MotoTourReview/app/views/public/posts/show.html.erb
+<!-- /app/views/public/posts/show.html.erb -->
+<h1><%= @post.title %></h1>
+<p><%= @post.comment %></p>
+<p>訪問日: <%= @post.visited_date %></p>
+<p>カテゴリ: <%= @post.category.name %></p>
+<p>投稿者: <%= @post.user.name %></p>
+
+<% if @post.user == current_user %>
+  <%= link_to "修正", edit_post_path(@post) %>
+<% end %>
+
+<h2>コメント</h2>
+<% @post.comments.each do |comment| %>
+  <p>
+    <strong><%= comment.user.name %></strong>: <%= comment.comment %>
+    <% if comment.user == current_user %>
+      <%= link_to "削除", post_comment_path(@post, comment), method: :delete, data: { confirm: "このコメントを削除しますか？" } %>
+    <% end %>
+  </p>
+<% end %>
+
+<%= form_for([@post, @comment]) do |f| %>
+  <%= f.text_area :comment, placeholder: "コメントを入力してください" %>
+  <%= f.submit "コメント投稿" %>
+<% end %>
+
+<%= link_to "一覧に戻る", posts_path %>

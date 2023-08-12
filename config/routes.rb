@@ -30,8 +30,9 @@ Rails.application.routes.draw do
         get :unsubscribe
       end
     end
-    resources :posts, only: [:index, :show, :new, :create, :edit, :update]
-    resources :comments, only: [:create, :destroy]
+    resources :posts, only: [:index, :show, :new, :create, :edit, :update] do
+      resources :comments, only: [:create, :destroy]
+    end
     resources :favorites, only: [:create, :destroy]
   end
 

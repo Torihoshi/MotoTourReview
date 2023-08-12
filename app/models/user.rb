@@ -26,11 +26,20 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-def self.guest
-  find_or_create_by!(email: 'guest@example.com') do |user|
-    user.password = SecureRandom.urlsafe_base64
-    user.name = "ゲストユーザー"
+  has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :favorites, dependent: :destroy
+  has_one_attached :profile_image
+
+  def self.guest
+    find_or_create_by!(email: 'guest@example.com') do |user|
+      user.password = SecureRandom.urlsafe_base64
+      user.name = "ゲストユーザー"
+    end
   end
-end
+
+  def get_profile_image
+    (profile_image.attached?) ? profile_image : 'no_image.jpg'
+  end
 
 end

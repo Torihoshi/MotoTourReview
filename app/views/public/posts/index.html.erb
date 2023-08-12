@@ -5,15 +5,23 @@
 <% @posts.each do |post| %>
 
   <h4>スポット名</h4>
-  <span><%= post.name %></span>
+  <span><%= post.spot_name %></span>
 
   <h4>タイトル</h4>
-  <span><%= post.post_title %></span>
+  <span><%= link_to post.title, post_path(post) %></span>
 
   <h4>コメント</h4>
-  <span><%= post.post_comment %></span>
+  <span><%= post.comment %></span>
 
   <h4>日付</h4>
   <span><%= post.visited_date %></span>
 
+  <h4>カテゴリ</h4>
+  <span><%= post.category.name %></span>
+<% end %>
+
+<%= form_tag posts_path, method: :get do %>
+  <label for="category_id">カテゴリ：</label>
+  <%= select_tag "category_id", options_from_collection_for_select(Category.all, "id", "name", params[:category_id]), include_blank: "すべてのカテゴリ" %>
+  <%= submit_tag "検索" %>
 <% end %>
