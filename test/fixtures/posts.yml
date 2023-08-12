@@ -7,6 +7,7 @@
 #  favorite     :integer          default(0)
 #  is_private   :boolean          default(FALSE), not null
 #  spot_name    :string           not null
+#  star         :float
 #  title        :string           not null
 #  visited_date :date             default(NULL), not null
 #  created_at   :datetime         not null

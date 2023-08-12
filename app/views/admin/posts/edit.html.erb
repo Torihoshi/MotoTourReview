@@ -1,1 +1,35 @@
-/MotoTourReview/app/views/public/posts/edit.html.erb
+/MotoTourReview/app/views/admin/posts/edit.html.erb
+<h1>投稿編集</h1>
+
+<%= form_for(@post) do |f| %>
+  <div class="field">
+    <%= f.label :spot_name %>
+    <%= f.text_field :spot_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :comment %>
+    <%= f.text_area :comment %>
+  </div>
+
+  <div class="field">
+    <%= f.label :visited_date %>
+    <%= f.date_field :visited_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :category_id %>
+    <%= f.collection_select :category_id, Category.all, :id, :name, include_blank: true %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "更新" %>
+  </div>
+<% end %>
+
+<%= link_to "投稿詳細に戻る", admin_post_path(@post) %>
