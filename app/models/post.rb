@@ -3,9 +3,12 @@
 # Table name: posts
 #
 #  id           :integer          not null, primary key
+#  address      :string
 #  comment      :text             not null
 #  favorite     :integer          default(0)
 #  is_private   :boolean          default(FALSE), not null
+#  latitude     :float
+#  longitude    :float
 #  spot_name    :string           not null
 #  star         :float
 #  title        :string           not null

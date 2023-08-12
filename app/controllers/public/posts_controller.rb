@@ -1,11 +1,14 @@
 class Public::PostsController < ApplicationController
   def index
     # レビュー一覧を表示する処理
+    @categories = Category.all
     @posts = if params[:category_id].present?
-           Post.where(category_id: params[:category_id])
-         else
-           Post.all
-         end
+                Post.where(category_id: params[:category_id])
+              elsif params[:word]
+                Post.where("spot_name LIKE ?", "%#{params[:word]}%")
+              else
+                Post.all
+              end
   end
 
   def show

@@ -1,5 +1,18 @@
 /MotoTourReview/app/views/public/posts/index.html.erb
 
+<%= form_tag posts_path, method: :get do %>
+  <label for="category_id">カテゴリ：</label>
+  <%= select_tag "category_id", options_from_collection_for_select(@categories, "id", "name", params[:category_id]), include_blank: "すべてのカテゴリ" %>
+  <%= submit_tag "検索" %>
+<% end %>
+
+<div class="search_form">
+  <%= form_with url: posts_path, method: :get do |f| %>
+    <%= f.text_field :word, placeholder: "Search"  %>
+    <%= f.submit "検索", class: "btn-sm btn-outline-secondary" %>
+  <% end %>
+</div>
+
 <h1>投稿一覧</h1>
 
 <% @posts.each do |post| %>
@@ -38,10 +51,4 @@
   });
   </script>
 
-<% end %>
-
-<%= form_tag posts_path, method: :get do %>
-  <label for="category_id">カテゴリ：</label>
-  <%= select_tag "category_id", options_from_collection_for_select(Category.all, "id", "name", params[:category_id]), include_blank: "すべてのカテゴリ" %>
-  <%= submit_tag "検索" %>
 <% end %>
