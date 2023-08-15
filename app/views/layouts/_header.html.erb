@@ -2,10 +2,10 @@
   <div class="container">
 
     <!--ロゴ-->
-    <% if user_signed_in? %>
-      <a class="navbar-brand p-1" href="/">LOGO</a>
-    <% elsif admin_signed_in? %>
+    <% if admin_signed_in? %>
       <a class="navbar-brand p-1" href="/admin">LOGO</a>
+    <% else %>
+      <a class="navbar-brand p-1" href="/">LOGO</a>
     <% end %>
 
     <!--ユーザー情報-->

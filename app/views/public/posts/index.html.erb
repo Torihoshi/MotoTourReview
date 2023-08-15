@@ -14,41 +14,48 @@
 </div>
 
 <h1>投稿一覧</h1>
+<table>
+    <thead>
+      <tr>
+        <th>スポット名</th>
+        <th>タイトル</th>
+        <th>コメント</th>
+        <th>日付</th>
+        <th>カテゴリ</th>
+        <th>評価</th>
+        <th>いいね</th>
+      </tr>
+    </thead>
 
-<% @posts.each do |post| %>
+  <% @posts.each do |post| %>
+    <tbody>
+      <tr>
+        <th><%= post.spot_name %></th>
+        <th><%= link_to post.title, post_path(post) %></th>
+        <th><%= post.comment %></th>
+        <th><%= post.visited_date %></th>
+        <th><%= post.category.name %></th>
+        <th>
+          <div id="star_<%= post.id %>"></div>
+          <script>
+            $(document).on('turbolinks:load', function() {
+              let elem = document.querySelector('#star_<%= post.id %>');
+              if (elem == null) return;
 
-  <h4>スポット名</h4>
-  <span><%= post.spot_name %></span>
-
-  <h4>タイトル</h4>
-  <span><%= link_to post.title, post_path(post) %></span>
-
-  <h4>コメント</h4>
-  <span><%= post.comment %></span>
-
-  <h4>日付</h4>
-  <span><%= post.visited_date %></span>
-
-  <h4>カテゴリ</h4>
-  <span><%= post.category.name %></span>
-
-  <h4>評価</h4>
-  <div id="star_<%= post.id %>"></div>
-  <script>
-  $(document).on('turbolinks:load', function() {
-    let elem = document.querySelector('#star_<%= post.id %>');
-    if (elem == null) return;
-
-    elem.innerHTML = "";
-    let opt = {
-      starOn: "<%= asset_path('star-on.png') %>",
-      starOff: "<%= asset_path('star-off.png') %>",
-      starHalf: "<%= asset_path('star-half.png') %>",
-      score: "<%= post.star %>",
-      readOnly: true,
-    };
-    raty(elem, opt);
-  });
-  </script>
-
-<% end %>
+              elem.innerHTML = "";
+              let opt = {
+                starOn: "<%= asset_path('star-on.png') %>",
+                starOff: "<%= asset_path('star-off.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                score: "<%= post.star %>",
+                readOnly: true,
+              };
+              raty(elem, opt);
+            });
+          </script>
+        </th>
+        <th>いいね</th>
+      </tr>
+    </tbody>
+  <% end %>
+</table>
