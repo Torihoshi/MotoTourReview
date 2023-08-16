@@ -28,6 +28,7 @@
     </thead>
 
   <% @posts.each do |post| %>
+    <% if post.is_private == false %>
     <tbody>
       <tr>
         <th><%= post.spot_name %></th>
@@ -57,5 +58,6 @@
         <th>いいね</th>
       </tr>
     </tbody>
+    <% end %>
   <% end %>
 </table>

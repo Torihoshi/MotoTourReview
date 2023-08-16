@@ -1,1 +1,27 @@
 /MotoTourReview/app/views/public/users/edit.html.erb
+
+<h1>ユーザー情報編集</h1>
+
+<%= form_for(@user) do |f| %>
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.email_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :introduction %>
+    <%= f.text_area :introduction %>
+  </div>
+  <!-- ユーザー情報の編集フォーム -->
+
+  <div class="actions">
+    <%= f.submit "更新" %>
+  </div>
+<% end %>
+
+<%= link_to "退会する", unsubscribe_user_path(current_user), class: "unsubscribe-button" %>

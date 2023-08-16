@@ -32,7 +32,7 @@ class Public::SessionsController < Devise::SessionsController
     return if !@user
     if @user.valid_password?(params[:user][:password]) && @user.is_deleted
       flash[:alert] = "このアカウントは退会済みです。"
-      redirect_to new_customer_registration_path
+      redirect_to new_user_registration_path
     end
   end
 

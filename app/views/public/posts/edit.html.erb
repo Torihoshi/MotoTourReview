@@ -28,6 +28,11 @@
     <%= f.collection_select :category_id, Category.all, :id, :name, include_blank: true %>
   </div>
 
+  <div class="field">
+    <%= f.label :is_private, "非公開(下書き)" %>
+    <%= f.check_box :is_private %>
+  </div>
+
   <div class="actions">
     <%= f.submit "更新" %>
   </div>

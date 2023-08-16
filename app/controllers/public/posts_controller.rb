@@ -1,13 +1,12 @@
 class Public::PostsController < ApplicationController
   def index
-    # レビュー一覧を表示する処理
     @categories = Category.all
     @posts = if params[:category_id].present?
-                Post.where(category_id: params[:category_id])
+                Post.where(category_id: params[:category_id], is_private: false)
               elsif params[:word]
-                Post.where("spot_name LIKE ?", "%#{params[:word]}%")
+                Post.where("spot_name LIKE ?", "%#{params[:word]}%").where(is_private: false)
               else
-                Post.all
+                Post.where(is_private: false)
               end
   end
 
@@ -44,22 +43,22 @@ class Public::PostsController < ApplicationController
     end
   end
 
-  def update
-    @post = Post.find(params[:id])
+def update
+  @post = Post.find(params[:id])
 
-    if @post.user == current_user && @post.update(post_params)
-      flash[:success] = "投稿が更新されました"
-      redirect_to post_path(@post)
-    else
-      flash.now[:error] = "投稿の更新に失敗しました"
-      render :edit
-    end
+  if @post.user == current_user && @post.update(post_params)
+    flash[:success] = "投稿が更新されました"
+    redirect_to post_path(@post)
+  else
+    flash.now[:error] = "投稿の更新に失敗しました"
+    render :edit
   end
+end
 
   private
   # ストロングパラメータ
   def post_params
-    params.require(:post).permit(:user_id, :spot_name, :title, :comment, :visited_date, :category_id, :star)
+    params.require(:post).permit(:user_id, :spot_name, :title, :comment, :visited_date, :category_id, :star, :is_private)
   end
 
 end
