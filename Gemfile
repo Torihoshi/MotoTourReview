@@ -66,3 +66,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
 gem 'pagy'
 gem 'ransack'
+
+#環境変数を扱う
+gem 'dotenv-rails'
+
+gem 'geocoder'

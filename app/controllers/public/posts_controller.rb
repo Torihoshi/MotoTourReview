@@ -11,9 +11,14 @@ class Public::PostsController < ApplicationController
   end
 
   def show
-    # レビュー詳細を表示する処理
     @post = Post.find(params[:id])
     @comment = Comment.new
+
+    @map_data = {
+      latitude: @post.latitude,
+      longitude: @post.longitude,
+      spot_name: @post.spot_name
+    }
   end
 
   def new
@@ -22,10 +27,16 @@ class Public::PostsController < ApplicationController
   end
 
   def create
-    # レビューの新規投稿を処理する処理
-    post = Post.new(post_params)
-    post.user_id = current_user.id # ユーザーIDをセット
-    # @post.category_id = params[:post][:category_id] # カテゴリーIDをセット
+  post = Post.new(post_params)
+  post.user_id = current_user.id
+  # スポット名から緯度経度を取得
+  spot_name = post_params[:spot_name]
+  results = Geocoder.search(spot_name)
+  if results.first
+    location = results.first.coordinates
+    post.latitude = location[0]
+    post.longitude = location[1]
+  end
 
     if post.save!
       redirect_to root_path, notice: '投稿が成功しました。'
@@ -47,6 +58,9 @@ def update
   @post = Post.find(params[:id])
 
   if @post.user == current_user && @post.update(post_params)
+    @post.latitude = latitude
+    @post.longitude = longitude
+
     flash[:success] = "投稿が更新されました"
     redirect_to post_path(@post)
   else
@@ -58,7 +72,7 @@ end
   private
   # ストロングパラメータ
   def post_params
-    params.require(:post).permit(:user_id, :spot_name, :title, :comment, :visited_date, :category_id, :star, :is_private)
+    params.require(:post).permit(:user_id, :spot_name, :title, :comment, :visited_date, :category_id, :star, :is_private, :address, :latitude, :longitude)
   end
 
 end

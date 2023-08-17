@@ -5,6 +5,9 @@
 <p>訪問日: <%= @post.visited_date %></p>
 <p>カテゴリ: <%= @post.category.name %></p>
 <p>投稿者: <%= @post.user.name %></p>
+<p>address: <%= @post.address %></p>
+<p>latitude: <%= @post.latitude %></p>
+<p>longitude: <%= @post.longitude %></p>
 
   <h4>評価</h4>
   <div id="star_<%= @post.id %>"></div>
@@ -24,6 +27,9 @@
     raty(elem, opt);
   });
   </script>
+
+<div id="map" style="height: 400px;"></div>
+
 
 <% if @post.user == current_user %>
   <%= link_to "修正", edit_post_path(@post) %>
@@ -45,3 +51,29 @@
 <% end %>
 
 <%= link_to "一覧に戻る", posts_path %>
+
+
+
+
+<script>
+  // 詳細画面の住所を取得
+  var postAddress = "<%= @post.address %>";
+  var postLat = <%= @post.latitude %>;
+  var postLng = <%= @post.longitude %>;
+
+  // 初期化とマップの描画
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: postLat, lng: postLng },
+      zoom: 15
+    });
+
+    // ピンを立てる
+    var marker = new google.maps.Marker({
+      position: { lat: postLat, lng: postLng },
+      map: map,
+      title: postAddress
+    });
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['API_KEY'] %>&callback=initMap"></script>

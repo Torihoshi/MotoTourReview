@@ -1,8 +1,11 @@
 /MotoTourReview/app/views/public/posts/new.html.erb
 
-<%= form_with model: @post do |f| %>
+<%= form_with model: @post, local: false do |f| %>
   <h4>スポット名</h4>
-  <%= f.text_field :spot_name %>
+  <%= f.text_field :spot_name, id: 'post_spot_name', onchange: 'autoFillAddress()' %>
+  <%= f.button 'Map表示', type: 'button', class: 'btn btn-sm btn-secondary', onclick: 'codeSpot()' %>
+  <h4>住所</h4>
+  <%= f.text_field :address, id: 'post_address' %>
 
   <h4>タイトル</h4>
   <%= f.text_field :title %>
@@ -16,27 +19,93 @@
   <h4>カテゴリ</h4>
   <%= f.collection_select :category_id, Category.all, :id, :name, prompt: 'カテゴリを選択してください' %>
 
+  <div class="form-group" id="star">
+    <%= f.label :star %>
+    <%= f.hidden_field :star, id: :review_star, class: 'form-control' %>
+    <div id="post_raty"></div>
+  </div>
 
-    <div class="form-group" id="star">
-      <%= f.label :star %>
-      <%= f.hidden_field :star, id: :review_star, class: 'form-control' %>
-      <div id="post_raty"></div>
-    </div>
-    <script>
-      $(document).on('turbolinks:load', function() {
-        let elem = document.querySelector('#post_raty');
-        if (elem == null) return;
+  <script>
+    $(document).on('turbolinks:load', function() {
+      let elem = document.querySelector('#post_raty');
+      if (elem == null) return;
 
-        elem.innerHTML = ""
-        let opt = {
-          starOn: "<%= asset_path('star-on.png') %>",
-          starOff: "<%= asset_path('star-off.png') %>",
-          starHalf: "<%= asset_path('star-half.png') %>",
-          scoreName: 'post[star]',
-        };
-        raty(elem, opt);
-      });
-    </script>
+      elem.innerHTML = ""
+      let opt = {
+        starOn: "<%= asset_path('star-on.png') %>",
+        starOff: "<%= asset_path('star-off.png') %>",
+        starHalf: "<%= asset_path('star-half.png') %>",
+        scoreName: 'post[star]',
+      };
+      raty(elem, opt);
+    });
+  </script>
 
-  <%= f.submit '投稿' %>
+    <%= f.submit '投稿' %>
+
+
+    <div id="map" style="height: 400px;"></div>
+
 <% end %>
+
+<script>
+  let map; // マップ
+  let marker; // ピン
+  let geocoder; // 住所
+  let aft; // 一回ピンを作ったか判定用
+
+  // 初期マップの設定
+  function initMap() {
+    geocoder = new google.maps.Geocoder();
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: 35.6895, lng: 139.6917 }, // デフォルトの中心座標 (東京の緯度・経度)
+      zoom: 15,
+      fullscreenControl: false, //マップを全画面モードで表示するボタンを非表示
+      streetViewControl: false, //ストリートビューに切り替えるボタンを非表示
+      scaleControl: true, //地図のスケールを表示（デフォルトは非表示）
+      mapTypeControl: false //地図と航空写真を切り替えるボタンを非表示
+    });
+  }
+
+  // スポット名を住所に変換して地図上に表示する関数
+  function codeSpot() {
+    var spotName = document.getElementById('post_spot_name').value;
+    geocoder.geocode({ 'address': spotName }, function(results, status) {
+      if (status === 'OK' && results[0]) {
+        var location = results[0].geometry.location;
+
+        // 以前のマーカーがあれば削除
+        if (marker) {
+          marker.setMap(null);
+        }
+
+        marker = new google.maps.Marker({
+          map: map,
+          position: location,
+          title: spotName
+        });
+
+        // 地図を新しい位置にセンタリング
+        map.setCenter(location);
+      } else {
+        console.log('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+
+  // スポット名を住所に自動入力する関数
+  function autoFillAddress() {
+    var spotName = document.getElementById('post_spot_name').value;
+    geocoder.geocode({ 'address': spotName }, function(results, status) {
+      if (status === 'OK' && results[0]) {
+        var formattedAddress = results[0].formatted_address;
+        document.getElementById('post_address').value = formattedAddress;
+      } else {
+        console.log('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+
+</script>
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['API_KEY'] %>&callback=initMap"></script>

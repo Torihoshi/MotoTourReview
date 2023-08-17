@@ -29,6 +29,11 @@
 #  user_id      (user_id => users.id)
 #
 class Post < ApplicationRecord
+
+  # Map用
+  geocoded_by :address
+  after_validation :geocode, if: :address_changed?
+
   belongs_to :user
   belongs_to :category
   has_many :comments, dependent: :destroy

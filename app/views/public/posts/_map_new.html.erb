@@ -1,0 +1,110 @@
+/MotoTourReview/app/views/public/posts/_map_new.html.erb
+<div class="row w-100">
+  <div class="offset-0 offset-md-4 col-md-8 w-100">
+    <small class="text-black-50">マーカーをドラック＆ドロップで位置の調整ができます。</small>
+    <div id="map"></div>
+  </div>
+</div>
+
+<style>
+  #map {　　　　　　　// id='map'のcss指定
+    height: 300px;
+    width: 100%;
+  }
+</style>
+
+<script>
+  let map; // マップ
+  let marker; // ピン
+  let geocoder; // 住所
+  let aft; // 一回ピンを作ったか判定用
+
+  //①初期マップの設定
+  function initMap(){
+    geocoder = new google.maps.Geocoder()
+    map = new google.maps.Map(document.getElementById('map'), {
+      center:  {lat: 35.68123620000001, lng: 139.7671248},  //東京
+      zoom: 15,
+      fullscreenControl: false, //マップを全画面モードで表示するボタンを非表示
+      streetViewControl: false, //ストリートビューに切り替えるボタンを非表示
+      scaleControl: true, //地図のスケールを表示（デフォルトは非表示）
+      mapTypeControl: false //地図と航空写真を切り替えるボタンを非表示
+    });
+  }
+
+  //②位置情報を入力してEnter(keyCode13)押したらMapに反映される
+  document.getElementById('address').addEventListener('keydown',(event) => {
+    //エンターキーがクリックされたか
+    if (event.keyCode == 13) {
+      codeAddress();
+    }
+    return false;
+  });
+
+  //③検索後のマップ作成
+  function codeAddress(){
+    let inputAddress = document.getElementById('address').value;
+    geocoder.geocode( { 'address': inputAddress}, function(results, status) {
+      if (status == 'OK') { //住所が取得できた場合
+        ⑴//すでにマーカーがあれば初期化
+        if (aft == true){
+          marker.setMap(null);
+        }
+        ⑵//新しくマーカーを作成する　result[0]は
+        map.setCenter(results[0].geometry.location);
+          marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location,
+          draggable: true	// ドラッグ可能にする
+        });
+
+        ⑶//マーカー作成済
+        aft = true
+
+        ⑷//検索した時に緯度経度を入力する
+        document.getElementById('latitude').value = results[0].geometry.location.lat();
+        document.getElementById('longitude').value = results[0].geometry.location.lng();
+
+        ⑸// hidden_fieldに入れる緯度経度
+        document.getElementById('post_latitude').value = results[0].geometry.location.lat();
+        document.getElementById('post_longitude').value = results[0].geometry.location.lng();
+
+        $('#address').val(formattedAddress(results[0].formatted_address))
+
+        ⑹// マーカーのドロップ（ドラッグ終了）時のイベント
+        google.maps.event.addListener( marker, 'dragend', function(ev){
+          // イベントの引数evの、プロパティ.latLngが緯度経度
+          document.getElementById('post_latitude').value = ev.latLng.lat();
+          document.getElementById('post_longitude').value = ev.latLng.lng();
+
+          // ドラッグでのピン移動で住所を求めるコーディング
+          let geocode = new google.maps.Geocoder();
+
+          geocoder.geocode({
+            latLng: ev.latLng
+          }, function (results, status) {
+
+            if (results[0].geometry) {
+              $('#address').val(formattedAddress(results[0].formatted_address))
+            } else {
+              alert('該当する詳細住所はありません。検索時のアドレスでそのまま登録されます。')
+            }
+          });
+
+        });
+      } else {
+        alert('該当する詳細住所はありません：' + status);
+      }
+    });
+  }
+
+  function formattedAddress(address)
+  {
+    let splitAddress = address.split(' ')
+    splitAddress.shift();
+
+    return splitAddress.join(' ')
+  }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?language=ja&key=<%= ENV['API_KEY'] %>&callback=initMap" async defer></script>
