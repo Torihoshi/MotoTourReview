@@ -14,41 +14,113 @@
 </div>
 
 <h1>投稿一覧</h1>
+<table>
+    <thead>
+      <tr>
+        <th>スポット名</th>
+        <th>タイトル</th>
+        <th>コメント</th>
+        <th>日付</th>
+        <th>カテゴリ</th>
+        <th>評価</th>
+        <th>いいね</th>
+      </tr>
+    </thead>
 
-<% @posts.each do |post| %>
+  <% @posts.each do |post| %>
+    <% if post.is_private == false %>
+    <tbody>
+      <tr>
+        <th><%= post.spot_name %></th>
+        <th><%= link_to post.title, post_path(post) %></th>
+        <th><%= post.comment %></th>
+        <th><%= post.visited_date %></th>
+        <th><%= post.category.name %></th>
+        <th>
+          <div id="star_<%= post.id %>"></div>
+          <script>
+            $(document).on('turbolinks:load', function() {
+              let elem = document.querySelector('#star_<%= post.id %>');
+              if (elem == null) return;
 
-  <h4>スポット名</h4>
-  <span><%= post.spot_name %></span>
+              elem.innerHTML = "";
+              let opt = {
+                starOn: "<%= asset_path('star-on.png') %>",
+                starOff: "<%= asset_path('star-off.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                score: "<%= post.star %>",
+                readOnly: true,
+              };
+              raty(elem, opt);
+            });
+          </script>
+        </th>
+        <th>
+          <!-- いいねボタンの表示 -->
+          <% if post.favorited_by?(current_user) %><!--いいねをする-->
+            <%= link_to post_favorites_path(post), method: :delete, remote: true, data: {"turbolinks" => false}, style: "color: red;" do %>
+              <nobr>
+                <i class="fas fa-heart" aria-hidden="true"></i> <!-- ハートのアイコンを表示 -->
+                <%= post.favorites.count %> <!-- いいねの数を表示 -->
+              </nobr>
+            <% end %>
+          <% else %><!--いいねをはずす-->
+            <%= link_to post_favorites_path(post), method: :post, remote: true, data: {"turbolinks" => false} do %>
+              <nobr>
+                <i class="fas fa-heart" aria-hidden="true"></i> <!-- ハートのアイコンを表示 -->
+                <%= post.favorites.count %> <!-- いいねの数を表示 -->
+              </nobr>
+            <% end %>
+          <% end %>
+        </th>
+      </tr>
+    </tbody>
+    <% end %>
+  <% end %>
+</table>
 
-  <h4>タイトル</h4>
-  <span><%= link_to post.title, post_path(post) %></span>
+<div id="map" style="height: 400px;"></div>
 
-  <h4>コメント</h4>
-  <span><%= post.comment %></span>
+<script>
+  function initMap() {
 
-  <h4>日付</h4>
-  <span><%= post.visited_date %></span>
+    // 初期表示位置
+    let latlng = new google.maps.LatLng(37.5, 137.5);
 
-  <h4>カテゴリ</h4>
-  <span><%= post.category.name %></span>
+    // Map設定
+    let map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 4.7,
+      center: latlng,
+      fullscreenControl: false, //マップを全画面モードで表示するボタンを非表示
+      streetViewControl: false, //ストリートビューに切り替えるボタンを非表示
+      scaleControl: true, //地図のスケールを表示（デフォルトは非表示）
+      mapTypeControl: false //地図と航空写真を切り替えるボタンを非表示
+    });
 
-  <h4>評価</h4>
-  <div id="star_<%= post.id %>"></div>
-  <script>
-  $(document).on('turbolinks:load', function() {
-    let elem = document.querySelector('#star_<%= post.id %>');
-    if (elem == null) return;
+    // 複数マーカー ここから
+    <% @posts.each do |post|%>
+      ( function() {
+        let markerLatLng = { lat: <%= post.latitude %>, lng: <%= post.longitude %> }; // 緯度経度のデータ作成
+        let marker = new google.maps.Marker({
+          position: markerLatLng,
+          map: map
+        });
+        // マーカーをクリックしたとき、詳細情報(infowindow)を表示
+        let infowindow = new google.maps.InfoWindow({
+          position: markerLatLng,
+          <% if admin_signed_in? %>
+            content: "<a href='<%= admin_post_path(post.id) %>' target='_blank'><%= post.title %></a>"
+          <% else %>
+            content: "<a href='<%= post_path(post.id) %>' target='_blank'><%= post.title %></a>"
+          <% end %>
+        }); //infowindowをクリックすると開く
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+      })();
+    <% end %>
+    // 複数マーカー ここまで
+  }
+</script>
 
-    elem.innerHTML = "";
-    let opt = {
-      starOn: "<%= asset_path('star-on.png') %>",
-      starOff: "<%= asset_path('star-off.png') %>",
-      starHalf: "<%= asset_path('star-half.png') %>",
-      score: "<%= post.star %>",
-      readOnly: true,
-    };
-    raty(elem, opt);
-  });
-  </script>
-
-<% end %>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['API_KEY'] %>&callback=initMap"></script>

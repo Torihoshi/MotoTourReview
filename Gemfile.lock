@@ -90,8 +90,13 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     erubi (1.12.0)
     ffi (1.15.5)
+    geocoder (1.8.2)
     globalid (1.1.0)
       activesupport (>= 5.0)
     i18n (1.14.1)
@@ -206,6 +211,8 @@ GEM
       rubocop (~> 1.41)
     rubocop-factory_bot (2.23.1)
       rubocop (~> 1.33)
+    rubocop-md (1.2.0)
+      rubocop (>= 1.0)
     rubocop-minitest (0.31.0)
       rubocop (>= 1.39, < 2.0)
     rubocop-packaging (0.5.2)
@@ -289,6 +296,8 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   devise
+  dotenv-rails
+  geocoder
   jbuilder (~> 2.7)
   listen (~> 3.3)
   pagy
@@ -297,6 +306,7 @@ DEPENDENCIES
   rails (~> 6.1.7, >= 6.1.7.4)
   ransack
   rubocop
+  rubocop-md
   rubocop-minitest
   rubocop-packaging
   rubocop-performance

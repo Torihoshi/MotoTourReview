@@ -1,18 +1,16 @@
 class Public::PostsController < ApplicationController
   def index
-    # レビュー一覧を表示する処理
     @categories = Category.all
     @posts = if params[:category_id].present?
-                Post.where(category_id: params[:category_id])
-              elsif params[:word]
-                Post.where("spot_name LIKE ?", "%#{params[:word]}%")
-              else
-                Post.all
-              end
+      Post.where(category_id: params[:category_id], is_private: false)
+    elsif params[:word]
+      Post.where("spot_name LIKE ?", "%#{params[:word]}%").where(is_private: false)
+    else
+      Post.where(is_private: false)
+    end
   end
 
   def show
-    # レビュー詳細を表示する処理
     @post = Post.find(params[:id])
     @comment = Comment.new
   end
@@ -23,13 +21,11 @@ class Public::PostsController < ApplicationController
   end
 
   def create
-    # レビューの新規投稿を処理する処理
     post = Post.new(post_params)
-    post.user_id = current_user.id # ユーザーIDをセット
-    # @post.category_id = params[:post][:category_id] # カテゴリーIDをセット
+    post.user_id = current_user.id
 
     if post.save!
-      redirect_to root_path, notice: '投稿が成功しました。'
+      redirect_to root_path, notice: "投稿が成功しました。"
     else
       render :new
     end
@@ -48,6 +44,7 @@ class Public::PostsController < ApplicationController
     @post = Post.find(params[:id])
 
     if @post.user == current_user && @post.update(post_params)
+
       flash[:success] = "投稿が更新されました"
       redirect_to post_path(@post)
     else
@@ -57,9 +54,8 @@ class Public::PostsController < ApplicationController
   end
 
   private
-  # ストロングパラメータ
-  def post_params
-    params.require(:post).permit(:user_id, :spot_name, :title, :comment, :visited_date, :category_id, :star)
-  end
-
+    # ストロングパラメータ
+    def post_params
+      params.require(:post).permit(:user_id, :spot_name, :title, :comment, :visited_date, :category_id, :star, :is_private, :address, :latitude, :longitude)
+    end
 end

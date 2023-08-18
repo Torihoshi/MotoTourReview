@@ -1,0 +1,16 @@
+<div id="map" style="height: 400px;"></div>
+<script>
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: <%= @map_data[:latitude] %>, lng: <%= @map_data[:longitude] %> },
+      zoom: 15
+    });
+
+    var marker = new google.maps.Marker({
+      position: { lat: <%= @map_data[:latitude] %>, lng: <%= @map_data[:longitude] %> },
+      map: map,
+      title: '<%= @map_data[:spot_name] %>'
+    });
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['API_KEY'] %>&callback=initMap"></script>

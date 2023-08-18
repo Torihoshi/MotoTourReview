@@ -1,1 +1,33 @@
 /MotoTourReview/app/views/public/users/show.html.erb
+
+<div class="user-info">
+  <h2>ユーザー情報</h2>
+  <p><strong>メールアドレス:</strong> <%= @user.email %></p>
+  <p><strong>アカウント名:</strong> <%= @user.name %></p>
+  <p><strong>自己紹介:</strong> <%= @user.introduction %></p>
+  <!-- 他のユーザー情報フィールドも追加可能 -->
+
+  <% if current_user == @user %>
+    <%= link_to "編集", edit_user_path(current_user), class: "edit-button" %>
+  <% end %>
+</div>
+
+<h1><%= @user.name %>さんの投稿一覧</h1>
+
+<% @user.posts.each do |post| %>
+  <div class="post">
+    <h2><%= post.spot_name %></h2>
+    <p><strong>レビュータイトル:</strong> <%= post.title %></p>
+    <p><strong>レビューコメント:</strong> <%= post.comment %></p>
+    <p><strong>いいね数:</strong> <%= post.favorite %></p>
+    <p><strong>訪問日:</strong> <%= post.visited_date %></p>
+    <p><strong>公開フラグ:</strong> <%= post.is_private ? "非公開" : "公開" %></p>
+    <p><strong>住所:</strong> <%= post.address %></p>
+    <p><strong>作成日時:</strong> <%= post.created_at %></p>
+    <p><strong>更新日時:</strong> <%= post.updated_at %></p>
+
+      <% if current_user == @user %>
+        <%= link_to "編集", edit_post_path(@user, post), class: "edit-button" %>
+      <% end %>
+  </div>
+<% end %>

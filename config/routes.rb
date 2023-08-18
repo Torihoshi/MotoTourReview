@@ -3,16 +3,16 @@
 #
 
 Rails.application.routes.draw do
-  devise_for :admin, skip: [:registrations, :passwords] ,controllers: {
+  devise_for :admin, skip: [:registrations, :passwords], controllers: {
     sessions: "admin/sessions"
   }
-  devise_for :users,skip: [:passwords], controllers: {
+  devise_for :users, skip: [:passwords], controllers: {
     registrations: "public/registrations",
-    sessions: 'public/sessions'
+    sessions: "public/sessions"
   }
 
   devise_scope :user do
-    post 'users/guest_sign_in', to: 'public/sessions#guest_sign_in'
+    post "users/guest_sign_in", to: "public/sessions#guest_sign_in"
   end
 
   namespace :admin do
@@ -25,15 +25,16 @@ Rails.application.routes.draw do
   scope module: :public do
     root "homes#top"
     get "/about" => "homes#about"
-    resources :users, only: [:index, :show, :edit, :update, :destroy] do
+    resources :users, only: [:show, :edit, :update] do
       member do
         get :unsubscribe
+        patch :withdrawal
       end
     end
-    resources :posts, only: [:index, :show, :new, :create, :edit, :update] do
+    resources :posts, except: [:destroy] do
       resources :comments, only: [:create, :destroy]
+      resource :favorites, only: [:create, :destroy]
     end
-    resources :favorites, only: [:create, :destroy]
   end
 
 

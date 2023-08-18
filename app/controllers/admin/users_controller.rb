@@ -1,13 +1,12 @@
 class Admin::UsersController < ApplicationController
   def show
-    # ユーザー詳細を表示する処理
     @user = User.find(params[:id])
-    @posts = @user.posts
+    @posts = @user.posts.order(created_at: :desc)
   end
 
   def edit
     # ユーザー情報編集フォームを表示する処理
-        @user = User.find(params[:id])
+    @user = User.find(params[:id])
   end
 
   def update
@@ -22,8 +21,7 @@ class Admin::UsersController < ApplicationController
   end
 
   private
-
-  def user_params
-    params.require(:user).permit(:email, :name, :introduction, :bike_name, :is_deleted)
-  end
+    def user_params
+      params.require(:user).permit(:email, :name, :introduction, :bike_name, :is_deleted)
+    end
 end

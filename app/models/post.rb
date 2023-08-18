@@ -29,6 +29,10 @@
 #  user_id      (user_id => users.id)
 #
 class Post < ApplicationRecord
+  # Map用
+  geocoded_by :address
+  after_validation :geocode, if: :address_changed?
+
   belongs_to :user
   belongs_to :category
   has_many :comments, dependent: :destroy
@@ -36,7 +40,10 @@ class Post < ApplicationRecord
   has_one_attached :image
 
   def get_image
-    (image.attached?) ? image : 'no_image.jpg'
+    (image.attached?) ? image : "no_image.jpg"
   end
 
+  def favorited_by?(user)
+    favorites.where(user_id: user.id).exists?
+  end
 end
