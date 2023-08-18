@@ -10,6 +10,12 @@ class Public::PostsController < ApplicationController
     else
       Post.where(is_private: false)
     end
+
+      if params[:sort] == "favorites"
+        @posts = @posts.left_joins(:favorites).group("posts.id").order("COUNT(favorites.id) DESC")
+      elsif params[:sort] == "star"
+        @posts = @posts.order(star: :desc)
+      end
   end
 
   def show

@@ -1,0 +1,8 @@
+ja:
+  views:
+    public:
+      posts:
+        index:
+          sort_options:
+            favorites: "いいね数が多い順"
+            star: "評価が高い順"

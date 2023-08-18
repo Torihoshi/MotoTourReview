@@ -65,6 +65,8 @@ GEM
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
+    annotate_routes (0.0.1)
+      rails (> 3.2)
     ast (2.4.2)
     bcrypt (3.1.19)
     bindex (0.8.1)
@@ -292,6 +294,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  annotate_routes
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)

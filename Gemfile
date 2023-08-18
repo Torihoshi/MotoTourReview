@@ -53,6 +53,7 @@ group :development do
   gem "rubocop-rspec"
   gem "rubocop-md"
   gem "annotate"
+  gem 'annotate_routes'
 end
 
 group :test do
