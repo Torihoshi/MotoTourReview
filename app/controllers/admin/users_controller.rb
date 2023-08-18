@@ -21,8 +21,7 @@ class Admin::UsersController < ApplicationController
   end
 
   private
-
-  def user_params
-    params.require(:user).permit(:email, :name, :introduction, :bike_name, :is_deleted)
-  end
+    def user_params
+      params.require(:user).permit(:email, :name, :introduction, :bike_name, :is_deleted)
+    end
 end
