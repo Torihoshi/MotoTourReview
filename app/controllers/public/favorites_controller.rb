@@ -1,9 +1,13 @@
 class Public::FavoritesController < ApplicationController
   def create
-    # いいねの投稿を処理する処理
+    @post_favorite = Favorite.new(user_id: current_user.id, post_id: params[:post_id])
+    @post_favorite.save
+    redirect_to post_path(params[:post_id])
   end
 
   def destroy
-    # いいねの削除を処理する処理
+    @post_favorite = Favorite.find_by(user_id: current_user.id, post_id: params[:post_id])
+    @post_favorite.destroy
+    redirect_to post_path(params[:post_id])
   end
 end

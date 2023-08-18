@@ -33,8 +33,8 @@ Rails.application.routes.draw do
     end
     resources :posts, except: [:destroy] do
       resources :comments, only: [:create, :destroy]
+      resource :favorites, only: [:create, :destroy]
     end
-    resources :favorites, only: [:create, :destroy]
   end
 
 

@@ -25,6 +25,24 @@
     <div id="post_raty"></div>
   </div>
 
+  <%= f.submit '投稿' %>
+
+  <div class="row">
+    <%= f.label :latitude, '緯度', class: 'col-md-2 offset-1' %>
+    <%= f.text_field :latitude, id: :latitude, class: 'col-md-3' %>
+
+    <%= f.label :longitude, '経度', class: 'col-md-2 offset-1' %>
+    <%= f.text_field :longitude, id: :longitude, class: 'col-md-3' %>
+
+    <%= f.hidden_field :latitude, id: 'post_latitude' %>
+    <%= f.hidden_field :longitude, id: 'post_longitude' %>
+  </div>
+
+  <div id="map" style="height: 400px;"></div>
+
+<% end %>
+
+<!--いいねスクリプト-->
   <script>
     $(document).on('turbolinks:load', function() {
       let elem = document.querySelector('#post_raty');
@@ -41,18 +59,11 @@
     });
   </script>
 
-    <%= f.submit '投稿' %>
-
-
-    <div id="map" style="height: 400px;"></div>
-
-<% end %>
-
+<!--GoogleMAPスクリプト-->
 <script>
   let map; // マップ
   let marker; // ピン
   let geocoder; // 住所
-  let aft; // 一回ピンを作ったか判定用
 
   // 初期マップの設定
   function initMap() {
@@ -69,10 +80,10 @@
 
   // スポット名を住所に変換して地図上に表示する関数
   function codeSpot() {
-    var spotName = document.getElementById('post_spot_name').value;
+    let spotName = document.getElementById('post_spot_name').value;
     geocoder.geocode({ 'address': spotName }, function(results, status) {
       if (status === 'OK' && results[0]) {
-        var location = results[0].geometry.location;
+        let location = results[0].geometry.location;
 
         // 以前のマーカーがあれば削除
         if (marker) {
@@ -95,11 +106,17 @@
 
   // スポット名を住所に自動入力する関数
   function autoFillAddress() {
-    var spotName = document.getElementById('post_spot_name').value;
+    let spotName = document.getElementById('post_spot_name').value;
     geocoder.geocode({ 'address': spotName }, function(results, status) {
       if (status === 'OK' && results[0]) {
-        var formattedAddress = results[0].formatted_address;
+        let formattedAddress = results[0].formatted_address;
         document.getElementById('post_address').value = formattedAddress;
+
+        // 緯度と経度を取得して設定
+        let latitude = results[0].geometry.location.lat();
+        let longitude = results[0].geometry.location.lng();
+        document.getElementById('post_latitude').value = latitude;
+        document.getElementById('post_longitude').value = longitude;
       } else {
         console.log('Geocode was not successful for the following reason: ' + status);
       }
@@ -107,5 +124,5 @@
   }
 
 </script>
-</script>
+
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['API_KEY'] %>&callback=initMap"></script>
