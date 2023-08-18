@@ -26,6 +26,8 @@ AllCops:
     - '**/4_*_release_notes.md'
     - '**/5_*_release_notes.md'
     - '**/6_*_release_notes.md'
+    - "db/schema*.rb"
+    - "db/migrate/**/*"
 
 
 Performance:

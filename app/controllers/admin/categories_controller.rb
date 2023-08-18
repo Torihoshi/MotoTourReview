@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::CategoriesController < ApplicationController
   def index
     # カテゴリー一覧を表示する処理

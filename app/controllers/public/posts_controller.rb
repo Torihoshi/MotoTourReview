@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Public::PostsController < ApplicationController
   def index
     @categories = Category.all

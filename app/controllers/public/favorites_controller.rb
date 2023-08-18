@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Public::FavoritesController < ApplicationController
   def create
     @post_favorite = Favorite.new(user_id: current_user.id, post_id: params[:post_id])

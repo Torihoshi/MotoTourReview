@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Public::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :unsubscribe]
 
