@@ -25,89 +25,38 @@
       <h3>投稿一覧</h3>
       <div class="row">
         <% @posts.each do |post| %>
+
           <% if post.is_private == false %>
             <div class="col-md-4 mb-4">
               <div class="card position-relative">
+
                 <%= link_to post_path(post) do %>
                   <div class="position-relative">
                     <%= image_tag post.get_image, class: "card-img-top", alt: "投稿画像" %>
-                    <h5 class="card-title overlay-text spot-name"><%= post.spot_name %></h5>
-                    <div class="overlay-text visit-date"><%= post.visited_date %></div>
-                  </div>
-                  <div class="card-body">
-                    <p class="card-text"><%= post.title %></p>
+                    <p class="card-title overlay-text spot-name"><%= post.spot_name %></p>
+                    <p class="overlay-text visit-date"><%= post.visited_date %><br><%= post.user.name %></p>
                   </div>
                 <% end %>
+
+                <div class="card-body">
+                  <p class="card-text"><%= post.title %></p>
+                  <p class="card-text"></p>
+                </div>
+
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                  <%= render "static_rate", post: post %>
+                  <div id="favorite_buttons_<%= post.id %>">
+                    <%= render "public/favorites/btn", post: post %>
+                  </div>
+                </div>
+
               </div>
             </div>
           <% end %>
+
         <% end %>
       </div>
-
-      <table>
-          <thead>
-            <tr>
-              <th>スポット名</th>
-              <th>タイトル</th>
-              <th>コメント</th>
-              <th>日付</th>
-              <th>カテゴリ</th>
-              <th>評価</th>
-              <th>いいね</th>
-            </tr>
-          </thead>
-
-        <% @posts.each do |post| %>
-          <% if post.is_private == false %>
-          <tbody>
-            <tr>
-              <th><%= post.spot_name %></th>
-              <th><%= link_to post.title, post_path(post) %></th>
-              <th><%= post.comment %></th>
-              <th><%= post.visited_date %></th>
-              <th><%= post.category.name %></th>
-              <th>
-                <div id="star_<%= post.id %>"></div>
-                <script>
-                  $(document).on('turbolinks:load', function() {
-                    let elem = document.querySelector('#star_<%= post.id %>');
-                    if (elem == null) return;
-
-                    elem.innerHTML = "";
-                    let opt = {
-                      starOn: "<%= asset_path('star-on.png') %>",
-                      starOff: "<%= asset_path('star-off.png') %>",
-                      starHalf: "<%= asset_path('star-half.png') %>",
-                      score: "<%= post.star %>",
-                      readOnly: true,
-                    };
-                    raty(elem, opt);
-                  });
-                </script>
-              </th>
-              <th>
-                <!-- いいねボタンの表示 -->
-                <% if post.favorited_by?(current_user) %><!--いいねをする-->
-                  <%= link_to post_favorites_path(post), method: :delete, remote: true, data: {"turbolinks" => false}, style: "color: red;" do %>
-                    <nobr>
-                      <i class="fas fa-heart" aria-hidden="true"></i> <!-- ハートのアイコンを表示 -->
-                      <%= post.favorites.count %> <!-- いいねの数を表示 -->
-                    </nobr>
-                  <% end %>
-                <% else %><!--いいねをはずす-->
-                  <%= link_to post_favorites_path(post), method: :post, remote: true, data: {"turbolinks" => false} do %>
-                    <nobr>
-                      <i class="fas fa-heart" aria-hidden="true"></i> <!-- ハートのアイコンを表示 -->
-                      <%= post.favorites.count %> <!-- いいねの数を表示 -->
-                    </nobr>
-                  <% end %>
-                <% end %>
-              </th>
-            </tr>
-          </tbody>
-          <% end %>
-        <% end %>
-      </table>
+      <%== pagy_nav(@pagy) %>
     </div>
 
   </div>

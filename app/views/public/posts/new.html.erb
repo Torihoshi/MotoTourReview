@@ -1,5 +1,4 @@
-/MotoTourReview/app/views/public/posts/new.html.erb
-
+<!--/MotoTourReview/app/views/public/posts/new.html.erb-->
 <%= form_with model: @post, local: false do |f| %>
   <h4>スポット名</h4>
   <%= f.text_field :spot_name, id: 'post_spot_name', onchange: 'autoFillAddress()' %>

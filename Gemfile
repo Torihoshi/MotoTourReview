@@ -75,3 +75,4 @@ gem "ransack"
 gem "dotenv-rails"
 
 gem "geocoder"
+gem 'jquery-rails'
