@@ -66,6 +66,9 @@ class Public::PostsController < ApplicationController
   private
     # ストロングパラメータ
     def post_params
-      params.require(:post).permit(:user_id, :spot_name, :title, :comment, :visited_date, :category_id, :star, :is_private, :address, :latitude, :longitude)
+      params.require(:post).permit(
+        :user_id, :category_id, :spot_name, :title, :comment,
+        :visited_date, :image, :star, :is_private, :address, :latitude, :longitude
+      )
     end
 end

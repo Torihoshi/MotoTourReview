@@ -41,6 +41,14 @@ class Post < ApplicationRecord
   has_many :favorites, dependent: :destroy
   has_one_attached :image
 
+  validates :spot_name, presence: true, length: { maximum: 255 }
+  validates :title, presence: true, length: { maximum: 20 }
+  validates :comment, presence: true, length: { maximum: 255 }
+  validates :visited_date, presence: true
+  validates :category_id, presence: true
+  validates :is_private, inclusion: { in: [true, false] }
+  validate :image_type
+
   def get_image
     (image.attached?) ? image : "no_image.jpg"
   end
@@ -48,4 +56,15 @@ class Post < ApplicationRecord
   def favorited_by?(user)
     favorites.where(user_id: user.id).exists?
   end
+
+  private
+
+  def image_type
+    if image.attached? && !image.content_type.in?(%w(image/jpeg image/png))
+      errors.add(:image, 'はJPEGまたはPNG形式でアップロードしてください')
+    elsif image.attached? && image.blob.byte_size > 5.megabytes
+      errors.add(:image, 'のファイルサイズが大きすぎます（最大5MBまで）')
+    end
+  end
+
 end

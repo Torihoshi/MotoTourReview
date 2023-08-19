@@ -1,127 +1,93 @@
 <!--/MotoTourReview/app/views/public/posts/new.html.erb-->
-<%= form_with model: @post, local: false do |f| %>
-  <h4>スポット名</h4>
-  <%= f.text_field :spot_name, id: 'post_spot_name', onchange: 'autoFillAddress()' %>
-  <%= f.button 'Map表示', type: 'button', class: 'btn btn-sm btn-secondary', onclick: 'codeSpot()' %>
-  <h4>住所</h4>
-  <%= f.text_field :address, id: 'post_address' %>
+<div class='container px-5 px-sm-0'>
+  <div class='row mt-5'>
+    <!--左側部分-->
+    <div class='col-md-6'>
+      <h4>新規投稿</h4>
+      <%= form_with model: @post, local: false do |f| %>
+        <div class="">
+          <table width="100%">
+            <tr>
+              <td width="20%">スポット名<span class="text-danger">*</span></td>
+              <td width="80%">
+                <%= f.text_field :spot_name, id: 'post_spot_name', onchange: 'autoFillAddress()',
+                    autofocus: true, class: "form-control", placeholder: "例：東京ドイツ村" %>
+              </td>
+            </tr>
+            <tr>
+              <td>住所(自動)</td>
+              <td><%= f.text_field :address, id: 'post_address', class: "form-control w-100", placeholder: "(自動入力)", readonly: true, disabled: true %></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <div class="d-grid gap-2 col-12 mx-auto">
+                  <%= f.button 'Map表示', type: 'button', class: 'btn btn-sm btn-outline-secondary', onclick: 'codeSpot()' %>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
 
-  <h4>タイトル</h4>
-  <%= f.text_field :title %>
+        <div class="mt-5">
+          <table width="100%">
+            <tr>
+              <td width="20%">タイトル<span class="text-danger">*</span></td>
+              <td width="80%"><%= f.text_field :title, class: "form-control", placeholder: "レビュータイトルを入力してください" %></td>
+            </tr>
+            <tr>
+              <td>コメント<span class="text-danger">*</span></td>
+              <td><%= f.text_area :comment, class: "form-control", placeholder: "コメントを入力してください", rows: 5 %></td>
+            </tr>
+            <tr>
+              <td>訪れた日<span class="text-danger">*</span></td>
+              <td><%= f.date_field :visited_date, class: "form-control w-50" %></td>
+            </tr>
+            <tr>
+              <td>カテゴリ<span class="text-danger">*</span></td>
+              <td>
+                <%= f.collection_select :category_id, Category.all, :id, :name,
+                    prompt: 'カテゴリを選択', class: "form-select" %>
+              </td>
+            </tr>
+            <tr>
+              <td>評価</td>
+              <td><%= render "new_rate", post: @post %></td>
+            </tr>
+            <tr>
+              <td>画像</td>
+              <td><%= f.file_field :image, class: "form-control-file", accept: 'image/*' %></td>
+            </tr>
+            <tr>
+              <td>公開ステータス<span class="text-danger">*</span></td>
+              <td>
+                <%= f.radio_button :is_private, false, checked: true %>
+                <%= f.label :is_private, '公開' %>
+                <%= f.radio_button :is_private, true %>
+                <%= f.label :is_private, '非公開' %>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="d-grid gap-2 col-12 mx-auto my-4">
+          <%= f.submit '投稿する', class: 'btn btn-lg btn-secondary'%>
+        </div>
+        <div style="display: none;">
+          <%= f.label :latitude, '緯度', class: 'col-md-2 offset-1' %>
+          <%= f.text_field :latitude, id: :latitude, class: 'col-md-3' %>
+          <%= f.label :longitude, '経度', class: 'col-md-2 offset-1' %>
+          <%= f.text_field :longitude, id: :longitude, class: 'col-md-3' %>
+          <%= f.hidden_field :latitude, id: 'post_latitude' %>
+          <%= f.hidden_field :longitude, id: 'post_longitude' %>
+        </div>
+      <% end %>
+    </div>
 
-  <h4>コメント</h4>
-  <%= f.text_area :comment %>
+    <!--右側部分-->
+    <div class='col-md-6'>
+      <%= render 'map_new' %>
+    </div>
 
-  <h4>日付</h4>
-  <%= f.date_field :visited_date %>
-
-  <h4>カテゴリ</h4>
-  <%= f.collection_select :category_id, Category.all, :id, :name, prompt: 'カテゴリを選択してください' %>
-
-  <div class="form-group" id="star">
-    <%= f.label :star %>
-    <%= f.hidden_field :star, id: :review_star, class: 'form-control' %>
-    <div id="post_raty"></div>
   </div>
+</div>
 
-  <%= f.submit '投稿' %>
-
-  <div class="row">
-    <%= f.label :latitude, '緯度', class: 'col-md-2 offset-1' %>
-    <%= f.text_field :latitude, id: :latitude, class: 'col-md-3' %>
-
-    <%= f.label :longitude, '経度', class: 'col-md-2 offset-1' %>
-    <%= f.text_field :longitude, id: :longitude, class: 'col-md-3' %>
-
-    <%= f.hidden_field :latitude, id: 'post_latitude' %>
-    <%= f.hidden_field :longitude, id: 'post_longitude' %>
-  </div>
-
-  <div id="map" style="height: 400px;"></div>
-
-<% end %>
-
-<!--いいねスクリプト-->
-  <script>
-    $(document).on('turbolinks:load', function() {
-      let elem = document.querySelector('#post_raty');
-      if (elem == null) return;
-
-      elem.innerHTML = ""
-      let opt = {
-        starOn: "<%= asset_path('star-on.png') %>",
-        starOff: "<%= asset_path('star-off.png') %>",
-        starHalf: "<%= asset_path('star-half.png') %>",
-        scoreName: 'post[star]',
-      };
-      raty(elem, opt);
-    });
-  </script>
-
-<!--GoogleMAPスクリプト-->
-<script>
-  let map; // マップ
-  let marker; // ピン
-  let geocoder; // 住所
-
-  // 初期マップの設定
-  function initMap() {
-    geocoder = new google.maps.Geocoder();
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: 35.6895, lng: 139.6917 }, // デフォルトの中心座標 (東京の緯度・経度)
-      zoom: 15,
-      fullscreenControl: false, //マップを全画面モードで表示するボタンを非表示
-      streetViewControl: false, //ストリートビューに切り替えるボタンを非表示
-      scaleControl: true, //地図のスケールを表示（デフォルトは非表示）
-      mapTypeControl: false //地図と航空写真を切り替えるボタンを非表示
-    });
-  }
-
-  // スポット名を住所に変換して地図上に表示する関数
-  function codeSpot() {
-    let spotName = document.getElementById('post_spot_name').value;
-    geocoder.geocode({ 'address': spotName }, function(results, status) {
-      if (status === 'OK' && results[0]) {
-        let location = results[0].geometry.location;
-
-        // 以前のマーカーがあれば削除
-        if (marker) {
-          marker.setMap(null);
-        }
-
-        marker = new google.maps.Marker({
-          map: map,
-          position: location,
-          title: spotName
-        });
-
-        // 地図を新しい位置にセンタリング
-        map.setCenter(location);
-      } else {
-        console.log('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  }
-
-  // スポット名を住所に自動入力する関数
-  function autoFillAddress() {
-    let spotName = document.getElementById('post_spot_name').value;
-    geocoder.geocode({ 'address': spotName }, function(results, status) {
-      if (status === 'OK' && results[0]) {
-        let formattedAddress = results[0].formatted_address;
-        document.getElementById('post_address').value = formattedAddress;
-
-        // 緯度と経度を取得して設定
-        let latitude = results[0].geometry.location.lat();
-        let longitude = results[0].geometry.location.lng();
-        document.getElementById('post_latitude').value = latitude;
-        document.getElementById('post_longitude').value = longitude;
-      } else {
-        console.log('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  }
-
-</script>
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['API_KEY'] %>&callback=initMap"></script>
