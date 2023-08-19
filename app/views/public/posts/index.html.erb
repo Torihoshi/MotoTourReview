@@ -32,7 +32,7 @@
 
                 <%= link_to post_path(post) do %>
                   <div class="position-relative">
-                    <%= image_tag post.get_image, class: "card-img-top", alt: "投稿画像" %>
+                    <%= image_tag post.get_image, class: "card-img-top post-image", alt: "投稿画像" %>
                     <p class="card-title overlay-text spot-name"><%= post.spot_name %></p>
                     <p class="overlay-text visit-date"><%= post.visited_date %><br><%= post.user.name %></p>
                   </div>

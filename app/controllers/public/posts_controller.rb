@@ -15,6 +15,8 @@ class Public::PostsController < ApplicationController
       @posts = @posts.left_joins(:favorites).group("posts.id").order("COUNT(favorites.id) DESC")
     elsif params[:sort] == "star"
       @posts = @posts.order(star: :desc)
+    else
+      @posts = @posts.order(created_at: :desc)
     end
 
     @pagy, @posts = pagy(@posts, items: 9)
@@ -35,7 +37,7 @@ class Public::PostsController < ApplicationController
     post.user_id = current_user.id
 
     if post.save!
-      redirect_to root_path, notice: "投稿が成功しました。"
+      redirect_to post_path(post), notice: "投稿が成功しました。"
     else
       render :new
     end
@@ -66,9 +68,6 @@ class Public::PostsController < ApplicationController
   private
     # ストロングパラメータ
     def post_params
-      params.require(:post).permit(
-        :user_id, :category_id, :spot_name, :title, :comment,
-        :visited_date, :image, :star, :is_private, :address, :latitude, :longitude
-      )
+      params.require(:post).permit(:user_id, :category_id, :spot_name, :title, :comment, :visited_date, :image, :star, :is_private, :address, :latitude, :longitude)
     end
 end
