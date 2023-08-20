@@ -16,7 +16,7 @@
             </tr>
             <tr>
               <td>住所(自動)</td>
-              <td><%= f.text_field :address, id: 'post_address', class: "form-control w-100", placeholder: "(自動入力)", readonly: true, disabled: true %></td>
+              <td><%= f.text_field :address, id: 'post_address', class: "form-control w-100", placeholder: "(自動入力)", readonly: true %></td>
             </tr>
             <tr>
               <td></td>
@@ -71,6 +71,14 @@
         </div>
         <div class="d-grid gap-2 col-12 mx-auto my-4">
           <%= f.submit '更新する', class: 'btn btn-lg btn-secondary'%>
+        </div>
+        <div style="display: none;">
+          <%= f.label :latitude, '緯度', class: 'col-md-2 offset-1' %>
+          <%= f.text_field :latitude, id: :latitude, class: 'col-md-3' %>
+          <%= f.label :longitude, '経度', class: 'col-md-2 offset-1' %>
+          <%= f.text_field :longitude, id: :longitude, class: 'col-md-3' %>
+          <%= f.hidden_field :latitude, id: 'post_latitude' %>
+          <%= f.hidden_field :longitude, id: 'post_longitude' %>
         </div>
       <% end %>
     </div>

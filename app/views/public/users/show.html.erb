@@ -30,19 +30,35 @@
       <h3><%= @user.name %>さんの投稿一覧</h3>
 
       <div class="row">
-        <% @user_posts.each do |post| %>
+        <% @posts.each do |post| %>
           <div class="col-md-4 mb-4">
             <div class="card position-relative">
+
               <%= link_to post_path(post) do %>
                 <div class="position-relative">
                   <%= image_tag post.get_image, class: "card-img-top post-image", alt: "投稿画像" %>
-                  <h5 class="card-title overlay-text spot-name"><%= post.spot_name %></h5>
-                  <div class="overlay-text visit-date"><%= post.visited_date %></div>
-                </div>
-                <div class="card-body">
-                  <p class="card-text"><%= post.title %></p>
+                  <p class="card-title overlay-text spot-name"><%= post.spot_name %></p>
+                  <p class="overlay-text visit-date"><%= post.visited_date %><br><%= post.user.name %></p>
                 </div>
               <% end %>
+
+              <div class="card-body">
+                <p class="card-text"><%= post.title %></p>
+                <p class="card-text"></p>
+              </div>
+
+              <div class="card-footer d-flex justify-content-between align-items-center">
+                <%= render "public/posts/static_rate", post: post %>
+                <% if current_user.id != post.user_id %>
+                  <div id="favorite_buttons_<%= post.id %>">
+                    <%= render "public/favorites/btn", post: post %>
+                  </div>
+                <% else %>
+                  <%= post.is_private ? '非公開' : '公開' %>
+                  <nobr><i class="fas fa-heart" aria-hidden="true"></i><%= post.favorites.count %></nobr>
+                <% end %>
+              </div>
+
             </div>
           </div>
         <% end %>
@@ -50,5 +66,9 @@
     </div>
   </div>
 </div>
+
+  <div class='row'>
+    <%== pagy_nav(@pagy) %>
+  </div>
 
 <%= link_to "一覧に戻る", posts_path %>

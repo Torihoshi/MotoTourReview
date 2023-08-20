@@ -4,40 +4,38 @@
     <!-- 左側部分 -->
     <div class='col-md-6'>
       <h4>投稿詳細</h4>
-      <table width="100%">
+      <table class="table">
         <tr>
-          <td width="20%">スポット名</td>
+          <th scope="row" width="20%">スポット名</th>
           <td width="80%"><%= @post.spot_name %></td>
         </tr>
         <tr>
-          <td>住所</td>
+          <th scope="row">住所</th>
           <td><%= @post.address %></td>
         </tr>
         <tr>
-          <td>タイトル</td>
+          <th scope="row">タイトル</th>
           <td><%= @post.title %></td>
         </tr>
         <tr>
-          <td>コメント</td>
+          <th scope="row">コメント</th>
           <td><%= simple_format(@post.comment) %></td>
         </tr>
         <tr>
-          <td>訪れた日</td>
+          <th scope="row">訪れた日</th>
           <td><%= @post.visited_date %></td>
         </tr>
         <tr>
-          <td>カテゴリ</td>
+          <th scope="row">カテゴリ</th>
           <td><%= @post.category.name %></td>
         </tr>
         <tr>
-          <td>評価</td>
+          <th scope="row">評価</th>
           <td><%= render "static_rate", post: @post %></td>
         </tr>
         <tr>
-          <td>公開ステータス</td>
-          <td>
-            <%= @post.is_private ? '非公開' : '公開' %>
-          </td>
+          <th scope="row">公開ステータス</th>
+          <td><%= @post.is_private ? '非公開' : '公開' %></td>
         </tr>
       </table>
 

@@ -4,7 +4,8 @@ class Public::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :unsubscribe]
 
   def show
-    @user_posts = @user.posts.order(created_at: :desc)
+    @posts = @user.posts.order(created_at: :desc)
+    @pagy, @posts = pagy(@posts, items: 9)
   end
 
   def edit

@@ -1,1 +1,33 @@
-/MotoTourReview/app/views/public/homes/top.html.erb
+<!--/MotoTourReview/app/views/public/homes/top.html.erb-->
+<div class='container px-5 px-sm-0'>
+  <div class='row'>
+      <% @random_posts.each do |post| %>
+
+        <% if post.is_private == false %>
+          <div class="col-md-5 mb-4">
+            <div class="card position-relative">
+
+              <%= link_to post_path(post) do %>
+                <div class="position-relative">
+                  <%= image_tag post.get_image, class: "card-img-top post-image", alt: "投稿画像" %>
+                  <p class="card-title overlay-text spot-name"><%= post.spot_name %></p>
+                  <p class="overlay-text visit-date"><%= post.visited_date %><br><%= post.user.name %></p>
+                </div>
+              <% end %>
+
+              <div class="card-body">
+                <p class="card-text"><%= post.title %></p>
+                <p class="card-text"></p>
+              </div>
+
+              <div class="card-footer d-flex justify-content-between align-items-center">
+                <%= render "public/posts/static_rate", post: post %>
+              </div>
+
+            </div>
+          </div>
+        <% end %>
+
+      <% end %>
+  </div>
+</div>

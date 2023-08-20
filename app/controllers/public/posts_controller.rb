@@ -12,11 +12,11 @@ class Public::PostsController < ApplicationController
     end
 
     if params[:sort] == "favorites"
-      @posts = @posts.left_joins(:favorites).group("posts.id").order("COUNT(favorites.id) DESC")
+      @posts = @posts.left_joins(:favorites).group("posts.id").where(is_private: false).order("COUNT(favorites.id) DESC")
     elsif params[:sort] == "star"
-      @posts = @posts.order(star: :desc)
+      @posts = @posts.where(is_private: false).order(star: :desc)
     else
-      @posts = @posts.order(created_at: :desc)
+      @posts = @posts.where(is_private: false).order(created_at: :desc)
     end
 
     @pagy, @posts = pagy(@posts, items: 9)
