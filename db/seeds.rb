@@ -9,7 +9,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 Admin.create!(
   email: "admin@admin",
-  password: "administrator"
+  password: "adminadmin"
 )
 Category.create!([
   { name: "道の駅" },

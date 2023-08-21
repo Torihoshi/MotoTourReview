@@ -1,0 +1,26 @@
+<!--/MotoTourReview/app/views/public/posts/_search.html.erb-->
+<div class="justify-content-center my-2">
+  <%= form_with url: posts_path, method: :get do |f| %>
+    <div class="d-flex align-items-center">
+
+      <div class="col-md-2 col-sm-4 mx-auto">
+        <%= f.select :category_id, options_from_collection_for_select(@categories, "id", "name", params[:category_id]),
+            include_blank: "すべてのカテゴリ", class: "form-select" %>
+      </div>
+
+      <div class="col-md-2 col-sm-4 mx-auto">
+        <%= f.select :sort, options_for_select([["いいね数が多い順", "favorites"], ["評価が高い順", "star"]], params[:sort]),
+            include_blank: "並び替え", class: "form-select" %>
+      </div>
+
+      <div class="col-md-4 col-sm-4">
+        <%= f.text_field :word, placeholder: "キーワード検索", class: "form-control" %>
+      </div>
+
+      <div class="d-grid gap-2 col-md-2 mx-auto">
+        <%= f.submit "検索", class: "btn btn-outline-primary" %>
+      </div>
+
+    </div>
+  <% end %>
+</div>

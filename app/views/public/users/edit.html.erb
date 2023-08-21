@@ -1,27 +1,38 @@
-/MotoTourReview/app/views/public/users/edit.html.erb
+<!--/MotoTourReview/app/views/public/users/edit.html.erb-->
+<div class="container mt-5 mb-5">
+  <div class="row col-6 mx-auto">
+    <h1>ユーザー情報編集</h1>
 
-<h1>ユーザー情報編集</h1>
+    <%= form_for(@user) do |f| %>
+      <table class="block" style="width: 100%;" cellpadding="5">
+        <tr>
+          <th>メールアドレス</th>
+          <td><%= f.email_field :email, class: "form-control" %></td>
+        </tr>
+        <tr>
+          <th>アカウント名</th>
+          <td><%= f.text_field :name, class: "form-control" %></td>
+        </tr>
+        <tr>
+          <th>自己紹介</th>
+          <td><%= f.text_area :introduction, class: "form-control" %></td>
+        </tr>
+        <tr>
+          <th>アカウント画像</th>
+          <td><%= f.file_field :profile_image, class: "form-control-file", accept: 'image/*' %></td>
+        </tr>
+        <tr>
+          <th>バイク名</th>
+          <td><%= f.text_field :bike_name, class: "form-control" %></td>
+        </tr>
+      </table>
 
-<%= form_for(@user) do |f| %>
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.email_field :email %>
+      <div class="d-grid gap-2 col-6 mx-auto">
+        <%= f.submit "更新", class: "btn btn-outline-success btn-lg mt-2 mb-5" %>
+        <%= link_to "退会する", unsubscribe_user_path(current_user), class: "btn btn-outline-danger btn-sm" %>
+      </div>
+    <% end %>
+
+
   </div>
-
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= f.label :introduction %>
-    <%= f.text_area :introduction %>
-  </div>
-  <!-- ユーザー情報の編集フォーム -->
-
-  <div class="actions">
-    <%= f.submit "更新" %>
-  </div>
-<% end %>
-
-<%= link_to "退会する", unsubscribe_user_path(current_user), class: "unsubscribe-button" %>
+</div>

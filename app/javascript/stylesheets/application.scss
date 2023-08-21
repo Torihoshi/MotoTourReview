@@ -1,1 +1,80 @@
 @import "~bootstrap/scss/bootstrap.scss";
+
+body {
+  background: #E6E1DC;
+}
+
+header, footer {
+  background: -webkit-linear-gradient(63deg, rgb(44, 44, 44) 5px, rgba(0, 0, 0, 0) 5px),
+              -webkit-linear-gradient(-117deg, rgb(44, 44, 44) 5px, rgba(0, 0, 0, 0) 5px),
+              -webkit-linear-gradient(63deg, rgb(64, 64, 64) 5px, rgba(0, 0, 0, 0) 5px),
+              -webkit-linear-gradient(-117deg, rgb(64, 64, 64) 5px, rgba(0, 0, 0, 0) 5px),
+              -webkit-linear-gradient(0deg, rgb(53, 53, 53) 10px, rgba(0, 0, 0, 0) 10px),
+              -webkit-linear-gradient(-90deg, rgb(56, 56, 56) 25%, rgb(50, 50, 50) 25%, rgb(50, 50, 50) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 75%, rgb(68, 68, 68) 75%, rgb(68, 68, 68) 100%), rgb(38, 38, 38);
+  background: linear-gradient(27deg, rgb(44, 44, 44) 5px, rgba(0, 0, 0, 0) 5px),
+              linear-gradient(207deg, rgb(44, 44, 44) 5px, rgba(0, 0, 0, 0) 5px),
+              linear-gradient(27deg, rgb(64, 64, 64) 5px, rgba(0, 0, 0, 0) 5px),
+              linear-gradient(207deg, rgb(64, 64, 64) 5px, rgba(0, 0, 0, 0) 5px),
+              linear-gradient(90deg, rgb(53, 53, 53) 10px, rgba(0, 0, 0, 0) 10px),
+              linear-gradient(180deg, rgb(56, 56, 56) 25%, rgb(50, 50, 50) 25%, rgb(50, 50, 50) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 75%, rgb(68, 68, 68) 75%, rgb(68, 68, 68) 100%), rgb(38, 38, 38);
+  background-position: 0 5px, 10px 0, 0 10px, 10px 5px, 0 0, 0 0;
+  -webkit-background-size: 20px 20px;
+  background-size: 20px 20px;
+}
+
+
+.sample{
+  position: relative;
+  padding: 30px;
+}
+.sample01{
+  background: #ffffff;
+  box-shadow: inset 0 0 30px rgba(230,220,228,0.8);
+}
+.sample:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border-width: 0 30px 30px 0;
+  border-style: solid;
+  width: 0;
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.sample:before {
+  background: #e3e3e3;
+  border-color: #E6E1DC #E6E1DC #e3e3e3 #e3e3e3;
+}
+
+
+.overlay-text {
+  position: absolute;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+.spot-name {
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.visit-date {
+  top: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.card-footer {
+  color:inherit;
+  text-decoration: none;
+}
+
+.post-image {
+  height: 200px; /* 画像の高さを調整する値を指定 */
+  object-fit: cover; /* 画像を指定した高さに合わせて切り抜き */
+}

@@ -1,7 +1,14 @@
-/MotoTourReview/app/views/admin/categories/new.html.erb
+<!-- /MotoTourReview/app/views/admin/categories/new.html.erb -->
+<div class="container mt-4">
+  <h1>新しいカテゴリを追加</h1>
 
-<%= form_with model: @category, url: admin_categories_path do |f| %>
-  <h4>カテゴリ名</h4>
-  <%= f.text_field :name %>
-  <%= f.submit '投稿' %>
-<% end %>
+  <%= form_with model: @category, url: admin_categories_path, local: true do |f| %>
+    <div class="form-group">
+      <label for="category_name">カテゴリ名</label>
+      <%= f.text_field :name, class: "form-control", id: "category_name" %>
+    </div>
+    <%= f.submit '投稿', class: "btn btn-primary" %>
+  <% end %>
+
+  <%= link_to '一覧に戻る', admin_categories_path, class: "btn btn-secondary mt-3" %>
+</div>

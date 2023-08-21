@@ -33,14 +33,21 @@ class User < ApplicationRecord
   has_many :favorites, dependent: :destroy
   has_one_attached :profile_image
 
+  validates :name, presence: true, length: { maximum: 16 }
+
   def self.guest
     find_or_create_by!(email: "guest@example.com") do |user|
-      user.password = SecureRandom.urlsafe_base64
+      random_password = SecureRandom.urlsafe_base64(6) # パスワードの長さをさらに短縮
+      user.password = random_password
       user.name = "ゲストユーザー"
     end
   end
 
   def get_profile_image
     (profile_image.attached?) ? profile_image : "no_image.jpg"
+  end
+
+  def remember_me
+    true
   end
 end

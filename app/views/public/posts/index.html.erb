@@ -1,126 +1,19 @@
-/MotoTourReview/app/views/public/posts/index.html.erb
-
-<%= form_tag posts_path, method: :get do %>
-  <label for="category_id">カテゴリ：</label>
-  <%= select_tag "category_id", options_from_collection_for_select(@categories, "id", "name", params[:category_id]), include_blank: "すべてのカテゴリ" %>
-  <%= submit_tag "検索" %>
-<% end %>
-
-<div class="search_form">
-  <%= form_with url: posts_path, method: :get do |f| %>
-    <%= f.text_field :word, placeholder: "Search"  %>
-    <%= f.submit "検索", class: "btn-sm btn-outline-secondary" %>
-  <% end %>
+<!--/MotoTourReview/app/views/public/posts/index.html.erb-->
+<div class='container px-5 px-sm-0'>
+  <div class='row'>
+      <%= render 'search' %>
+  </div>
+  <div class='row'>
+    <%== pagy_nav(@pagy) %>
+  </div>
+  <div class='row'>
+    <%= render 'users_post' %>
+  </div>
+  <div class='row'>
+    <%== pagy_nav(@pagy) %>
+  </div>
+  <div class='row'>
+    <%= render 'map_index' %>
+  </div>
 </div>
 
-<h1>投稿一覧</h1>
-<table>
-    <thead>
-      <tr>
-        <th>スポット名</th>
-        <th>タイトル</th>
-        <th>コメント</th>
-        <th>日付</th>
-        <th>カテゴリ</th>
-        <th>評価</th>
-        <th>いいね</th>
-      </tr>
-    </thead>
-
-  <% @posts.each do |post| %>
-    <% if post.is_private == false %>
-    <tbody>
-      <tr>
-        <th><%= post.spot_name %></th>
-        <th><%= link_to post.title, post_path(post) %></th>
-        <th><%= post.comment %></th>
-        <th><%= post.visited_date %></th>
-        <th><%= post.category.name %></th>
-        <th>
-          <div id="star_<%= post.id %>"></div>
-          <script>
-            $(document).on('turbolinks:load', function() {
-              let elem = document.querySelector('#star_<%= post.id %>');
-              if (elem == null) return;
-
-              elem.innerHTML = "";
-              let opt = {
-                starOn: "<%= asset_path('star-on.png') %>",
-                starOff: "<%= asset_path('star-off.png') %>",
-                starHalf: "<%= asset_path('star-half.png') %>",
-                score: "<%= post.star %>",
-                readOnly: true,
-              };
-              raty(elem, opt);
-            });
-          </script>
-        </th>
-        <th>
-          <!-- いいねボタンの表示 -->
-          <% if post.favorited_by?(current_user) %><!--いいねをする-->
-            <%= link_to post_favorites_path(post), method: :delete, remote: true, data: {"turbolinks" => false}, style: "color: red;" do %>
-              <nobr>
-                <i class="fas fa-heart" aria-hidden="true"></i> <!-- ハートのアイコンを表示 -->
-                <%= post.favorites.count %> <!-- いいねの数を表示 -->
-              </nobr>
-            <% end %>
-          <% else %><!--いいねをはずす-->
-            <%= link_to post_favorites_path(post), method: :post, remote: true, data: {"turbolinks" => false} do %>
-              <nobr>
-                <i class="fas fa-heart" aria-hidden="true"></i> <!-- ハートのアイコンを表示 -->
-                <%= post.favorites.count %> <!-- いいねの数を表示 -->
-              </nobr>
-            <% end %>
-          <% end %>
-        </th>
-      </tr>
-    </tbody>
-    <% end %>
-  <% end %>
-</table>
-
-<div id="map" style="height: 400px;"></div>
-
-<script>
-  function initMap() {
-
-    // 初期表示位置
-    let latlng = new google.maps.LatLng(37.5, 137.5);
-
-    // Map設定
-    let map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 4.7,
-      center: latlng,
-      fullscreenControl: false, //マップを全画面モードで表示するボタンを非表示
-      streetViewControl: false, //ストリートビューに切り替えるボタンを非表示
-      scaleControl: true, //地図のスケールを表示（デフォルトは非表示）
-      mapTypeControl: false //地図と航空写真を切り替えるボタンを非表示
-    });
-
-    // 複数マーカー ここから
-    <% @posts.each do |post|%>
-      ( function() {
-        let markerLatLng = { lat: <%= post.latitude %>, lng: <%= post.longitude %> }; // 緯度経度のデータ作成
-        let marker = new google.maps.Marker({
-          position: markerLatLng,
-          map: map
-        });
-        // マーカーをクリックしたとき、詳細情報(infowindow)を表示
-        let infowindow = new google.maps.InfoWindow({
-          position: markerLatLng,
-          <% if admin_signed_in? %>
-            content: "<a href='<%= admin_post_path(post.id) %>' target='_blank'><%= post.title %></a>"
-          <% else %>
-            content: "<a href='<%= post_path(post.id) %>' target='_blank'><%= post.title %></a>"
-          <% end %>
-        }); //infowindowをクリックすると開く
-        marker.addListener('click', function() {
-          infowindow.open(map, marker);
-        });
-      })();
-    <% end %>
-    // 複数マーカー ここまで
-  }
-</script>
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['API_KEY'] %>&callback=initMap"></script>
