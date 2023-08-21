@@ -1,0 +1,85 @@
+<!--/MotoTourReview/app/views/public/posts/_map_edit.html.erb-->
+<div id="map" style="height: 400px;"></div>
+
+<script>
+  let map; // マップ
+  let marker; // ピン
+  let geocoder; // 住所
+
+  // 初期マップの設定
+  function initMap() {
+    geocoder = new google.maps.Geocoder();
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: 35.6895, lng: 139.6917 }, // デフォルトの中心座標（東京の緯度・経度）
+      zoom: 15,
+      fullscreenControl: false,
+      streetViewControl: false,
+      scaleControl: true,
+      mapTypeControl: false
+    });
+
+    // フォーム内に緯度と経度が存在する場合、既存のマーカーを読み込む
+    let latitude = document.getElementById('post_latitude').value;
+    let longitude = document.getElementById('post_longitude').value;
+
+    if (latitude && longitude) {
+      let location = new google.maps.LatLng(latitude, longitude);
+
+      marker = new google.maps.Marker({
+        map: map,
+        position: location,
+        title: '<%= @post.spot_name %>' // 投稿のスポット名に適切な値に置き換えてください
+      });
+
+      // マップを既存のマーカーの位置にセンタリング
+      map.setCenter(location);
+    }
+  }
+
+  // スポット名を住所に変換して地図上に表示する関数
+  function codeSpot() {
+    let spotName = document.getElementById('post_spot_name').value;
+    geocoder.geocode({ 'address': spotName }, function(results, status) {
+      if (status === 'OK' && results[0]) {
+        let location = results[0].geometry.location;
+
+        // 以前のマーカーがあれば削除
+        if (marker) {
+          marker.setMap(null);
+        }
+
+        marker = new google.maps.Marker({
+          map: map,
+          position: location,
+          title: spotName
+        });
+
+        // 地図を新しい位置にセンタリング
+        map.setCenter(location);
+      } else {
+        console.log('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+
+  // スポット名を住所に自動入力する関数
+  function autoFillAddress() {
+    let spotName = document.getElementById('post_spot_name').value;
+    geocoder.geocode({ 'address': spotName }, function(results, status) {
+      if (status === 'OK' && results[0]) {
+        let formattedAddress = results[0].formatted_address;
+        document.getElementById('post_address').value = formattedAddress;
+
+        // 緯度と経度を取得して設定
+        let latitude = results[0].geometry.location.lat();
+        let longitude = results[0].geometry.location.lng();
+        document.getElementById('post_latitude').value = latitude;
+        document.getElementById('post_longitude').value = longitude;
+      } else {
+        console.log('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['API_KEY'] %>&callback=initMap"></script>

@@ -1,0 +1,59 @@
+<!--/MotoTourReview/app/views/public/posts/show.html.erb-->
+<div class='container px-5 px-sm-0'>
+  <div class='row mt-5'>
+    <!-- 左側部分 -->
+    <div class='col-md-6'>
+      <h4>投稿詳細</h4>
+      <table class="table">
+        <tr>
+          <th scope="row" width="20%">スポット名</th>
+          <td width="80%"><%= @post.spot_name %></td>
+        </tr>
+        <tr>
+          <th scope="row">住所</th>
+          <td><%= @post.address %></td>
+        </tr>
+        <tr>
+          <th scope="row">タイトル</th>
+          <td><%= @post.title %></td>
+        </tr>
+        <tr>
+          <th scope="row">コメント</th>
+          <td><%= simple_format(@post.comment) %></td>
+        </tr>
+        <tr>
+          <th scope="row">訪れた日</th>
+          <td><%= @post.visited_date %></td>
+        </tr>
+        <tr>
+          <th scope="row">カテゴリ</th>
+          <td><%= @post.category.name %></td>
+        </tr>
+        <tr>
+          <th scope="row">評価</th>
+          <td><%= render "static_rate", post: @post %></td>
+        </tr>
+        <tr>
+          <th scope="row">公開ステータス</th>
+          <td><%= @post.is_private ? '非公開' : '公開' %></td>
+        </tr>
+      </table>
+
+      <% if @post.image.attached? %>
+        <%= image_tag @post.image, class: 'img-fluid' %>
+      <% else %>
+      <% end %>
+
+      <% if current_user == @post.user %>
+        <%= link_to "編集する", edit_post_path(@post), class: "btn btn-secondary mt-3" %>
+      <% end %>
+    </div>
+
+    <!-- 右側部分 -->
+    <div class='col-md-6'>
+      <%= render 'map_show' %>
+    </div>
+  </div>
+</div>
+
+<%= link_to "一覧に戻る", posts_path %>

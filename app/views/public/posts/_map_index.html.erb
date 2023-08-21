@@ -1,0 +1,45 @@
+<!--/MotoTourReview/app/views/public/posts/_map_index.html.erb-->
+<div class="mx-auto" id="map" style="height: 600px; width: 600px;"></div>
+
+<script>
+  function initMap() {
+
+    // 初期表示位置
+    let latlng = new google.maps.LatLng(37.5, 137.5);
+
+    // Map設定
+    let map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 5.8,
+      center: latlng,
+      fullscreenControl: false, //マップを全画面モードで表示するボタンを非表示
+      streetViewControl: false, //ストリートビューに切り替えるボタンを非表示
+      scaleControl: true, //地図のスケールを表示（デフォルトは非表示）
+      mapTypeControl: false //地図と航空写真を切り替えるボタンを非表示
+    });
+
+    // 複数マーカー ここから
+    <% @posts.each do |post|%>
+      ( function() {
+        let markerLatLng = { lat: <%= post.latitude %>, lng: <%= post.longitude %> }; // 緯度経度のデータ作成
+        let marker = new google.maps.Marker({
+          position: markerLatLng,
+          map: map
+        });
+        // マーカーをクリックしたとき、詳細情報(infowindow)を表示
+        let infowindow = new google.maps.InfoWindow({
+          position: markerLatLng,
+          <% if admin_signed_in? %>
+            content: "<a href='<%= admin_post_path(post.id) %>' target='_blank'><%= post.title %></a><br>評価: <%= post.star %> / 5"
+          <% else %>
+            content: "<a href='<%= post_path(post.id) %>' target='_blank'><%= post.title %></a><br>評価: <%= post.star %> / 5"
+          <% end %>
+        }); //infowindowをクリックすると開く
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+      })();
+    <% end %>
+  }
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['API_KEY'] %>&callback=initMap"></script>

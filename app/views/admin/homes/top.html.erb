@@ -1,0 +1,29 @@
+<!-- /MotoTourReview/app/views/admin/homes/top.html.erb -->
+<div class="container mt-4">
+  <h1 class="mb-4">管理者トップページ</h1>
+
+  <h2>ユーザー一覧</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>アカウント名</th>
+        <th>退会状況</th>
+        <th>詳細</th>
+        <th>編集</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.is_deleted ? "退会済み" : "有効" %></td>
+          <td><%= link_to "詳細", admin_user_path(user), class: "btn btn-info btn-sm" %></td>
+          <td><%= link_to "編集", edit_admin_user_path(user), class: "btn btn-primary btn-sm" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

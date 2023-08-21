@@ -1,0 +1,93 @@
+<!--/MotoTourReview/app/views/public/posts/new.html.erb-->
+<div class='container px-5 px-sm-0'>
+  <div class='row mt-5'>
+    <!--左側部分-->
+    <div class='col-md-6'>
+      <h4>新規投稿</h4>
+      <%= form_with model: @post, local: false do |f| %>
+        <div class="">
+          <table width="100%">
+            <tr>
+              <td width="20%">スポット名<span class="text-danger">*</span></td>
+              <td width="80%">
+                <%= f.text_field :spot_name, id: 'post_spot_name', onchange: 'autoFillAddress()',
+                    autofocus: true, class: "form-control", placeholder: "例：東京ドイツ村" %>
+              </td>
+            </tr>
+            <tr>
+              <td>住所(自動)</td>
+              <td><%= f.text_field :address, id: 'post_address', class: "form-control w-100", placeholder: "(自動入力)", readonly: true %></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <div class="d-grid gap-2 col-12 mx-auto">
+                  <%= f.button 'Map表示', type: 'button', class: 'btn btn-sm btn-outline-secondary', onclick: 'codeSpot()' %>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="mt-5">
+          <table width="100%">
+            <tr>
+              <td width="20%">タイトル<span class="text-danger">*</span></td>
+              <td width="80%"><%= f.text_field :title, class: "form-control", placeholder: "レビュータイトルを入力してください" %></td>
+            </tr>
+            <tr>
+              <td>コメント<span class="text-danger">*</span></td>
+              <td><%= f.text_area :comment, class: "form-control", placeholder: "コメントを入力してください", rows: 5 %></td>
+            </tr>
+            <tr>
+              <td>訪れた日<span class="text-danger">*</span></td>
+              <td><%= f.date_field :visited_date, class: "form-control w-50" %></td>
+            </tr>
+            <tr>
+              <td>カテゴリ<span class="text-danger">*</span></td>
+              <td>
+                <%= f.collection_select :category_id, Category.all, :id, :name,
+                    prompt: 'カテゴリを選択', class: "form-select" %>
+              </td>
+            </tr>
+            <tr>
+              <td>評価</td>
+              <td><%= render "new_rate", post: @post %></td>
+            </tr>
+            <tr>
+              <td>画像</td>
+              <td><%= f.file_field :image, class: "form-control-file", accept: 'image/*' %></td>
+            </tr>
+            <tr>
+              <td>公開ステータス<span class="text-danger">*</span></td>
+              <td>
+                <%= f.radio_button :is_private, false, checked: true %>
+                <%= f.label :is_private, '公開' %>
+                <%= f.radio_button :is_private, true %>
+                <%= f.label :is_private, '非公開' %>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="d-grid gap-2 col-12 mx-auto my-4">
+          <%= f.submit '投稿する', class: 'btn btn-lg btn-secondary'%>
+        </div>
+        <div style="display: none;">
+          <%= f.label :latitude, '緯度', class: 'col-md-2 offset-1' %>
+          <%= f.text_field :latitude, id: :latitude, class: 'col-md-3' %>
+          <%= f.label :longitude, '経度', class: 'col-md-2 offset-1' %>
+          <%= f.text_field :longitude, id: :longitude, class: 'col-md-3' %>
+          <%= f.hidden_field :latitude, id: 'post_latitude' %>
+          <%= f.hidden_field :longitude, id: 'post_longitude' %>
+        </div>
+      <% end %>
+    </div>
+
+    <!--右側部分-->
+    <div class='col-md-6'>
+      <%= render 'map_new' %>
+    </div>
+
+  </div>
+</div>
+

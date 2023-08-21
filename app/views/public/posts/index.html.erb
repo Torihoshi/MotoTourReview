@@ -1,0 +1,19 @@
+<!--/MotoTourReview/app/views/public/posts/index.html.erb-->
+<div class='container px-5 px-sm-0'>
+  <div class='row'>
+      <%= render 'search' %>
+  </div>
+  <div class='row'>
+    <%== pagy_nav(@pagy) %>
+  </div>
+  <div class='row'>
+    <%= render 'users_post' %>
+  </div>
+  <div class='row'>
+    <%== pagy_nav(@pagy) %>
+  </div>
+  <div class='row'>
+    <%= render 'map_index' %>
+  </div>
+</div>
+
