@@ -12,11 +12,11 @@
 #  spot_name    :string           not null
 #  star         :float
 #  title        :string           not null
-#  visited_date :date             default(NULL), not null
+#  visited_date :date             not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  category_id  :integer          not null
-#  user_id      :integer          not null
+#  category_id  :bigint           not null
+#  user_id      :bigint           not null
 #
 # Indexes
 #
