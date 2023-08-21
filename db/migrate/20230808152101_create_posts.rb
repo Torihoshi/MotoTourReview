@@ -7,7 +7,7 @@ class CreatePosts < ActiveRecord::Migration[6.1]
       t.string     :title, null: false
       t.text       :comment, null: false
       t.integer    :favorite, default: 0
-      t.date       :visited_date, null: false, default: -> { "CURRENT_DATE" }
+      t.date       :visited_date, null: false, default: -> { Date.current }
       t.boolean    :is_private, null: false, default: false
       t.timestamps
     end
