@@ -9,6 +9,11 @@ class CreatePosts < ActiveRecord::Migration[6.1]
       t.integer    :favorite,                                 default: 0
       t.date       :visited_date,                null: false
       t.boolean    :is_private,                  null: false, default: false
+      t.string     :address
+      t.float      :latitude
+      t.float      :longitude
+      t.float      :star
+
       t.timestamps
     end
   end
