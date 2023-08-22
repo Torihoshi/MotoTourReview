@@ -3,7 +3,7 @@
 class Public::HomesController < ApplicationController
   def top
     @users = User.all
-    @random_posts = Post.where(is_private: false).order('RANDOM()').limit(4)
+    @random_posts = Post.where(is_private: false).order('RAND()').limit(4)
   end
 
   def about
