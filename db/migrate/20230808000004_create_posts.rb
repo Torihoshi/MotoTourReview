@@ -1,8 +1,8 @@
 class CreatePosts < ActiveRecord::Migration[6.1]
   def change
     create_table :posts do |t|
-      t.references :user,     foreign_key: true, null: false, type: :bigint
-      t.references :category, foreign_key: true, null: false, type: :bigint
+      t.bigint :user_id,                         null: false
+      t.bigint :category_id,                     null: false
       t.string     :spot_name,                   null: false
       t.string     :title,                       null: false
       t.text       :comment,                     null: false
@@ -16,5 +16,8 @@ class CreatePosts < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
+
+    add_foreign_key "posts", "users"
+    add_foreign_key "posts", "categories"
   end
 end

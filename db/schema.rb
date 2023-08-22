@@ -78,8 +78,8 @@ ActiveRecord::Schema.define(version: 2023_08_08_000006) do
   end
 
   create_table "posts", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "category_id", null: false
+    t.integer "user_id", null: false
+    t.integer "category_id", null: false
     t.string "spot_name", null: false
     t.string "title", null: false
     t.text "comment", null: false
@@ -92,8 +92,6 @@ ActiveRecord::Schema.define(version: 2023_08_08_000006) do
     t.float "star"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_posts_on_category_id"
-    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
