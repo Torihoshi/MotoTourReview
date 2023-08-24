@@ -1,26 +1,59 @@
 @import "~bootstrap/scss/bootstrap.scss";
 
 body {
-  background: #E6E1DC;
+  font-family:"HGP創英角ゴシックUB";
+  background: #F1F5F5;
+  color: #17345B;
+}
+header {
+  background: #3E9ADE;
+  background: radial-gradient(circle, transparent 20%, #3E9ADE 20%, #3E9ADE 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, #3E9ADE 20%, #3E9ADE 80%, transparent 80%, transparent) 20px 20px, linear-gradient(#3c8dca 1.6px, transparent 1.6px) 0 -0.8px, linear-gradient(90deg, #3c8dca 1.6px, #3E9ADE 1.6px) -0.8px 0;
+  background-size: 40px 40px, 40px 40px, 20px 20px, 20px 20px;
+}
+footer {
+  background: #888481;
+}
+.logo-img {
+  height: 50px;
+}
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+.footer-links li {
+  display: inline;
+  margin-right: 20px;
+}
+.footer-links a {
+  color: #ffffff;
+  text-decoration: none;
 }
 
-header, footer {
-  background: -webkit-linear-gradient(63deg, rgb(44, 44, 44) 5px, rgba(0, 0, 0, 0) 5px),
-              -webkit-linear-gradient(-117deg, rgb(44, 44, 44) 5px, rgba(0, 0, 0, 0) 5px),
-              -webkit-linear-gradient(63deg, rgb(64, 64, 64) 5px, rgba(0, 0, 0, 0) 5px),
-              -webkit-linear-gradient(-117deg, rgb(64, 64, 64) 5px, rgba(0, 0, 0, 0) 5px),
-              -webkit-linear-gradient(0deg, rgb(53, 53, 53) 10px, rgba(0, 0, 0, 0) 10px),
-              -webkit-linear-gradient(-90deg, rgb(56, 56, 56) 25%, rgb(50, 50, 50) 25%, rgb(50, 50, 50) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 75%, rgb(68, 68, 68) 75%, rgb(68, 68, 68) 100%), rgb(38, 38, 38);
-  background: linear-gradient(27deg, rgb(44, 44, 44) 5px, rgba(0, 0, 0, 0) 5px),
-              linear-gradient(207deg, rgb(44, 44, 44) 5px, rgba(0, 0, 0, 0) 5px),
-              linear-gradient(27deg, rgb(64, 64, 64) 5px, rgba(0, 0, 0, 0) 5px),
-              linear-gradient(207deg, rgb(64, 64, 64) 5px, rgba(0, 0, 0, 0) 5px),
-              linear-gradient(90deg, rgb(53, 53, 53) 10px, rgba(0, 0, 0, 0) 10px),
-              linear-gradient(180deg, rgb(56, 56, 56) 25%, rgb(50, 50, 50) 25%, rgb(50, 50, 50) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 75%, rgb(68, 68, 68) 75%, rgb(68, 68, 68) 100%), rgb(38, 38, 38);
-  background-position: 0 5px, 10px 0, 0 10px, 10px 5px, 0 0, 0 0;
-  -webkit-background-size: 20px 20px;
-  background-size: 20px 20px;
+
+
+
+.top-img {
+  opacity: 0.5;
 }
+
+.links {
+  color: #888481;
+  text-decoration: none;
+}
+
+
+
+.profile-box {
+  align-items: center;
+  justify-content: center;
+  color: #17345B;
+  border: solid 3px #888481;
+  background-color: #F1F5F5;
+  border-radius: 3px;
+  box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.4);
+}
+
+
 
 
 .sample{
@@ -75,6 +108,8 @@ header, footer {
 }
 
 .post-image {
-  height: 200px; /* 画像の高さを調整する値を指定 */
-  object-fit: cover; /* 画像を指定した高さに合わせて切り抜き */
+  height: 200px;
+  object-fit: cover;
+  margin: 5px;
+  border-radius: 15px;
 }

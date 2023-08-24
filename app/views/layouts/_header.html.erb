@@ -3,9 +3,13 @@
 
     <!--ロゴ-->
     <% if admin_signed_in? %>
-      <a class="navbar-brand p-1" href="/admin">LOGO</a>
+      <a class="navbar-brand p-1" href="/admin">
+        <img src="<%= asset_path('logo.png') %>" alt="Logo" class="logo-img">
+      </a>
     <% else %>
-      <a class="navbar-brand p-1" href="/">LOGO</a>
+      <a class="navbar-brand p-1" href="/">
+        <img src="<%= asset_path('logo.png') %>" alt="Logo" class="logo-img">
+      </a>
     <% end %>
 
     <!--ユーザー情報-->

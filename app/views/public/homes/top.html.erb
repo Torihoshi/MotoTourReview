@@ -1,33 +1,42 @@
 <!--/MotoTourReview/app/views/public/homes/top.html.erb-->
-<div class='container px-5 px-sm-0'>
-  <div class='row'>
-      <% @random_posts.each do |post| %>
+<div class="container px-5 px-sm-0">
+  <div class="row">
 
-        <% if post.is_private == false %>
-          <div class="col-md-5 mb-4">
-            <div class="card position-relative">
+    <!-- 左側カラム col-md-6 -->
+    <div class="col-md-6 mt-5 align-items-center">
+      <div class="top-text text-center">
+        <h2>駆け巡り、記録し、シェアしよう。</h2>
+        <h4>ツーリングスポットレビューサイト</h4>
+      </div>
 
-              <%= link_to post_path(post) do %>
-                <div class="position-relative">
-                  <%= image_tag post.get_image, class: "card-img-top post-image", alt: "投稿画像" %>
-                  <p class="card-title overlay-text spot-name"><%= post.spot_name %></p>
-                  <p class="overlay-text visit-date"><%= post.visited_date %><br><%= post.user.name %></p>
-                </div>
-              <% end %>
+      <div class="top-logo my-5">
+        <img src="<%= asset_path('logo.png') %>" alt="Logo" class="top-logo w-100">
+      </div>
 
-              <div class="card-body">
-                <p class="card-text"><%= post.title %></p>
-                <p class="card-text"></p>
-              </div>
-
-              <div class="card-footer d-flex justify-content-between align-items-center">
-                <%= render "public/posts/static_rate", post: post %>
-              </div>
-
-            </div>
+      <div class="top-btn d-grid gap-2 col-6 mx-auto text-center">
+        <% if user_signed_in? %>
+          <%= link_to "マイページ", user_path(current_user), class: "btn btn-primary btn-lg" %>
+          <%= link_to "投稿一覧", posts_path, class: "btn btn-info btn-lg" %>
+          <%= link_to "新規投稿", new_post_path, class: "btn btn-success btn-lg" %>
+        <% elsif admin_signed_in? %>
+        <% else %>
+          <div>
+            <a class="links" href="/about">About</a>
+          </div>
+          <%= link_to "新規登録", new_user_registration_path, class: "btn btn-primary btn-lg" %>
+          <%= link_to "ログイン", new_user_session_path, class: "btn btn-info btn-lg" %>
+          <div>
+            <%= link_to 'ゲストログインはこちら', users_guest_sign_in_path, method: :post, class: "links" %>
           </div>
         <% end %>
 
-      <% end %>
+      </div>
+    </div>
+
+    <!-- 右側カラム col-md-6 -->
+    <div class="col-md-6">
+      <img src="<%= asset_path('top_view') %>" alt="Top View" class="top-img w-100">
+    </div>
+
   </div>
 </div>
