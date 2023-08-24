@@ -2,98 +2,29 @@
 <div class='container px-5 px-sm-0'>
   <div class='row gx-5'>
     <!-- 左側部分 -->
-    <div class='col-md-3 mt-5 mb-auto profile-box'>
+    <div class='col-md-4 mt-5 mb-auto profile-box'>
       <%= render "info", user: @user %>
     </div>
 
     <!-- 右側部分 -->
-    <div class='col-offset-1 col-md-8 mt-5'>
+    <div class='col-offset-1 col-md-8 mt-5 ml-5'>
       <div class='row'>
         </%= render 'search' %>
       </div>
 
-      <h3><%= @user.name %>さんの投稿一覧</h3>
+      <div class="row d-flex justify-content-between align-items-center">
+        <div class="col-md-8 text-start"><%= @user.name %>さんの投稿一覧</div>
+        <div class="col-md-4 text-end"><%== pagy_nav(@pagy) %></div>
+      </div>
 
-<div class="row row-cols-2 row-cols-md-1 g-4">
-  <% @posts.each do |post| %>
-    <div class="card">
-      <div class="row g-0">
-        <div class="row card-header bg-transparent justify-content-between">
-          <div class="col-md-4"><%= post.spot_name %></div>
-          <div class="col-md-4 text-end"><%= post.visited_date %></div>
-        </div>
-        <div class="col-md-4">
-          <%= image_tag post.get_image, class: "card-img-top post-image", alt: "投稿画像", style: "object-fit: cover;" %>
-        </div>
-        <div class="col-md-8">
+      <div class="row row-cols-2 row-cols-md-1">
+        <%= render 'users_post' %>
+      </div>
 
-          <div class="card-body">
-            <div class="card-title"><%= post.title %></div>
-            <div class="card-text col-8 text-truncate"><%= post.comment %></div>
-            <table>
-              <tr>
-                <td style="width:70%"></td>
-                <td style="width:30%"><%= post.visited_date %></td>
-              </tr>
-              <tr>
-                <td><h5><%= post.title %></h5></td>
-                <td><%= post.user.name %></td>
-              </tr>
-
-            </table>
-          </div>
-        </div>
-        <div class="card-footer bg-transparent">
-          <div>
-            <%= render "public/posts/static_rate", post: post %></div>
-          </div>
+      <div class="row d-flex align-items-center text-center">
+        <%== pagy_nav(@pagy) %>
       </div>
     </div>
-  <% end %>
-</div>
-
-
-
-      <div class="row">
-        <% @posts.each do |post| %>
-          <div class="col-md-4 mb-4">
-            <div class="card position-relative">
-
-              <%= link_to post_path(post) do %>
-                <div class="position-relative">
-                  <%= image_tag post.get_image, class: "card-img-top post-image", alt: "投稿画像" %>
-                  <p class="card-title overlay-text spot-name"><%= post.spot_name %></p>
-                  <p class="overlay-text visit-date"><%= post.visited_date %><br><%= post.user.name %></p>
-                </div>
-              <% end %>
-
-              <div class="card-body">
-                <p class="card-text"><%= post.title %></p>
-                <p class="card-text"></p>
-              </div>
-
-              <div class="card-footer d-flex justify-content-between align-items-center">
-                <%= render "public/posts/static_rate", post: post %>
-                <% if current_user.id != post.user_id %>
-                  <div id="favorite_buttons_<%= post.id %>">
-                    <%= render "public/favorites/btn", post: post %>
-                  </div>
-                <% else %>
-                  <%= post.is_private ? '非公開' : '公開' %>
-                  <nobr><i class="fas fa-heart" aria-hidden="true"></i><%= post.favorites.count %></nobr>
-                <% end %>
-              </div>
-
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
+    
   </div>
 </div>
-
-  <div class='row'>
-    <%== pagy_nav(@pagy) %>
-  </div>
-
-<%= link_to "一覧に戻る", posts_path %>

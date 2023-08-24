@@ -1,28 +1,31 @@
 <!--/MotoTourReview/app/views/public/users/_info.html.erb-->
+<div class=" mt-2 text-center">
+  <h5>Profile</h5>
+</div>
 
-  <div class=" mt-2 text-center">
-    <h5>Profile</h5>
+<div class="p-2">
+  <%= image_tag @user.get_profile_image, width: "100%" %>
+</div>
+
+<table class="m-2" style="color: #17345b;">
+  <tr>
+    <th class="text-end"><i class="fa-regular fa-user"></i>:</th>
+    <td><b><%= @user.name %></b></td>
+  </tr>
+  <tr>
+    <th class="text-end"><i class="fa-solid fa-motorcycle" style="color: #17345b;"></i>:</th>
+    <td><b><%= @user.bike_name %></b></td>
+  </tr>
+  <tr>
+    <th class="text-end"><i class="fa-solid fa-comment"></i>:</th>
+    <td><b><%= @user.introduction %></b></td>
+  </tr>
+</table>
+
+<% if current_user == @user %>
+  <div class='d-grid gap-2 col-10 mx-auto text-center my-4'>
+    <%= link_to edit_user_path(@user), class: "btn btn-outline-secondary btn-block" do %>
+      <i class="fas fa-user-cog"></i>
+    <% end %>
   </div>
-  <div class="p-2"><%= image_tag @user.get_profile_image, width: "100%" %></div>
-  <table class="m-2" style="color: #17345b;">
-    <tr>
-      <th class="text-end"><i class="fa-regular fa-user"></i>:</th>
-      <td><b><%= @user.name %></b></td>
-    </tr>
-    <tr>
-      <th class="text-end"><i class="fa-solid fa-motorcycle" style="color: #17345b;"></i>:</th>
-      <td><b><%= @user.bike_name %></b></td>
-    </tr>
-    <tr>
-      <th class="text-end"><i class="fa-solid fa-comment"></i>:</th>
-      <td><b><%= @user.introduction %></b></td>
-    </tr>
-  </table>
-
-  <% if current_user == @user %>
-    <div class='d-grid gap-2 col-10 mx-auto text-center my-4'>
-      <%= link_to edit_user_path(@user), class: "btn btn-outline-secondary btn-block" do %>
-        <i class="fas fa-user-cog"></i>
-      <% end %>
-    </div>
-  <% end %>
+<% end %>
