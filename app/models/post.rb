@@ -45,7 +45,7 @@ class Post < ApplicationRecord
   validate :image_type
 
   def get_image
-    (image.attached?) ? image : "no_image.jpg"
+    (image.attached?) ? image : "no_image"
   end
 
   def favorited_by?(user)

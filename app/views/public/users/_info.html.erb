@@ -1,0 +1,43 @@
+<!--/MotoTourReview/app/views/public/users/_info.html.erb-->
+<div class="row">
+  <div class="card border border-secondary text-center">
+
+    <div class="card-img-top">
+      <%= image_tag @user.get_profile_image, class: "img-fluid mx-auto d-block user-image", alt: "ユーザー画像" %>
+    </div>
+
+    <h5 class="card-header bg-transparent">
+      <i class="fa-regular fa-user"></i>:<b><%= @user.name %></b>
+    </h5>
+
+    <div class="card-body">
+      <p class="card-title">
+        <i class="fa-solid fa-motorcycle"></i>:<b><%= @user.bike_name %></b>
+      </p>
+      <p class="card-text">
+        <%= simple_format(@user.introduction) %>
+      </p>
+      <% if current_user == @user %>
+        <div class='d-grid gap-2 col-10 mx-auto text-center my-1'>
+          <%= link_to edit_user_path(@user), class: "btn btn-outline-secondary btn-block" do %>
+            <i class="fas fa-user-cog"></i>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>
+
+
+
+<style>
+.user-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+</style>

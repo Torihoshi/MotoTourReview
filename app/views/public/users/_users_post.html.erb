@@ -1,0 +1,60 @@
+<!--/MotoTourReview/app/views/public/users/_users_post.html.erb-->
+<div class='row row-cols-2 row-cols-md-1'>
+  <% @posts.each do |post| %>
+    <div class="card border border-secondary">
+      <div class='row'>
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div class="col-md-8 text-start"><b><%= post.spot_name %></b></div>
+          <div class="col-md-4 text-end"><%= post.visited_date %></div>
+        </div>
+
+        <div class="col-md-3">
+          <%= link_to post_path(post) do %>
+            <%= image_tag post.get_image, class: "img-fluid mx-auto d-block post-image", alt: "投稿画像" %>
+          <% end %>
+        </div>
+
+        <div class="card-body col-md-9">
+          <div class="row">
+            <div class="card-text col-12 text-truncate">
+              <b><%= post.title %></b><br>
+              <%= post.comment %><br>
+              <%= link_to "詳細を見る>> ", post_path(post) %>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between align-items-center">
+          <%= render "public/posts/static_rate", post: post %>
+          <% if current_user.id != post.user_id %>
+            <div>
+              <nobr><i class="fa-regular fa-message"></i><%= post.comments.count %> | </nobr>
+              <nobr><a id="favorite_buttons_<%= post.id %>"><%= render "public/favorites/btn", post: post %></a></nobr>
+            </div>
+          <% else %>
+            <div>
+              <%= post.is_private ? '非公開' : '公開中' %> |
+              <nobr><i class="fa-regular fa-message"></i><%= post.comments.count %> | </nobr>
+              <nobr><i class="fas fa-heart" aria-hidden="true"></i><%= post.favorites.count %></nobr>
+            </div>
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  <% end %>
+</div>
+
+
+
+<style>
+.post-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  margin: 5px 0;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+</style>

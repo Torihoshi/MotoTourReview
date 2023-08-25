@@ -1,16 +1,23 @@
 <!--/MotoTourReview/app/views/public/posts/_map_new.html.erb-->
-<div id="map" style="height: 400px;"></div>
+<div class="row">
+  <div class="card border border-secondary text-center">
+    <div class="d-grid gap-2 col-10 mx-auto mt-2">
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick='codeSpot()'>Map表示</button>
+    </div>
+    <div class="mx-auto my-2" id="map" style="height: 500px; width: 100%;"></div>
+  </div>
+</div>
 
 <script>
-  let map; // マップ
+  let map;
   let marker; // ピン
-  let geocoder; // 住所
+  let geocoder;
 
   // 初期マップの設定
   function initMap() {
     geocoder = new google.maps.Geocoder();
     map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: 35.6895, lng: 139.6917 }, // デフォルトの中心座標 (東京の緯度・経度)
+      center: { lat: 36, lng: 138 },
       zoom: 15,
       fullscreenControl: false, //マップを全画面モードで表示するボタンを非表示
       streetViewControl: false, //ストリートビューに切り替えるボタンを非表示
@@ -64,6 +71,15 @@
     });
   }
 
+  // Mapをリフレッシュする関数
+  function refreshMap() {
+    // 現在の地図を削除
+    let mapElement = document.getElementById('map');
+    mapElement.innerHTML = ''; // 地図を削除
+
+    // 地図を再描画
+    initMap();
+  }
 </script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['API_KEY'] %>&callback=initMap"></script>
