@@ -2,12 +2,12 @@
 <div class='container px-5 px-sm-0'>
   <div class='row gx-5'>
     <!-- 左側部分 -->
-    <div class='col-md-4 mt-5 mb-auto profile-box'>
+    <div class='col-md-4 col-xs-4 mt-5 mb-auto'>
       <%= render "info", user: @user %>
     </div>
 
     <!-- 右側部分 -->
-    <div class='col-offset-1 col-md-8 mt-5 ml-5'>
+    <div class='col-md-8 mt-5 ml-5'>
       <div class='row'>
         </%= render 'search' %>
       </div>
@@ -17,7 +17,7 @@
         <div class="col-md-4 text-end"><%== pagy_nav(@pagy) %></div>
       </div>
 
-      <div class="row row-cols-2 row-cols-md-1">
+      <div>
         <%= render 'users_post' %>
       </div>
 
@@ -25,6 +25,6 @@
         <%== pagy_nav(@pagy) %>
       </div>
     </div>
-    
+
   </div>
 </div>

@@ -13,12 +13,12 @@
       </div>
 
       <div class="row d-flex justify-content-between align-items-center">
-        <div class="col-md-8 text-start"><%= @user.name %>さんの投稿一覧</div>
+        <div class="col-md-8 text-start">すべての投稿一覧</div>
         <div class="col-md-4 text-end"><%== pagy_nav(@pagy) %></div>
       </div>
 
       <div class="row row-cols-2 row-cols-md-1">
-        <%= render 'users_post' %>
+        <%= render 'public/users/users_post' %>
       </div>
 
       <div class="row d-flex align-items-center text-center">
