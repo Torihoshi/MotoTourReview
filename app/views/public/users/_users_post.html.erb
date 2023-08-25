@@ -28,8 +28,9 @@
         <div class="card-footer d-flex justify-content-between align-items-center">
           <%= render "public/posts/static_rate", post: post %>
           <% if current_user.id != post.user_id %>
-            <div id="favorite_buttons_<%= post.id %>">
-              <%= render "public/favorites/btn", post: post %>
+            <div>
+              <nobr><i class="fa-regular fa-message"></i><%= post.comments.count %> | </nobr>
+              <nobr><a id="favorite_buttons_<%= post.id %>"><%= render "public/favorites/btn", post: post %></a></nobr>
             </div>
           <% else %>
             <div>

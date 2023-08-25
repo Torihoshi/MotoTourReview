@@ -2,6 +2,12 @@
 <div class="container px-5 px-sm-0">
   <div class="row">
 
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success" role="alert">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
     <!-- 左側カラム col-md-6 -->
     <div class="col-md-6 mt-5 align-items-center">
       <div class="top-text text-center">

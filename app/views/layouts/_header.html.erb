@@ -45,7 +45,7 @@
             <%= link_to "新規投稿", new_post_path, class: "btn btn-secondary btn-sm nav-btn" %>
           </li>
           <li class="nav-item m-1">
-            <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-secondary btn-sm nav-btn" %>
+            <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-secondary btn-sm nav-btn", data: { confirm: "ログアウトしますか？" } %>
           </li>
         <% elsif admin_signed_in? %>
           <li class="nav-item m-1">
@@ -58,7 +58,7 @@
             <%= link_to "カテゴリ一覧", admin_categories_path, class: "btn btn-secondary btn-sm nav-btn" %>
           </li>
           <li class="nav-item m-1">
-            <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "btn btn-secondary btn-sm nav-btn" %>
+            <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "btn btn-secondary btn-sm nav-btn", data: { confirm: "ログアウトしますか？" } %>
           </li>
         <% else %>
           <li class="nav-item m-1">

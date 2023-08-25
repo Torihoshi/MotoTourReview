@@ -2,8 +2,6 @@
 
 class Public::HomesController < ApplicationController
   def top
-    @users = User.all
-    @random_posts = Post.where(is_private: false).limit(4)
   end
 
   def about
