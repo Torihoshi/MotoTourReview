@@ -5,7 +5,7 @@ class Public::UsersController < ApplicationController
 
   def show
     @posts = @user.posts.order(created_at: :desc)
-    @pagy, @posts = pagy(@posts, items: 9)
+    @pagy, @posts = pagy(@posts, items: 10)
 
   end
 

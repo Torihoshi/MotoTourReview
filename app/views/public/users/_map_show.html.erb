@@ -1,4 +1,4 @@
-<!--/MotoTourReview/app/views/public/posts/_map_index.html.erb-->
+<!--/MotoTourReview/app/views/public/users/_map_show.html.erb-->
 <div class="row">
   <div class="card border border-secondary text-center">
     <div class="d-grid gap-2 col-10 mx-auto mt-2">
@@ -10,7 +10,6 @@
 
 <script>
   function initMap() {
-
     // 初期表示位置
     let latlng = new google.maps.LatLng(36, 138);
 
@@ -25,7 +24,7 @@
     });
 
     // 複数マーカー ここから
-    <% @posts.each do |post|%>
+    <% @user.posts.each do |post|%>
       ( function() {
         let markerLatLng = { lat: <%= post.latitude %>, lng: <%= post.longitude %> }; // 緯度経度のデータ作成
         let marker = new google.maps.Marker({
