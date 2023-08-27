@@ -1,16 +1,18 @@
 <!--/MotoTourReview/app/views/public/favorites/_btn.html.erb-->
-<% if post.favorited_by?(current_user) %><!--いいねを外す-->
+<% if post.favorited_by?(current_user) %>
+  <!--いいねを外す-->
   <%= link_to post_favorites_path(post), method: :delete, remote: true, data: {"turbolinks" => false}, style: "color: red;" do %>
-    <nobr>
-      <i class="fas fa-heart" aria-hidden="true"></i> <!-- ハートのアイコンを表示 -->
-      <%= post.favorites.count %> <!-- いいねの数を表示 -->
-    </nobr>
+    <div class="btn btn-danger btn-sm">
+      <i class="fa-solid fa-thumbs-up" aria-hidden="true"></i>
+      Good! <%= post.favorites.count %>
+    </div>
   <% end %>
-<% else %><!--いいねする-->
+<% else %>
+  <!--いいねする-->
   <%= link_to post_favorites_path(post), method: :post, remote: true, data: {"turbolinks" => false} do %>
-    <nobr>
-      <i class="fas fa-heart" aria-hidden="true"></i> <!-- ハートのアイコンを表示 -->
-      <%= post.favorites.count %> <!-- いいねの数を表示 -->
-    </nobr>
+    <div class="btn btn-outline-danger btn-sm">
+      <i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>
+      Good! <%= post.favorites.count %>
+    </div>
   <% end %>
 <% end %>

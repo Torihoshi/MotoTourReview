@@ -17,11 +17,15 @@
       <div class="row">
         <div class="card border border-secondary">
           <div class="mt-2">
-            <h5>投稿へのコメント</h5>
+            <h5>ひとくちコメント</h5>
           </div>
-          <div id="comment-form" class="col-12 mb-5">
-            <%= render 'public/comments/form', post: @post, comment: @comment %>
-          </div>
+          <!--コメントフォーム-->
+          <% if current_user != @post.user %>
+            <div id="comment-form" class="col-12 mb-3">
+              <%= render 'public/comments/form', post: @post, comment: @comment %>
+            </div>
+          <% end %>
+          <!--コメント一覧-->
           <div id="post-comments" class="col-12">
             <%= render 'public/comments/post_comments', post: @post %>
           </div>
@@ -36,6 +40,12 @@
         <div class="card border border-secondary">
           <div class="d-grid gap-2 col-10 mx-auto mt-2">
             <h4>投稿詳細</h4>
+
+            <!--いいね-->
+            <h2 id="favorite_buttons_<%= @post.id %>">
+              <%= render "public/favorites/btn", post: @post %>
+            </h2>
+
             <table class="table">
               <tr>
                 <th scope="row" width="25%">スポット名</th>

@@ -4,20 +4,27 @@
     <div class="card border border-secondary">
       <div class='row'>
 
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <div class="col-md-8 text-start"><b><%= post.spot_name %></b></div>
-          <div class="col-md-4 text-end"><%= post.visited_date %></div>
+        <!--ヘッダー(スポット名・訪問日)-->
+        <div class="card-header d-md-flex justify-content-md-between align-items-center">
+          <div class="col-md-8 col-12 text-start"><b><%= post.spot_name %></b></div>
+          <div class="col-md-4 col-12 text-md-end"><%= post.visited_date %></div>
         </div>
 
+        <!--投稿画像-->
         <div class="col-md-3">
           <%= link_to post_path(post) do %>
             <%= image_tag post.get_image, class: "img-fluid mx-auto d-block post-image", alt: "投稿画像" %>
           <% end %>
         </div>
 
+        <!--ボディ(タイトル・コメント)-->
         <div class="card-body col-md-9">
           <div class="row">
             <div class="card-text col-12 text-truncate">
+              <% if current_user.id == post.user_id %>
+                <div class="btn btn-warning btn-sm disabled"><%= post.is_private ? '非公開' : '公開中' %></div>
+              <% else %>
+              <% end %>
               <b><%= post.title %></b><br>
               <%= post.comment %><br>
               <%= link_to "詳細を見る>> ", post_path(post) %>
@@ -25,21 +32,23 @@
           </div>
         </div>
 
-        <div class="card-footer d-flex justify-content-between align-items-center">
-          <div class="horizontal-container">
-            <nobr>ユーザー:<%= post.user.name %> ｜</nobr>
-            <nobr><%= render "public/posts/static_rate", post: post %></nobr>
+        <!--フッター(ユーザー名・評価等)-->
+        <div class="card-footer d-md-flex justify-content-md-between align-items-center">
+          <div class="d-md-flex">
+            <div class=""><i class="fa-regular fa-user"></i>:<%= post.user.name %>  </div>
+            <div class="mx-2"><%= render "public/posts/static_rate", post: post %></div>
           </div>
           <% if current_user.id != post.user_id %>
-            <div class="">
-              <nobr><i class="fa-regular fa-message"></i><%= post.comments.count %> ｜</nobr>
-              <a id="favorite_buttons_<%= post.id %>"><%= render "public/favorites/btn", post: post %></a>
+            <div class="d-flex align-items-center">
+              <div class=""><i class="fa-regular fa-message"></i><%= post.comments.count %> |</div>
+              <div id="favorite_buttons_<%= post.id %>">
+                <%= render "public/favorites/btn", post: post %>
+              </div>
             </div>
           <% else %>
-            <div class="">
-              <%= post.is_private ? '非公開' : '公開中' %> |
-              <nobr><i class="fa-regular fa-message"></i><%= post.comments.count %> ｜</nobr>
-              <nobr><i class="fas fa-heart" aria-hidden="true"></i><%= post.favorites.count %></nobr>
+            <div class="d-flex align-items-center">
+              <p class="m-0"><i class="fa-regular fa-message"></i><%= post.comments.count %> |</p>
+              <p class="m-0 btn btn-outline-secondary btn-sm disabled"><i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>Good! <%= post.favorites.count %></p>
             </div>
           <% end %>
         </div>
@@ -48,7 +57,6 @@
     </div>
   <% end %>
 </div>
-
 
 
 <style>

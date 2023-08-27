@@ -3,8 +3,8 @@
   <p>コメント件数：<%= post.comments.count %></p>
 
   <% post.comments.each do |comment| %>
-    <div class="card border border-secondary mb-3">
-      <div class="card-header text-secondary d-flex justify-content-between">
+    <div class="card border border-secondary mb-1">
+      <div class="card-header text-secondary d-flex justify-content-between py-0 align-items-center">
         <%= link_to user_path(comment.user), style: "text-decoration: none;" do %>
           <%= comment.user.name %>
         <% end %>
@@ -13,7 +13,7 @@
           <%= link_to "削除", post_comment_path(post, comment), remote: true, method: :delete, class: "btn btn-outline-danger btn-sm" %>
         <% end %>
       </div>
-      <div class="card-body">
+      <div class="card-body py-0">
         <div class="card-text">
           <%= comment.comment %>
 
