@@ -7,15 +7,15 @@
 
       <table class="block" style="width: 100%;" cellpadding="5">
         <tr>
-          <th>アカウント名</th>
+          <th>アカウント名<span class="text-danger">*</span></th>
           <td><%= f.text_field :name, autofocus: true, class: "form-control w-50" %><em>(16文字以内で入力してください。)</em></td>
         </tr>
         <tr>
-          <th>メールアドレス</th>
+          <th>メールアドレス<span class="text-danger">*</span></th>
           <td><%= f.email_field :email, autocomplete: "email", class: "form-control w-100" %><em>(メールアドレスは公開されません。)</em></td>
         </tr>
         <tr>
-          <th>パスワード</th>
+          <th>パスワード<span class="text-danger">*</span></th>
           <td><%= f.password_field :password, autocomplete: "new-password", class: "form-control w-50" %><em>(半角英数6〜12文字で入力してください。)</em></td>
         </tr>
         <tr>
@@ -25,7 +25,7 @@
       </table>
 
       <div class="d-grid gap-2 col-6 mx-auto">
-        <%= f.submit "アカウントを作成する", class: "btn btn-outline-success btn-lg" %>
+        <%= f.submit "アカウントを作成する", class: "btn btn-success btn-lg" %>
         <%= render "public/shared/links" %>
       </div>
 

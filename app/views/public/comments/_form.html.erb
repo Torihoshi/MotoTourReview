@@ -1,0 +1,5 @@
+<!--/MotoTourReview/app/views/public/comments/_form.html.erb-->
+<%= form_with model: [post, comment], local: false do |f| %>
+  <%= f.text_area :comment, rows: "2", class: "form-control", placeholder: "コメントを入力してください" %>
+  <%= f.submit "コメント投稿", class: "btn btn-primary d-grid gap-2 col-12 mx-auto" %>
+<% end %>

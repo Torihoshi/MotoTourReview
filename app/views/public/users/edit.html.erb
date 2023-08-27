@@ -6,11 +6,11 @@
     <%= form_for(@user) do |f| %>
       <table class="block" style="width: 100%;" cellpadding="5">
         <tr>
-          <th>メールアドレス</th>
+          <th>メールアドレス<span class="text-danger">*</span></th>
           <td><%= f.email_field :email, class: "form-control" %></td>
         </tr>
         <tr>
-          <th>アカウント名</th>
+          <th>アカウント名<span class="text-danger">*</span></th>
           <td><%= f.text_field :name, class: "form-control" %></td>
         </tr>
         <tr>

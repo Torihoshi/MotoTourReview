@@ -1,0 +1,40 @@
+<!--/MotoTourReview/app/views/public/comments/_post_comments.html.erb-->
+<% if post.comments.present? %>
+  <p>コメント件数：<%= post.comments.count %></p>
+
+  <% post.comments.each do |comment| %>
+    <div class="card border border-secondary mb-3">
+      <div class="card-header text-secondary d-flex justify-content-between">
+        <%= link_to user_path(comment.user), style: "text-decoration: none;" do %>
+          <%= comment.user.name %>
+        <% end %>
+        <%= comment.created_at.strftime('%Y/%m/%d') %>
+        <% if comment.user == current_user %>
+          <%= link_to "削除", post_comment_path(post, comment), remote: true, method: :delete, class: "btn btn-outline-danger btn-sm" %>
+        <% end %>
+      </div>
+      <div class="card-body">
+        <div class="card-text">
+          <%= comment.comment %>
+
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+<% else %>
+  <p>コメントはまだありません</p>
+<% end %>
+
+
+<style>
+.user-icon {
+  width: 50px;
+  max-height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+
+</style>

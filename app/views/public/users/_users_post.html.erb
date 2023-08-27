@@ -26,16 +26,19 @@
         </div>
 
         <div class="card-footer d-flex justify-content-between align-items-center">
-          <%= render "public/posts/static_rate", post: post %>
+          <div class="horizontal-container">
+            <nobr>ユーザー:<%= post.user.name %> ｜</nobr>
+            <nobr><%= render "public/posts/static_rate", post: post %></nobr>
+          </div>
           <% if current_user.id != post.user_id %>
-            <div>
-              <nobr><i class="fa-regular fa-message"></i><%= post.comments.count %> | </nobr>
-              <nobr><a id="favorite_buttons_<%= post.id %>"><%= render "public/favorites/btn", post: post %></a></nobr>
+            <div class="">
+              <nobr><i class="fa-regular fa-message"></i><%= post.comments.count %> ｜</nobr>
+              <a id="favorite_buttons_<%= post.id %>"><%= render "public/favorites/btn", post: post %></a>
             </div>
           <% else %>
-            <div>
+            <div class="">
               <%= post.is_private ? '非公開' : '公開中' %> |
-              <nobr><i class="fa-regular fa-message"></i><%= post.comments.count %> | </nobr>
+              <nobr><i class="fa-regular fa-message"></i><%= post.comments.count %> ｜</nobr>
               <nobr><i class="fas fa-heart" aria-hidden="true"></i><%= post.favorites.count %></nobr>
             </div>
           <% end %>
@@ -57,4 +60,10 @@
   border-radius: 5px;
   box-sizing: border-box;
 }
+
+.horizontal-container {
+    display: flex;
+    align-items: center;
+}
+
 </style>

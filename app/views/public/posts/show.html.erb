@@ -1,58 +1,94 @@
 <!--/MotoTourReview/app/views/public/posts/show.html.erb-->
 <div class='container px-5 px-sm-0'>
-  <div class='row mt-5'>
+  <div class='row my-5 gx-5'>
+
+    <!--フラッシュメッセージ-->
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success" role="alert">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
     <!-- 左側部分 -->
-    <div class='col-md-6'>
-      <h4>投稿詳細</h4>
-      <table class="table">
-        <tr>
-          <th scope="row" width="20%">スポット名</th>
-          <td width="80%"><%= @post.spot_name %></td>
-        </tr>
-        <tr>
-          <th scope="row">住所</th>
-          <td><%= @post.address %></td>
-        </tr>
-        <tr>
-          <th scope="row">タイトル</th>
-          <td><%= @post.title %></td>
-        </tr>
-        <tr>
-          <th scope="row">コメント</th>
-          <td><%= simple_format(@post.comment) %></td>
-        </tr>
-        <tr>
-          <th scope="row">訪れた日</th>
-          <td><%= @post.visited_date %></td>
-        </tr>
-        <tr>
-          <th scope="row">カテゴリ</th>
-          <td><%= @post.category.name %></td>
-        </tr>
-        <tr>
-          <th scope="row">評価</th>
-          <td><%= render "static_rate", post: @post %></td>
-        </tr>
-        <tr>
-          <th scope="row">公開ステータス</th>
-          <td><%= @post.is_private ? '非公開' : '公開' %></td>
-        </tr>
-      </table>
-
-      <% if current_user == @post.user %>
-        <%= link_to "編集する", edit_post_path(@post), class: "btn btn-secondary mt-3" %>
-      <% end %>
-
-      <% if @post.image.attached? %>
-        <%= image_tag @post.image, class: 'img-fluid' %>
-      <% else %>
-      <% end %>
-
+    <div class='col-md-4 col-xs-4 mb-auto'>
+      <!--ユーザーINFO-->
+      <%= render "public/users/info", user: @post %>
+      <!--コメント-->
+      <div class="row">
+        <div class="card border border-secondary">
+          <div class="mt-2">
+            <h5>投稿へのコメント</h5>
+          </div>
+          <div id="comment-form" class="col-12 mb-5">
+            <%= render 'public/comments/form', post: @post, comment: @comment %>
+          </div>
+          <div id="post-comments" class="col-12">
+            <%= render 'public/comments/post_comments', post: @post %>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 右側部分 -->
-    <div class='col-md-6'>
+    <div class='col-md-8 ml-5'>
+      <!--投稿表示-->
+      <div class="row">
+        <div class="card border border-secondary">
+          <div class="d-grid gap-2 col-10 mx-auto mt-2">
+            <h4>投稿詳細</h4>
+            <table class="table">
+              <tr>
+                <th scope="row" width="25%">スポット名</th>
+                <td width="75%"><%= @post.spot_name %></td>
+              </tr>
+              <tr>
+                <th scope="row">住所</th>
+                <td><%= @post.address %></td>
+              </tr>
+              <tr>
+                <th scope="row">タイトル</th>
+                <td><%= @post.title %></td>
+              </tr>
+              <tr>
+                <th scope="row">コメント</th>
+                <td><%= simple_format(@post.comment) %></td>
+              </tr>
+              <tr>
+                <th scope="row">訪れた日</th>
+                <td><%= @post.visited_date %></td>
+              </tr>
+              <tr>
+                <th scope="row">カテゴリ</th>
+                <td><%= @post.category.name %></td>
+              </tr>
+              <tr>
+                <th scope="row">評価</th>
+                <td><%= render "static_rate", post: @post %></td>
+              </tr>
+              <% if current_user == @post.user %>
+                <tr>
+                  <th scope="row">公開ステータス</th>
+                  <td><%= @post.is_private ? '非公開' : '公開' %></td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <%= link_to "編集する", edit_post_path(@post), class: "btn btn-secondary d-grid gap-2 col-10 mx-auto" %>
+                  </td>
+                </tr>
+              <% end %>
+            </table>
+
+            <% if @post.image.attached? %>
+              <%= image_tag @post.image, class: 'img-fluid' %>
+            <% else %>
+            <% end %>
+
+          </div>
+        </div>
+      </div>
+      <!--Google MAP-->
       <%= render 'map_show' %>
     </div>
+
   </div>
 </div>

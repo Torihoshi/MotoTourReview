@@ -25,6 +25,7 @@ class Public::PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
+    @user = @post.user
     @comment = Comment.new
   end
 
@@ -34,34 +35,30 @@ class Public::PostsController < ApplicationController
   end
 
   def create
-    post = Post.new(post_params)
-    post.user_id = current_user.id
+    @post = Post.new(post_params)
+    @post.user_id = current_user.id
 
-    if post.save!
-      redirect_to post_path(post), notice: "投稿が成功しました。"
+    if @post.save
+      flash[:notice] = "投稿が成功しました。"
+      redirect_to post_path(@post)
     else
+      # byebug
       render :new
     end
   end
 
   def edit
     @post = Post.find(params[:id])
-    # 自分の投稿でなければ編集不可
-    unless @post.user == current_user
-      flash[:error] = "自分の投稿でないため、編集できません"
-      redirect_to post_path(@post)
-    end
   end
 
   def update
     @post = Post.find(params[:id])
 
-    if @post.user == current_user && @post.update(post_params)
-
-      flash[:success] = "投稿が更新されました"
+    if @post.update(post_params)
+      flash[:notice] = "投稿が更新されました"
       redirect_to post_path(@post)
     else
-      flash.now[:error] = "投稿の更新に失敗しました"
+      # byebug
       render :edit
     end
   end
