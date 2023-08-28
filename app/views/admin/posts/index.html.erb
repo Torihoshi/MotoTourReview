@@ -1,6 +1,14 @@
 <!-- /MotoTourReview/app/views/admin/posts/index.html.erb -->
 <div class="container mt-4">
   <h1 class="mb-4">投稿一覧</h1>
+  <%= form_with url: admin_posts_path, method: :get, class: "mb-4" do |form| %>
+    <div class="form-group">
+      <%= form.label :category_id, "カテゴリ：" %>
+      <%= form.select :category_id, options_from_collection_for_select(Category.all, "id", "name", params[:category_id]), include_blank: "すべてのカテゴリ", class: "form-control" %>
+    </div>
+    <%= form.submit "検索", class: "btn btn-primary" %>
+  <% end %>
+
   <table class="table table-striped">
     <thead>
       <tr>
@@ -10,6 +18,7 @@
         <th>日付</th>
         <th>カテゴリ</th>
         <th>評価</th>
+        <th>ユーザー名</th>
       </tr>
     </thead>
     <tbody>
@@ -20,35 +29,10 @@
           <td><%= post.comment %></td>
           <td><%= post.visited_date %></td>
           <td><%= post.category.name %></td>
-          <td>
-            <div id="star_<%= post.id %>"></div>
-            <script>
-              $(document).on('turbolinks:load', function() {
-                let elem = document.querySelector('#star_<%= post.id %>');
-                if (elem == null) return;
-
-                elem.innerHTML = "";
-                let opt = {
-                  starOn: "<%= asset_path('star-on.png') %>",
-                  starOff: "<%= asset_path('star-off.png') %>",
-                  starHalf: "<%= asset_path('star-half.png') %>",
-                  score: "<%= post.star %>",
-                  readOnly: true,
-                };
-                raty(elem, opt);
-              });
-            </script>
-          </td>
+          <td><%= render "public/posts/static_rate", post: post %></td>
+          <td><%= post.user.name %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
-
-  <%= form_with url: admin_posts_path, method: :get, class: "mb-4" do |form| %>
-    <div class="form-group">
-      <%= form.label :category_id, "カテゴリ：" %>
-      <%= form.select :category_id, options_from_collection_for_select(Category.all, "id", "name", params[:category_id]), include_blank: "すべてのカテゴリ", class: "form-control" %>
-    </div>
-    <%= form.submit "検索", class: "btn btn-primary" %>
-  <% end %>
 </div>

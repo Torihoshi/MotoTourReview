@@ -1,35 +1,41 @@
-/MotoTourReview/app/views/admin/posts/edit.html.erb
-<h1>投稿編集</h1>
+<!-- /MotoTourReview/app/views/admin/posts/edit.html.erb -->
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1>投稿編集</h1>
 
-<%= form_for(@post) do |f| %>
-  <div class="field">
-    <%= f.label :spot_name %>
-    <%= f.text_field :spot_name %>
+      <%= form_for(@post) do |f| %>
+        <div class="form-group">
+          <%= f.label :spot_name %>
+          <%= f.text_field :spot_name, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :title %>
+          <%= f.text_field :title, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :comment %>
+          <%= f.text_area :comment, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :visited_date %>
+          <%= f.date_field :visited_date, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :category_id %>
+          <%= f.collection_select :category_id, Category.all, :id, :name, { include_blank: true }, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.submit "更新", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+
+      <%= link_to "投稿詳細に戻る", admin_post_path(@post), class: "btn btn-secondary" %>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
-
-  <div class="field">
-    <%= f.label :comment %>
-    <%= f.text_area :comment %>
-  </div>
-
-  <div class="field">
-    <%= f.label :visited_date %>
-    <%= f.date_field :visited_date %>
-  </div>
-
-  <div class="field">
-    <%= f.label :category_id %>
-    <%= f.collection_select :category_id, Category.all, :id, :name, include_blank: true %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "更新" %>
-  </div>
-<% end %>
-
-<%= link_to "投稿詳細に戻る", admin_post_path(@post) %>
+</div>

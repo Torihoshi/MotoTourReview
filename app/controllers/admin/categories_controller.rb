@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Admin::CategoriesController < ApplicationController
+  before_action :authenticate_admin!
+
   def index
     # カテゴリー一覧を表示する処理
     @categories = Category.all

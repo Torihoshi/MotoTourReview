@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Admin::UsersController < ApplicationController
+  before_action :authenticate_admin!
+
   def show
     @user = User.find(params[:id])
     @posts = @user.posts.order(created_at: :desc)

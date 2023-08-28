@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Admin::PostsController < ApplicationController
+  before_action :authenticate_admin!
+
   def index
     # レビュー一覧を表示する処理
     @posts = if params[:category_id].present?

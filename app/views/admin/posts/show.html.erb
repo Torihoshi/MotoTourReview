@@ -1,44 +1,56 @@
-/MotoTourReview/app/views/admin/posts/show.html.erb
-<h1><%= @post.title %></h1>
-<p><%= @post.comment %></p>
-<p>訪問日: <%= @post.visited_date %></p>
-<p>カテゴリ: <%= @post.category.name %></p>
-<p>投稿者: <%= @post.user.name %></p>
+<!-- /MotoTourReview/app/views/admin/posts/show.html.erb -->
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1><%= @post.title %></h1>
+      <p><%= @post.comment %></p>
+      <p>訪問日: <%= @post.visited_date %></p>
+      <p>カテゴリ: <%= @post.category.name %></p>
+      <p>投稿者: <%= @post.user.name %></p>
 
-  <h4>評価</h4>
-  <div id="star_<%= @post.id %>"></div>
-  <script>
-  $(document).on('turbolinks:load', function() {
-    let elem = document.querySelector('#star_<%= @post.id %>');
-    if (elem == null) return;
+      <h2>評価</h2>
+      <div id="star_<%= @post.id %>"></div>
+      <script>
+        $(document).on('turbolinks:load', function() {
+          let elem = document.querySelector('#star_<%= @post.id %>');
+          if (elem == null) return;
 
-    elem.innerHTML = "";
-    let opt = {
-      starOn: "<%= asset_path('star-on.png') %>",
-      starOff: "<%= asset_path('star-off.png') %>",
-      starHalf: "<%= asset_path('star-half.png') %>",
-      score: "<%= @post.star %>",
-      readOnly: true,
-    };
-    raty(elem, opt);
-  });
-  </script>
+          elem.innerHTML = "";
+          let opt = {
+            starOn: "<%= asset_path('star-on.png') %>",
+            starOff: "<%= asset_path('star-off.png') %>",
+            starHalf: "<%= asset_path('star-half.png') %>",
+            score: "<%= @post.star %>",
+            readOnly: true,
+          };
+          raty(elem, opt);
+        });
+      </script>
 
-  <%= link_to "修正", edit_admin_post_path(@post) %>
+      <%= link_to "修正", edit_admin_post_path(@post) %>
 
-<h2>コメント</h2>
-<% @post.comments.each do |comment| %>
-  <p>
-    <strong><%= comment.user.name %></strong>: <%= comment.comment %>
-    <% if comment.user == current_user %>
-      <%= link_to "削除", post_comment_path(@post, comment), method: :delete, data: { confirm: "このコメントを削除しますか？" } %>
-    <% end %>
-  </p>
-<% end %>
+      <h2>コメント</h2>
+      <% @post.comments.each do |comment| %>
+        <div class="media">
+          <div class="media-body">
+            <h5 class="mt-0"><%= comment.user.name %></h5>
+            <p><%= comment.comment %></p>
+            <% if comment.user == current_user %>
+              <%= link_to "削除", post_comment_path(@post, comment), method: :delete, data: { confirm: "このコメントを削除しますか？" }, class: "btn btn-danger btn-sm" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
 
-<%= form_for([@post, @comment]) do |f| %>
-  <%= f.text_area :comment, placeholder: "コメントを入力してください" %>
-  <%= f.submit "コメント投稿" %>
-<% end %>
+      <h2>コメントを投稿</h2>
+      <%= form_for([@post, @comment]) do |f| %>
+        <div class="form-group">
+          <%= f.text_area :comment, placeholder: "コメントを入力してください", class: "form-control" %>
+        </div>
+        <%= f.submit "コメント投稿", class: "btn btn-primary" %>
+      <% end %>
 
-<%= link_to "一覧に戻る", admin_posts_path %>
+      <%= link_to "一覧に戻る", admin_posts_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
+</div>
