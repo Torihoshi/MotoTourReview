@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class Public::UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :unsubscribe]
+  before_action :set_user, only: [:show, :edit, :update, :withdrawal, :unsubscribe]
+  before_action :authenticate_user!
+  before_action :ensure_correct_user, only: [:edit, :update, :withdrawal]
 
   def show
     @posts = @user.posts.order(created_at: :desc)
@@ -30,7 +32,7 @@ class Public::UsersController < ApplicationController
   def withdrawal
     @user = current_user
     @user.update(is_deleted: true)
-    reset_session
+    sign_out(@user)
     redirect_to root_path, notice: "退会が完了しました。"
   end
 
@@ -42,4 +44,12 @@ class Public::UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:email, :name, :introduction, :bike_name, :is_deleted, :profile_image)
     end
+
+    def ensure_correct_user
+      @user = User.find(params[:id])
+      unless @user == current_user
+        redirect_to user_path(current_user)
+      end
+    end
+
 end

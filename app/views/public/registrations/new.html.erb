@@ -1,7 +1,7 @@
 <div class="container mt-5 mb-5">
   <div class="row col-6 mx-auto">
     <h2>新規アカウント登録</h2>
-
+    <p class="alert" role="alert"><%= alert %></p>
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
       <%= render "public/shared/error_messages", resource: resource %>
 

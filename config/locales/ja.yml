@@ -1,4 +1,10 @@
 ja:
+  prefectures:
+    - 北海道
+    - 青森県
+    - 岩手県
+    - 宮城県
+    - 秋田県
   activerecord:
     errors:
       messages:
@@ -212,3 +218,4 @@ ja:
           sort_options:
             favorites: "いいね数が多い順"
             star: "評価が高い順"
+            

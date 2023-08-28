@@ -1,27 +1,69 @@
 <!--/MotoTourReview/app/views/public/posts/_search.html.erb-->
-<div class="justify-content-center my-2">
-  <%= form_with url: posts_path, method: :get do |f| %>
-    <div class="d-flex align-items-center">
 
-      <div class="col-md-2 col-sm-4 mx-auto">
-        <%= f.select :category_id, options_from_collection_for_select(@categories, "id", "name", params[:category_id]),
-            include_blank: "すべてのカテゴリ", class: "form-select" %>
+<!--先に記載する必要あり-->
+<% prefectures = [
+  "北海道",
+  "青森県", "岩手県", "秋田県", "宮城県", "山形県", "福島県",
+  "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県",
+  "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県", "静岡県", "愛知県",
+  "三重県", "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県",
+  "鳥取県", "島根県", "岡山県", "広島県", "山口県",
+  "徳島県", "香川県", "愛媛県", "高知県",
+  "福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県",
+  "鹿児島県", "沖縄県"
+] %>
+
+<!--ここから表示-->
+
+<%= search_form_for @q, url: posts_path, method: "get", local: true do |f| %>
+  <div class="row d-flex">
+      <!-- スポット名からあいまい検索 -->
+      <div class="col-md px-0">
+        <%= f.search_field :spot_name_cont, placeholder: "スポット検索", class: "form-control" %>
       </div>
 
-      <div class="col-md-2 col-sm-4 mx-auto">
-        <%= f.select :sort, options_for_select([["いいね数が多い順", "favorites"], ["評価が高い順", "star"]], params[:sort]),
-            include_blank: "並び替え", class: "form-select" %>
+      <!-- 都道府県からあいまい検索 -->
+      <div class="col-md px-0">
+        <select name="q[address_cont]" class="form-select">
+          <option value="">都道府県</option>
+          <%= options_for_select(prefectures, params.dig(:q, :address_cont)) %>
+        </select>
       </div>
 
-      <div class="col-md-4 col-sm-4">
-        <%= f.text_field :word, placeholder: "キーワード検索", class: "form-control" %>
+      <!-- カテゴリ一致検索 -->
+      <div class="col-md px-0">
+        <select name="q[category_id_eq]" class="form-select">
+          <option value="">カテゴリ</option>
+          <%= options_for_select(@categories.pluck(:name, :id), params.dig(:q, :category_id_eq)) %>
+        </select>
       </div>
 
-      <div class="d-grid gap-2 col-md-2 mx-auto">
+      <!-- 検索ボタン -->
+      <div class="col-md px-0 d-grid gap-2 text-center">
         <%= f.submit "検索", class: "btn btn-outline-primary" %>
       </div>
+  </div>
+<% end %>
 
-    </div>
-  <% end %>
+<div class="row">
+  <div class=" col-md-4 d-grid gap-2 mx-auto px-0">
+    <select class="form-select" onChange="location.href=value;">
+      <option value="">並び替え</option>
+      <option value="<%= sort_by_sort_url(sort_url(@q, :updated_at), 'updated_at+desc') %>">新着順</option>
+      <option value="<%= sort_by_sort_url(sort_url(@q, :visited_date), 'visited_date+desc') %>">訪れた日が新しい順</option>
+      <option value="<%= sort_by_sort_url(sort_url(@q, :star), 'star+desc') %>">評価の高い順</option>
+    </select>
+  </div>
 </div>
 
+
+
+<style>
+.form {
+  border-radius: 5px;
+  width: 100px;
+}
+.select-form{
+  width: 100%;
+}
+</style>

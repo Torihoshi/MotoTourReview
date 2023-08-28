@@ -1,26 +1,15 @@
 # frozen_string_literal: true
 
 class Public::PostsController < ApplicationController
+  before_action :set_search
+  before_action :authenticate_user!
+  before_action :ensure_correct_user, only: [:edit, :update, :destroy]
+
   def index
-    @categories = Category.all
     @user = current_user
-    @posts = if params[:category_id].present?
-      Post.where(category_id: params[:category_id], is_private: false)
-    elsif params[:word]
-      Post.where("spot_name LIKE ?", "%#{params[:word]}%").where(is_private: false)
-    else
-      Post.where(is_private: false)
-    end
+    @categories = Category.all
 
-    if params[:sort] == "favorites"
-      @posts = @posts.left_joins(:favorites).group("posts.id").where(is_private: false).order("COUNT(favorites.id) DESC")
-    elsif params[:sort] == "star"
-      @posts = @posts.where(is_private: false).order(star: :desc)
-    else
-      @posts = @posts.where(is_private: false).order(created_at: :desc)
-    end
-
-    @pagy, @posts = pagy(@posts, items: 9)
+    @pagy, @posts = pagy(@posts, items: 8)
   end
 
   def show
@@ -30,7 +19,6 @@ class Public::PostsController < ApplicationController
   end
 
   def new
-    # 新規レビュー投稿フォームを表示する処理
     @post = Post.new
   end
 
@@ -63,10 +51,32 @@ class Public::PostsController < ApplicationController
     end
   end
 
+  def destroy
+    @post = Post.find(params[:id])
+    @post.destroy
+    flash[:notice] = "投稿を削除しました"
+    redirect_to user_path(current_user)
+  end
+
   private
 
-    # ストロングパラメータ
+    def set_search
+      @q = Post.ransack(params[:q])
+      if params[:q].present? && params[:q][:category_id_eq].present?
+        @q.category_id_eq = params[:q][:category_id_eq]
+      end
+      @posts = @q.result(distinct: true).where(is_private: false).order(created_at: :desc)
+    end
+
+
     def post_params
       params.require(:post).permit(:user_id, :category_id, :spot_name, :title, :comment, :visited_date, :image, :star, :is_private, :address, :latitude, :longitude)
+    end
+
+    def ensure_correct_user
+      @post = Post.find(params[:id])
+      unless @post.user == current_user
+        redirect_to post_path(@post)
+      end
     end
 end

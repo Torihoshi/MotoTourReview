@@ -1,59 +1,72 @@
 <!--/MotoTourReview/app/views/public/users/_users_post.html.erb-->
 <div class='row row-cols-2 row-cols-md-1'>
-  <% @posts.each do |post| %>
-    <div class="card border border-secondary">
-      <div class='row'>
+  <% if @posts.any? %>
+    <% @posts.each do |post| %>
+      <div class="card border border-secondary">
+        <div class='row'>
 
-        <!--ヘッダー(スポット名・訪問日)-->
-        <div class="card-header d-md-flex justify-content-md-between align-items-center">
-          <div class="col-md-8 col-12 text-start"><b><%= post.spot_name %></b></div>
-          <div class="col-md-4 col-12 text-md-end"><%= post.visited_date %></div>
-        </div>
-
-        <!--投稿画像-->
-        <div class="col-md-3">
-          <%= link_to post_path(post) do %>
-            <%= image_tag post.get_image, class: "img-fluid mx-auto d-block post-image", alt: "投稿画像" %>
-          <% end %>
-        </div>
-
-        <!--ボディ(タイトル・コメント)-->
-        <div class="card-body col-md-9">
-          <div class="row">
-            <div class="card-text col-12 text-truncate">
+          <!--ヘッダー(スポット名・訪問日)-->
+          <div class="card-header d-md-flex justify-content-md-between align-items-center">
+            <div class="col-md-8 col-12 text-start">
               <% if current_user.id == post.user_id %>
-                <div class="btn btn-warning btn-sm disabled"><%= post.is_private ? '非公開' : '公開中' %></div>
+                <% if post.is_private %>
+                  <div class="btn btn-warning btn-sm disabled">非公開</div>
+                <% else %>
+                  <div class="btn btn-success btn-sm disabled">公開中</div>
+                <% end %>
               <% else %>
               <% end %>
-              <b><%= post.title %></b><br>
-              <%= post.comment %><br>
-              <%= link_to "詳細を見る>> ", post_path(post) %>
+              <b><%= post.spot_name %></b>
             </div>
+            <div class="col-md-4 col-12 text-md-end"><%= post.visited_date %></div>
           </div>
-        </div>
 
-        <!--フッター(ユーザー名・評価等)-->
-        <div class="card-footer d-md-flex justify-content-md-between align-items-center">
-          <div class="d-md-flex">
-            <div class=""><i class="fa-regular fa-user"></i>:<%= post.user.name %>  </div>
-            <div class="mx-2"><%= render "public/posts/static_rate", post: post %></div>
+          <!--投稿画像-->
+          <div class="col-md-3">
+            <%= link_to post_path(post) do %>
+              <%= image_tag post.get_image, class: "img-fluid mx-auto d-block post-image", alt: "投稿画像" %>
+            <% end %>
           </div>
-          <% if current_user.id != post.user_id %>
-            <div class="d-flex align-items-center">
-              <div class=""><i class="fa-regular fa-message"></i><%= post.comments.count %> |</div>
-              <div id="favorite_buttons_<%= post.id %>">
-                <%= render "public/favorites/btn", post: post %>
+
+          <!--ボディ(タイトル・コメント)-->
+          <div class="card-body col-md-9">
+            <div class="row">
+              <div class="card-text col-12 text-truncate">
+                <b><%= post.title %></b><br>
+                <%= post.comment %><br>
+                <%= link_to "詳細を見る>> ", post_path(post) %>
               </div>
             </div>
-          <% else %>
-            <div class="d-flex align-items-center">
-              <p class="m-0"><i class="fa-regular fa-message"></i><%= post.comments.count %> |</p>
-              <p class="m-0 btn btn-outline-secondary btn-sm disabled"><i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>Good! <%= post.favorites.count %></p>
-            </div>
-          <% end %>
-        </div>
+          </div>
 
+          <!--フッター(ユーザー名・評価等)-->
+          <div class="card-footer d-md-flex justify-content-md-between align-items-center">
+            <div class="d-md-flex">
+              <div class=""><i class="fa-regular fa-user"></i>:<%= post.user.name %>  </div>
+              <div class="mx-2"><%= render "public/posts/static_rate", post: post %></div>
+            </div>
+            <% if current_user.id != post.user_id %>
+              <div class="d-flex align-items-center">
+                <div class=""><i class="fa-regular fa-message"></i><%= post.comments.count %> |</div>
+                <div id="favorite_buttons_<%= post.id %>">
+                  <%= render "public/favorites/btn", post: post %>
+                </div>
+              </div>
+            <% else %>
+              <div class="d-flex align-items-center">
+                <p class="m-0"><i class="fa-regular fa-message"></i><%= post.comments.count %> |</p>
+                <p class="m-0 btn btn-outline-secondary btn-sm disabled"><i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>Good! <%= post.favorites.count %></p>
+              </div>
+            <% end %>
+          </div>
+
+        </div>
       </div>
+    <% end %>
+  <% else %>
+    <div class="col text-center mt-3">
+      <p>投稿がありません</p>
+      <%= link_to "新規投稿", new_post_path, class: "btn btn-success btn-sm" %>
     </div>
   <% end %>
 </div>

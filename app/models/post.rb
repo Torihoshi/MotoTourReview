@@ -52,7 +52,21 @@ class Post < ApplicationRecord
      favorites.exists?(user_id: user.id)
   end
 
+  def formatted_address
+    address.gsub(/〒.*? /, '').gsub("日本、", '')
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["address", "category_id", "comment", "created_at", "favorite", "id", "is_private", "latitude", "longitude", "spot_name", "star", "title", "updated_at", "user_id", "visited_date"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["category", "comments", "favorites", "image_attachment", "image_blob", "user"]
+  end
+
+
   private
+
 
   def image_type
     if image.attached? && !image.content_type.in?(%w(image/jpeg image/png))
