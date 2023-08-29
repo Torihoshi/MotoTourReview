@@ -83,8 +83,11 @@
                     <%= render "static_rate", post: @post %>
                   </div>
                 </div>
+                <!-- 編集ボタンを表示 -->
+                <% if current_user == @post.user %>
+                  <%= link_to "編集", edit_post_path(@post), class: "btn btn-primary btn-sm" %>
+                <% end %>
               </div>
-
             </div>
 
             <!--フッター(ユーザー名・評価等)-->
