@@ -1,78 +1,83 @@
-<nav class="navbar navbar-expand-lg navbar-light">
-  <div class="container">
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
 
-    <!--ロゴ-->
-    <% if admin_signed_in? %>
-      <a class="navbar-brand p-1" href="/admin">
-        <img src="<%= asset_path('logo.png') %>" alt="Logo" class="logo-img">
-      </a>
-    <% else %>
-      <a class="navbar-brand p-1" href="/">
-        <img src="<%= asset_path('logo.png') %>" alt="Logo" class="logo-img">
-      </a>
-    <% end %>
-
-    <!--ユーザー情報-->
-    <ul class="navbar-nav ml-auto">
-      <% if user_signed_in? %>
-        <li class="nav-item ml-auto">
-          ようこそ、<%= current_user.name %>さん！
-        </li>
-      <% elsif admin_signed_in? %>
-        <li class="nav-item ml-auto">
-          管理者ページです。
-        </li>
+      <!--ロゴ-->
+      <% if admin_signed_in? %>
+        <a class="navbar-brand p-1" href="/admin">
+          <img src="<%= asset_path('logo.png') %>" alt="Logo" class="logo-img">
+        </a>
       <% else %>
-        <%= link_to 'ゲストログイン（閲覧用）', users_guest_sign_in_path, method: :post %>
+        <a class="navbar-brand p-1" href="/">
+          <img src="<%= asset_path('logo.png') %>" alt="Logo" class="logo-img">
+        </a>
       <% end %>
-    </ul>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                  aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="ナビゲーションの切替">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="collapse navbar-collapse flex-column" id="navbarNavDropdown">
-      <ul class="navbar-nav ml-auto">
-        <% if user_signed_in? %>
-          <li class="nav-item m-1">
-            <%= link_to "マイページ", user_path(current_user), class: "btn btn-secondary btn-sm nav-btn" %>
-          </li>
-          <li class="nav-item m-1">
-            <%= link_to "投稿一覧", posts_path, class: "btn btn-secondary btn-sm nav-btn" %>
-          </li>
-          <li class="nav-item m-1">
-            <%= link_to "新規投稿", new_post_path, class: "btn btn-secondary btn-sm nav-btn" %>
-          </li>
-          <li class="nav-item m-1">
-            <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-secondary btn-sm nav-btn", data: { confirm: "ログアウトしますか？" } %>
-          </li>
-        <% elsif admin_signed_in? %>
-          <li class="nav-item m-1">
-            <%= link_to "ユーザーリスト", admin_path, class: "btn btn-secondary btn-sm nav-btn" %>
-          </li>
-          <li class="nav-item m-1">
-            <%= link_to "投稿一覧", admin_posts_path, class: "btn btn-secondary btn-sm nav-btn" %>
-          </li>
-          <li class="nav-item m-1">
-            <%= link_to "カテゴリ一覧", admin_categories_path, class: "btn btn-secondary btn-sm nav-btn" %>
-          </li>
-          <li class="nav-item m-1">
-            <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "btn btn-secondary btn-sm nav-btn", data: { confirm: "ログアウトしますか？" } %>
-          </li>
-        <% else %>
-          <li class="nav-item m-1">
-            <%= link_to "About", about_path, class: "btn btn-secondary btn-sm nav-btn" %>
-          </li>
-          <li class="nav-item m-1">
-            <%= link_to "新規登録", new_user_registration_path, class: "btn btn-secondary btn-sm nav-btn" %>
-          </li>
-          <li class="nav-item m-1">
-            <%= link_to "ログイン", new_user_session_path, class: "btn btn-secondary btn-sm nav-btn" %>
-          </li>
-        <% end %>
-      </ul>
+      <div class="collapse navbar-collapse" id="navbar">
+
+        <ul class="navbar-nav ms-auto nav1">
+          <% if user_signed_in? %>
+            <li class="nav-item m-1">
+              ユーザー: <%= current_user.name %>
+            </li>
+            <li class="nav-item m-1">
+              <%= link_to "マイページ", user_path(current_user), class: "btn btn-sm nav-btn" %>
+            </li>
+            <li class="nav-item m-1">
+              <%= link_to "投稿一覧", posts_path, class: "btn btn-sm nav-btn" %>
+            </li>
+            <li class="nav-item m-1">
+              <%= link_to "新規投稿", new_post_path, class: "btn btn-sm nav-btn" %>
+            </li>
+            <li class="nav-item m-1">
+              <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-sm nav-btn", data: { confirm: "ログアウトしますか？" } %>
+            </li>
+          <% elsif admin_signed_in? %>
+            <li class="nav-item m-1 user-name">
+              管理者ページです。
+            </li>
+            <li class="nav-item m-1">
+              <%= link_to "ユーザーリスト", admin_path, class: "btn btn-sm nav-btn" %>
+            </li>
+            <li class="nav-item m-1">
+              <%= link_to "投稿一覧", admin_posts_path, class: "btn btn-sm nav-btn" %>
+            </li>
+            <li class="nav-item m-1">
+              <%= link_to "カテゴリ一覧", admin_categories_path, class: "btn btn-sm nav-btn" %>
+            </li>
+            <li class="nav-item m-1">
+              <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "btn btn-sm nav-btn", data: { confirm: "ログアウトしますか？" } %>
+            </li>
+          <% else %>
+            <li class="nav-item m-1">
+              <%= link_to "About", about_path, class: "btn btn-sm nav-btn" %>
+            </li>
+            <li class="nav-item m-1">
+              <%= link_to "新規登録", new_user_registration_path, class: "btn btn-sm nav-btn" %>
+            </li>
+            <li class="nav-item m-1">
+              <%= link_to "ログイン", new_user_session_path, class: "btn btn-sm nav-btn" %>
+            </li>
+          <% end %>
+        </ul>
+
+      </div>
     </div>
+  </nav>
 
-  </div>
-</nav>
+<style>
+.nav-btn {
+  width: 130px;
+  background-color: #17345B;
+  color: #F1F5F5;
+  font-weight: bold;
+}
+.nav1{
+    display: flex;
+    align-items: end;
+  font-weight: bold;
+}
+</style>

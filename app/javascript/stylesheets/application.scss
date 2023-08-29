@@ -2,11 +2,18 @@
 
 body {
   font-family:"HGP創英角ゴシックUB";
-  background: #F1F5F5;
+  animation: bgchange 20s ease infinite;
   color: #17345B;
 }
+@keyframes bgchange{
+    0% { background: #F1F5F5; } /* 基調色 */
+    20% { background: #EDF7ED; } /* 淡い緑系統の色 */
+    40% { background: #E4F2F5; } /* 淡い青系統の色 */
+    60% { background: #FFECE3; } /* 淡いオレンジ系統の色 */
+    80% { background: #FFF5E1; } /* 淡い黄系統の色 */
+    100% { background: #F1F5F5; } /* 基調色 */
+ }
 header {
-  background: #3E9ADE;
   background: radial-gradient(circle, transparent 20%, #3E9ADE 20%, #3E9ADE 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, #3E9ADE 20%, #3E9ADE 80%, transparent 80%, transparent) 20px 20px, linear-gradient(#3c8dca 1.6px, transparent 1.6px) 0 -0.8px, linear-gradient(90deg, #3c8dca 1.6px, #3E9ADE 1.6px) -0.8px 0;
   background-size: 40px 40px, 40px 40px, 20px 20px, 20px 20px;
 }
