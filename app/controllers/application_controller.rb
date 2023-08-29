@@ -16,8 +16,13 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    flash[:notice] = "ログインしました"
-    user_path(resource)
+    case resource
+    when Admin
+      admin_path
+    when User
+      flash[:notice] = "ログインしました"
+      user_path(resource)
+    end
   end
 
   def after_sign_out_path_for(resource)
