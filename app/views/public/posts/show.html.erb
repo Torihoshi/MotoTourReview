@@ -38,66 +38,75 @@
       <!--投稿表示-->
       <div class="row">
         <div class="card border border-secondary">
-          <div class="d-grid gap-2 col-10 mx-auto mt-2">
-            <h4>投稿詳細</h4>
+          <div class='row'>
 
-            <!--いいね-->
-            <% if current_user.id != @post.user_id %>
-              <h2 id="favorite_buttons_<%= @post.id %>">
-                <%= render "public/favorites/btn", post: @post %>
-              </h2>
-            <% else %>
-              <div>
-                <p class="m-0 btn btn-outline-secondary btn-sm disabled"><i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>Good! <%= @post.favorites.count %></p>
+            <!--ヘッダー(スポット名・訪問日)-->
+            <div class="card-header">
+              <div class="row d-md-flex justify-content-md-between align-items-center">
+                <div class="col-md-8 col-12 text-start">
+                  <h3 class="m-0"><%= @post.spot_name %></h3>
+                  <p class="m-0"><%= @post.formatted_address %></p>
+                </div>
+                <div class="col-md-4 col-12 text-md-end">
+                  <% if current_user.id == @post.user_id %>
+                    <% if @post.is_private %>
+                      <div class="btn btn-warning btn-sm disabled">非公開</div>
+                    <% else %>
+                      <div class="btn btn-success btn-sm disabled">公開中</div>
+                    <% end %>
+                  <% else %>
+                  <% end %>
+                  <%= @post.visited_date %>
+                </div>
               </div>
-            <% end %>
+            </div>
 
-            <table class="table">
-              <tr>
-                <th scope="row" width="25%">スポット名</th>
-                <td width="75%"><%= @post.spot_name %></td>
-              </tr>
-              <tr>
-                <th scope="row">住所</th>
-                <td><%= @post.formatted_address %></td>
-              </tr>
-              <tr>
-                <th scope="row">タイトル</th>
-                <td><%= @post.title %></td>
-              </tr>
-              <tr>
-                <th scope="row">コメント</th>
-                <td><%= simple_format(@post.comment) %></td>
-              </tr>
-              <tr>
-                <th scope="row">訪れた日</th>
-                <td><%= @post.visited_date %></td>
-              </tr>
-              <tr>
-                <th scope="row">カテゴリ</th>
-                <td><%= @post.category.name %></td>
-              </tr>
-              <tr>
-                <th scope="row">評価</th>
-                <td><%= render "static_rate", post: @post %></td>
-              </tr>
-              <% if current_user == @post.user %>
-                <tr>
-                  <th scope="row">公開ステータス</th>
-                  <td><%= @post.is_private ? '非公開' : '公開' %></td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <%= link_to "編集する", edit_post_path(@post), class: "btn btn-secondary d-grid gap-2 col-10 mx-auto" %>
-                  </td>
-                </tr>
+          <!--投稿画像-->
+          <div class="col-md-3">
+            <a data-bs-toggle="modal" href="#imageModal">
+              <%= image_tag @post.get_image, class: "img-thumbnail" %>
+            </a>
+          </div>
+
+            <!--ボディ(タイトル・コメント)-->
+            <div class="card-body col-md-9">
+              <div class="row">
+                <div class="card-text col-10 mx-auto text-truncate">
+                  <div class="row d-flex align-items-start">
+                    <h5 class="col-12 mb-0"><b><%= @post.title %></b></h5><br>
+                    <p class="col-12 mb-0"><%= simple_format(@post.comment) %></p>
+                  </div>
+                  <div>
+                    <a class="btn btn-outline-warning btn-sm disabled"><%= @post.category.name %></a>
+                  </div>
+                  <div>
+                    <%= render "static_rate", post: @post %>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!--フッター(ユーザー名・評価等)-->
+            <div class="card-footer d-md-flex justify-content-md-between align-items-center">
+              <div class="d-md-flex">
+                <div class=""><i class="fa-regular fa-user"></i>:<%= @post.user.name %> , 投稿日:<%= @post.updated_at.strftime('%Y-%m-%d') %> </div>
+                <div class="mx-2"><%= render "public/posts/static_rate", post: @post %></div>
+              </div>
+              <% if current_user.id != @post.user_id %>
+                <div class="d-flex align-items-center">
+                  <div class=""><i class="fa-regular fa-message"></i><%= @post.comments.count %> |</div>
+                  <div id="favorite_buttons_<%= @post.id %>">
+                    <%= render "public/favorites/btn", post: @post %>
+                  </div>
+                </div>
+              <% else %>
+                <div class="d-flex align-items-center">
+                  <p class="m-0"><i class="fa-regular fa-message"></i><%= @post.comments.count %> |</p>
+                  <p class="m-0 btn btn-outline-secondary btn-sm disabled"><i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>Good! <%= @post.favorites.count %></p>
+                </div>
               <% end %>
-            </table>
-
-            <% if @post.image.attached? %>
-              <%= image_tag @post.image, class: 'img-fluid' %>
-            <% else %>
-            <% end %>
+            </div>
 
           </div>
         </div>
@@ -106,5 +115,25 @@
       <%= render 'map_show' %>
     </div>
 
+  </div>
+</div>
+
+
+
+<!-- モーダルダイアログ -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <% if @post.image.attached? %>
+          <%= image_tag @post.image, width: "100%" %>
+        <% else %>
+          <p>画像が添付されていません。</p>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      </div>
+    </div>
   </div>
 </div>

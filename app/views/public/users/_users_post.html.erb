@@ -7,7 +7,7 @@
 
           <!--ヘッダー(スポット名・訪問日)-->
           <div class="card-header d-md-flex justify-content-md-between align-items-center">
-            <div class="col-md-8 col-12 text-start">
+            <div class="col-md-8 col-12 text-start text-truncate">
               <% if current_user.id == post.user_id %>
                 <% if post.is_private %>
                   <div class="btn btn-warning btn-sm disabled">非公開</div>
@@ -16,7 +16,8 @@
                 <% end %>
               <% else %>
               <% end %>
-              <b><%= post.spot_name %></b>
+              <b><%= post.spot_name %></b><br>
+              <%= post.formatted_address %>
             </div>
             <div class="col-md-4 col-12 text-md-end"><%= post.visited_date %></div>
           </div>
@@ -42,8 +43,9 @@
           <!--フッター(ユーザー名・評価等)-->
           <div class="card-footer d-md-flex justify-content-md-between align-items-center">
             <div class="d-md-flex">
-              <div class=""><i class="fa-regular fa-user"></i>:<%= post.user.name %>  </div>
-              <div class="mx-2"><%= render "public/posts/static_rate", post: post %></div>
+              <div class="me-1 fw-bold"><i class="fa-regular fa-user"></i>:<%= post.user.name %>  </div>
+              <div class="me-1 text-muted"> 投稿:<%= post.updated_at.strftime('%Y-%m-%d') %></div>
+              <div class="mx-0"><%= render "public/posts/static_rate", post: post %></div>
             </div>
             <% if current_user.id != post.user_id %>
               <div class="d-flex align-items-center">
