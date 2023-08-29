@@ -4,7 +4,7 @@
     <div class="col-md-8">
       <h1>投稿編集</h1>
 
-      <%= form_for(@post) do |f| %>
+      <%= form_with(model: @post, url: admin_post_path(@post), local: true) do |f| %>
         <div class="form-group">
           <%= f.label :spot_name %>
           <%= f.text_field :spot_name, class: "form-control" %>

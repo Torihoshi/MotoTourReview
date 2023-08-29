@@ -42,9 +42,15 @@
             <h4>投稿詳細</h4>
 
             <!--いいね-->
-            <h2 id="favorite_buttons_<%= @post.id %>">
-              <%= render "public/favorites/btn", post: @post %>
-            </h2>
+            <% if current_user.id != @post.user_id %>
+              <h2 id="favorite_buttons_<%= @post.id %>">
+                <%= render "public/favorites/btn", post: @post %>
+              </h2>
+            <% else %>
+              <div>
+                <p class="m-0 btn btn-outline-secondary btn-sm disabled"><i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>Good! <%= @post.favorites.count %></p>
+              </div>
+            <% end %>
 
             <table class="table">
               <tr>

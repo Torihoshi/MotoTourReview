@@ -25,12 +25,18 @@ class Admin::PostsController < ApplicationController
   def update
     @post = Post.find(params[:id])
 
-    if @post.user == current_user && @post.update(post_params)
+    if @post.update(post_params)
       flash[:success] = "投稿が更新されました"
-      redirect_to post_path(@post)
+      redirect_to admin_post_path(@post)
     else
       flash.now[:error] = "投稿の更新に失敗しました"
       render :edit
     end
+  end
+
+  private
+
+  def post_params
+    params.require(:post).permit(:spot_name, :title, :comment, :visited_date, :category_id)
   end
 end
