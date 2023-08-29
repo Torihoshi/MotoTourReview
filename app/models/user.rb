@@ -37,8 +37,7 @@ class User < ApplicationRecord
 
   def self.guest
     find_or_create_by!(email: "guest@example.com") do |user|
-      random_password = SecureRandom.urlsafe_base64(6) # パスワードの長さをさらに短縮
-      user.password = random_password
+      user.password = SecureRandom.urlsafe_base64(6)
       user.name = "ゲストユーザー"
     end
   end

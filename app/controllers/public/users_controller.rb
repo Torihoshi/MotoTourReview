@@ -4,6 +4,7 @@ class Public::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :withdrawal, :unsubscribe]
   before_action :authenticate_user!
   before_action :ensure_correct_user, only: [:edit, :update, :withdrawal]
+  before_action :ensure_normal_user, only: [:edit,:update, :unsubscribe, :withdrawal]
 
   def show
     @posts = @user.posts.order(created_at: :desc)
@@ -49,6 +50,12 @@ class Public::UsersController < ApplicationController
       @user = User.find(params[:id])
       unless @user == current_user
         redirect_to user_path(current_user)
+      end
+    end
+
+    def ensure_normal_user
+      if current_user.email == 'guest@example.com'
+        redirect_to root_path, notice: 'ゲストユーザーの更新・削除はできません。'
       end
     end
 
