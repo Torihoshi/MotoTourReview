@@ -19,23 +19,32 @@
   <div class="row d-flex">
       <!-- スポット名からあいまい検索 -->
       <div class="col-md px-0">
-        <%= f.search_field :spot_name_cont, placeholder: "スポット検索", class: "form-control" %>
+        <div class="form-floating">
+          <%= f.search_field :spot_name_cont, placeholder: "スポット検索", class: "form-control",id: "floatingSpot" %>
+          <label for="floatingSpot">スポット名検索</label>
+        </div>
       </div>
 
       <!-- 都道府県からあいまい検索 -->
       <div class="col-md px-0">
-        <select name="q[address_cont]" class="form-select">
-          <option value="">都道府県</option>
-          <%= options_for_select(prefectures, params.dig(:q, :address_cont)) %>
-        </select>
+        <div class="form-floating">
+          <select name="q[address_cont]" class="form-select" id: "floatingSelect">
+            <option value="">都道府県を選択</option>
+            <%= options_for_select(prefectures, params.dig(:q, :address_cont)) %>
+          </select>
+          <label for="floatingSelect">都道府県</label>
+        </div>
       </div>
 
       <!-- カテゴリ一致検索 -->
       <div class="col-md px-0">
-        <select name="q[category_id_eq]" class="form-select">
-          <option value="">カテゴリ</option>
-          <%= options_for_select(@categories.pluck(:name, :id), params.dig(:q, :category_id_eq)) %>
-        </select>
+        <div class="form-floating">
+          <select name="q[category_id_eq]" class="form-select">
+            <option value="">カテゴリを選択</option>
+            <%= options_for_select(@categories.pluck(:name, :id), params.dig(:q, :category_id_eq)) %>
+          </select>
+          <label for="floatingSelect">都道府県</label>
+        </div>
       </div>
 
       <!-- 検索ボタン -->

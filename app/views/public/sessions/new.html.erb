@@ -1,29 +1,31 @@
 <!--/MotoTourReview/app/views/public/sessions/new.html.erb-->
-<div class="container mt-5 mb-5">
-  <div class="row col-6 mx-auto">
+<div class="container my-5">
+  <div class="row col-sm-6 mx-auto">
 
-    <p class="alert" role="alert"><%= alert %></p>
+    <div class="notice">
+      <p class="alert" role="alert"><%= alert %></p>
+    </div>
 
-    <h2>ログイン</h2>
+    <div class="form">
+      <h2>ログイン</h2>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <!--メールアドレス-->
+          <div class="form-floating mb-3">
+            <%= f.email_field :email, class: "form-control", id: "floatingInput", placeholder: "name@example.com" %>
+            <label for="floatingInput">メールアドレス</label>
+          </div>
+          <!--パスワード-->
+          <div class="form-floating mb-3">
+            <%= f.password_field :password, class: "form-control", id: "floatingInput", placeholder: "password" %>
+            <label for="floatingInput">パスワード</label>
+          </div>
+          <!--ボタン-->
+          <div class="d-grid gap-2 col-lg-6 mx-auto mt-5">
+            <%= f.submit "ログインする", class: "btn btn-outline-success btn-lg" %>
+            <%= render "public/shared/links" %>
+          </div>
+      <% end %>
+    </div>
 
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-
-      <table class="block" style="width: 100%;" cellpadding="5">
-        <tr>
-          <th>メールアドレス<span class="text-danger">*</span></th>
-          <td><%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control w-100" %></td>
-        </tr>
-        <tr>
-          <th>パスワード<span class="text-danger">*</span></th>
-          <td><%= f.password_field :password, autocomplete: "current-password", class: "form-control w-50" %></td>
-        </tr>
-      </table>
-
-      <div class="d-grid gap-2 col-6 mx-auto mt-5">
-        <%= f.submit "ログインする", class: "btn btn-outline-success btn-lg" %>
-        <%= render "public/shared/links" %>
-      </div>
-
-    <% end %>
   </div>
 </div>
