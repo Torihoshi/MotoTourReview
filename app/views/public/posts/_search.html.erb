@@ -43,7 +43,7 @@
             <option value="">カテゴリを選択</option>
             <%= options_for_select(@categories.pluck(:name, :id), params.dig(:q, :category_id_eq)) %>
           </select>
-          <label for="floatingSelect">都道府県</label>
+          <label for="floatingSelect">カテゴリ</label>
         </div>
       </div>
 

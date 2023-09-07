@@ -61,12 +61,14 @@
               </div>
             </div>
 
-          <!--投稿画像-->
-          <div class="col-md-3">
-            <a data-bs-toggle="modal" href="#imageModal">
-              <%= image_tag @post.get_image, class: "img-thumbnail" %>
-            </a>
-          </div>
+<!--投稿画像-->
+<div class="col-md-3 d-flex">
+  <% @post.images.each do |image| %>
+    <a data-bs-toggle="modal" href="#imageModal">
+      <%= image_tag image, height: 200 %>
+    </a>
+  <% end %>
+</div>
 
             <!--ボディ(タイトル・コメント)-->
             <div class="card-body col-md-9">
@@ -128,8 +130,10 @@
   <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
       <div class="modal-body text-center">
-        <% if @post.image.attached? %>
-          <%= image_tag @post.image, width: "100%" %>
+        <% if @post.images.attached? %>
+<% @post.images.each do |image| %>
+  <%= image_tag image, width: "100%" %>
+<% end %>
         <% else %>
           <p>画像が添付されていません。</p>
         <% end %>
@@ -140,3 +144,4 @@
     </div>
   </div>
 </div>
+

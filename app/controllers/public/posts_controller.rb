@@ -18,6 +18,7 @@ class Public::PostsController < ApplicationController
     @comment = Comment.new
   end
 
+
   def new
     @post = Post.new
   end
@@ -70,7 +71,7 @@ class Public::PostsController < ApplicationController
 
 
     def post_params
-      params.require(:post).permit(:user_id, :category_id, :spot_name, :title, :comment, :visited_date, :image, :star, :is_private, :address, :latitude, :longitude)
+      params.require(:post).permit(:user_id, :category_id, :spot_name, :title, :comment, :visited_date, :star, :is_private, :address, :latitude, :longitude, images: [])
     end
 
     def ensure_correct_user

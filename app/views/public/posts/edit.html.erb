@@ -66,7 +66,7 @@
             </tr>
             <tr>
               <td>画像</td>
-              <td><%= f.file_field :image, class: "form-control-file", accept: 'image/*' %></td>
+              <td><%= f.file_field :images, multiple: true, class: "form-control-file", accept: 'image/*' %></td>
             </tr>
             <tr>
               <td>公開ステータス<span class="text-danger">*</span></td>
