@@ -17,7 +17,7 @@
       <div class="row">
         <div class="card border border-secondary">
           <div class="mt-2">
-            <h5>ひとくちコメント</h5>
+            <h5>ひとことコメント</h5>
           </div>
           <!--コメントフォーム-->
           <% if current_user != @post.user %>
@@ -44,7 +44,7 @@
             <div class="card-header">
               <div class="row d-md-flex justify-content-md-between align-items-center">
                 <div class="col-md-8 col-12 text-start">
-                  <h3 class="m-0"><%= @post.spot_name %></h3>
+                  <h4 class="m-0"><%= @post.spot_name %></h4>
                   <p class="m-0"><%= @post.formatted_address %></p>
                 </div>
                 <div class="col-md-4 col-12 text-md-end">
@@ -61,19 +61,10 @@
               </div>
             </div>
 
-<!--投稿画像-->
-<div class="col-md-3 d-flex">
-  <% @post.images.each do |image| %>
-    <a data-bs-toggle="modal" href="#imageModal">
-      <%= image_tag image, height: 200 %>
-    </a>
-  <% end %>
-</div>
-
             <!--ボディ(タイトル・コメント)-->
-            <div class="card-body col-md-9">
+            <div class="card-body">
               <div class="row">
-                <div class="card-text col-10 mx-auto text-truncate">
+                <div class="card-text col-12 mx-auto text-truncate">
                   <div class="row d-flex align-items-start">
                     <h5 class="col-12 mb-0"><b><%= @post.title %></b></h5><br>
                     <p class="col-12 mb-0"><%= simple_format(@post.comment) %></p>
@@ -88,6 +79,14 @@
                 <!-- 編集ボタンを表示 -->
                 <% if current_user == @post.user %>
                   <%= link_to "編集", edit_post_path(@post), class: "btn btn-primary btn-sm" %>
+                <% end %>
+              </div>
+              <!--投稿画像-->
+              <div class="col-md-3 d-flex">
+                <% @post.images.each do |image| %>
+                  <a data-bs-toggle="modal" href="#imageModal">
+                    <%= image_tag image, height: 200 %>
+                  </a>
                 <% end %>
               </div>
             </div>

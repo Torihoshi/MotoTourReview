@@ -10,7 +10,9 @@
         <% end %>
         <%= comment.created_at.strftime('%Y/%m/%d') %>
         <% if comment.user == current_user %>
-          <%= link_to "削除", post_comment_path(post, comment), remote: true, method: :delete, class: "btn btn-outline-danger btn-sm" %>
+          <%= link_to post_comment_path(post, comment), remote: true, method: :delete, class: "btn btn-outline-danger btn-sm" do %>
+            <i class="fa-regular fa-trash-can"></i>
+          <% end %>
         <% end %>
       </div>
       <div class="card-body py-0">

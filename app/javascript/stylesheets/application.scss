@@ -1,5 +1,9 @@
 @import "~bootstrap/scss/bootstrap.scss";
 
+.field_with_errors {
+  display: contents;
+}
+
 body {
   font-family:"HGP創英角ゴシックUB";
   animation: bgchange 20s ease infinite;

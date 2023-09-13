@@ -36,9 +36,9 @@ class Post < ApplicationRecord
   has_many :favorites, dependent: :destroy
   has_many_attached :images
 
-  validates :spot_name, presence: true, length: { maximum: 255 }
+  validates :spot_name, presence: true, length: { maximum: 50 }
   validates :title, presence: true, length: { maximum: 20 }
-  validates :comment, presence: true, length: { maximum: 255 }
+  validates :comment, presence: true, length: { maximum: 300 }
   validates :visited_date, presence: true
   validates :category_id, presence: true
   validates :is_private, inclusion: { in: [true, false] }
