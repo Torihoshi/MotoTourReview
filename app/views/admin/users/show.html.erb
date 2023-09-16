@@ -1,18 +1,39 @@
 <!-- /app/views/admin/users/show.html.erb -->
-<div class="container mt-4">
-  <h1><%= @user.name %> の詳細情報</h1>
-  <p>Email: <%= @user.email %></p>
-  <p>自己紹介: <%= @user.introduction %></p>
-  <p>バイク名: <%= @user.bike_name %></p>
+<div class='container px-5 px-sm-0'>
+  <div class='row my-5 gx-5'>
 
-  <h2>投稿一覧</h2>
-  <ul class="list-group">
-    <% @posts.each do |post| %>
-      <li class="list-group-item">
-        <%= link_to post.title, admin_post_path(post) %>
-      </li>
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success" role="alert">
+        <%= flash[:notice] %>
+      </div>
     <% end %>
-  </ul>
 
-  <%= link_to "ユーザー情報編集", edit_admin_user_path(@user), class: "btn btn-primary mt-3" %>
+    <!-- 左側部分 -->
+    <div class='col-md-4 col-xs-4 mt-5 mb-auto'>
+      <%= render "public/users/info", user: @user %>
+      <%= link_to "ユーザー情報編集", edit_admin_user_path(@user), class: "btn btn-primary mt-3" %>
+    </div>
+
+    <!-- 右側部分 -->
+    <div class='col-md-8 my-5 ml-5'>
+      <div class='row'>
+        </%= render 'search' %>
+      </div>
+
+      <div class="row d-flex justify-content-between align-items-center">
+        <div class="col-md-8 text-start"><%= @user.name %>さんの投稿一覧</div>
+        <div class="col-md-4 text-end"><%== pagy_nav(@pagy) %></div>
+      </div>
+
+      <div>
+        <%= render 'users_post' %>
+      </div>
+
+      <div class="row d-flex align-items-center text-center">
+        <%== pagy_nav(@pagy) %>
+      </div>
+
+    </div>
+
+  </div>
 </div>

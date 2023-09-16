@@ -1,0 +1,90 @@
+<!--/MotoTourReview/app/views/public/users/_users_post.html.erb-->
+<div class='row row-cols-2 row-cols-md-1'>
+  <% if @posts.any? %>
+    <% @posts.each do |post| %>
+      <div class="card border border-secondary">
+        <div class='row'>
+
+          <!--cardヘッダー-->
+          <div class="card-header d-md-flex justify-content-md-between align-items-center">
+            <!--公開ステータス-->
+
+              <div class="col-md-2 col-12">
+                <div class="is-release">
+                  <% if post.is_private %>
+                    <div class="btn btn-warning btn-sm disabled">非公開</div>
+                  <% else %>
+                    <div class="btn btn-success btn-sm disabled">公開中</div>
+                  <% end %>
+                </div>
+              </div>
+
+            <!--タイトル&スポット名&ユーザー名-->
+            <div class="col-md-6 col-12 text-start text-truncate">
+              <div class="post-title my-0">
+                <b><%= post.title %></b>
+              </div>
+              <div class="d-md-flex">
+                <div class="post-spot me-2">
+                  <i class="fa-solid fa-location-dot"></i><%= post.spot_name %>
+                </div>
+                <div class="post-user">
+                  <%= link_to admin_user_path(post.user), style: "text-decoration: none;" do %>
+                    <i class="fa-regular fa-user"></i><%= post.user.name %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <!--訪問日&評価-->
+            <div class="col-md-4 col-12 text-md-end">
+              <div class="text-muted"><%= post.visited_date.strftime('%Y年%m月%d日') %></div>
+              <div class="mx-0"><%= render "public/posts/static_rate", post: post %></div>
+            </div>
+          </div>
+
+          <!--cardボディ-->
+          <div class="card-body row">
+            <!--投稿画像-->
+            <div class="col-md-4">
+              <%= link_to post_path(post) do %>
+                <%= image_tag post.get_image, class: "img-fluid mx-auto d-block post-image", alt: "投稿画像" %>
+              <% end %>
+            </div>
+            <!--コメント-->
+            <div class="col-md-8">
+              <div class="card-text col-12 text-truncate">
+                <%= post.comment %><br>
+                <%= link_to "詳細を見る>> ", admin_post_path(post) %>
+              </div>
+            </div>
+          </div>
+
+          <!--cardフッター-->
+          <div class="card-footer d-md-flex justify-content-md-between align-items-center">
+              <div class="me-1 text-muted"><%= post.updated_at.strftime('%Y年%m月%d日') %>投稿</div>
+              <div class="d-flex align-items-center">
+                <p class="m-0"><i class="fa-regular fa-message"></i><%= post.comments.count %> |</p>
+                <p class="m-0 btn btn-outline-secondary btn-sm disabled"><i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>Good! <%= post.favorites.count %></p>
+              </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="col text-center mt-3">
+      <p>投稿がありません</p>
+    </div>
+  <% end %>
+</div>
+
+
+<style>
+.post-image {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  margin: 5px 0;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+</style>
