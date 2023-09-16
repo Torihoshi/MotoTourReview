@@ -19,7 +19,7 @@
         <img src="<%= asset_path('logo.png') %>" alt="Logo" class="top-logo w-100">
       </div>
 
-      <div class="top-btn d-grid gap-2 col-6 mx-auto text-center">
+      <div class="top-btn d-grid gap-2 col-7 mx-auto text-center">
         <% if user_signed_in? %>
           <%= link_to "マイページ", user_path(current_user), class: "btn btn-primary btn-lg" %>
           <%= link_to "投稿一覧", posts_path, class: "btn btn-info btn-lg" %>

@@ -5,7 +5,7 @@
     <div class='col-md-6'>
       <div class="row">
         <div class="card border border-secondary bg-transparent">
-          <div class="d-grid gap-2 col-10 mx-auto mt-2">
+          <div class="col-12 mx-auto mt-2">
             <% if @post.errors.any? %>
               <%= @post.errors.count %>件のエラーが発生しました
               <ul>
@@ -68,10 +68,10 @@
 
               <!-- 公開ステータス -->
               <div class="form-check form-check-inline mb-3">
-                      <%= f.radio_button :is_private, false, checked: true %>
-                      <%= f.label :is_private, '公開' %>
-                      <%= f.radio_button :is_private, true %>
-                      <%= f.label :is_private, '非公開(下書き)' %>
+                <%= f.radio_button :is_private, false, checked: true %>
+                <%= f.label :is_private, '公開' %>
+                <%= f.radio_button :is_private, true %>
+                <%= f.label :is_private, '非公開(下書き)' %>
               </div>
 
               <div class="d-grid gap-2 col-12 mx-auto my-4">
