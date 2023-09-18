@@ -1,27 +1,32 @@
 <!-- /MotoTourReview/app/views/admin/homes/top.html.erb -->
 <div class="container mt-4">
-  <h1 class="mb-4">管理者トップページ</h1>
+  <div class="row">
+    <h2>ユーザー一覧(管理者トップ)</h2>
 
-  <h2>ユーザー一覧</h2>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>アカウント名</th>
-        <th>退会状況</th>
-        <th>詳細</th>
-      </tr>
-    </thead>
+    <% @users.each do |user| %>
+      <div class="col-md-2 mb-2">
+        <div class="card">
+          <div class="card-header">
+            <div><%= user.name %></div>
+            <div></div>
+          </div>
 
-    <tbody>
-      <% @users.each do |user| %>
-        <tr>
-          <td><%= user.id %></td>
-          <td><%= user.name %></td>
-          <td><%= user.is_deleted ? "退会済み" : "有効" %></td>
-          <td><%= link_to "詳細", admin_user_path(user), class: "btn btn-info btn-sm" %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+          <div class="card-body">
+            <div class="card-img-top">
+              <%= image_tag user.get_profile_image, class: "img-fluid mx-auto d-block user-image", alt: "ユーザー画像" %>
+            </div>
+            <div>
+              投稿数:<%= user.posts.count %>
+              <%= link_to "詳細", admin_user_path(user), class: "btn btn-info btn-sm" %>
+            </div>
+          </div>
+
+          <div class="card-footer <%= user.is_deleted ? 'bg-secondary text-white' : '' %>">
+            <%= user.is_deleted ? "退会済" : "登録中" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
 </div>
