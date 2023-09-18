@@ -4,32 +4,51 @@
     <div class="col-md-8">
       <h1>投稿編集</h1>
 
-      <%= form_with(model: @post, url: admin_post_path(@post), local: true) do |f| %>
+      <%= form_with(model: @post, local: true) do |f| %>
+        <!-- スポット名 -->
         <div class="form-group">
           <%= f.label :spot_name %>
           <%= f.text_field :spot_name, class: "form-control" %>
         </div>
 
+        <!-- タイトル -->
         <div class="form-group">
           <%= f.label :title %>
           <%= f.text_field :title, class: "form-control" %>
         </div>
 
+        <!-- コメント -->
         <div class="form-group">
           <%= f.label :comment %>
-          <%= f.text_area :comment, class: "form-control" %>
+          <%= f.text_area :comment, class: "form-control", rows: 5 %>
         </div>
 
+        <!-- 訪れた日 -->
         <div class="form-group">
           <%= f.label :visited_date %>
           <%= f.date_field :visited_date, class: "form-control" %>
         </div>
 
+        <!-- カテゴリ -->
         <div class="form-group">
           <%= f.label :category_id %>
           <%= f.collection_select :category_id, Category.all, :id, :name, { include_blank: true }, class: "form-control" %>
         </div>
 
+        <!-- 画像 -->
+        <div class="form-group">
+          <%= f.label :images, "画像", class: "form-label" %>
+          <%= f.file_field :images, multiple: true, class: "form-control-file", accept: 'image/*' %>
+        </div>
+
+        <!-- 公開ステータス -->
+        <div class="form-group">
+          <%= f.label :is_private %>
+          <%= f.radio_button :is_private, false, checked: true %> <%= f.label :is_private, '公開' %>
+          <%= f.radio_button :is_private, true %> <%= f.label :is_private, '非公開' %>
+        </div>
+
+        <!-- 更新ボタン -->
         <div class="form-group">
           <%= f.submit "更新", class: "btn btn-primary" %>
         </div>

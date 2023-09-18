@@ -6,6 +6,12 @@ class Admin::CategoriesController < ApplicationController
   def index
     # カテゴリー一覧を表示する処理
     @categories = Category.all
+
+    # カテゴリごとの投稿数を取得
+    @category_post_counts = {}
+    @categories.each do |category|
+      @category_post_counts[category] = category.posts.count
+    end
   end
 
   def new
@@ -17,7 +23,7 @@ class Admin::CategoriesController < ApplicationController
     # カテゴリーの新規投稿を処理する処理
     @category = Category.new(category_params)
 
-    if @category.save!
+    if @category.save
       redirect_to admin_categories_path, notice: "投稿が成功しました。"
     else
       render :new
@@ -34,9 +40,24 @@ class Admin::CategoriesController < ApplicationController
     @category = Category.find(params[:id])
 
     if @category.update(category_params)
-      redirect_to admin_categories_path, notice: "編集が成功しました。"
+      redirect_to admin_categories_path, notice: "更新が成功しました。"
     else
       render :edit
+    end
+  end
+
+  def destroy
+    @category = Category.find(params[:id])
+
+    # カテゴリに関連付けられた投稿が存在するか確認
+    if @category.posts.any?
+      redirect_to admin_categories_path, alert: "カテゴリに関連付けられた投稿が存在するため、カテゴリを削除できません。"
+    else
+      if @category.destroy
+        redirect_to admin_categories_path, notice: "カテゴリが削除されました。"
+      else
+        redirect_to admin_categories_path, alert: "カテゴリの削除に失敗しました。"
+      end
     end
   end
 
