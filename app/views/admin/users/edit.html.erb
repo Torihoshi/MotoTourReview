@@ -1,35 +1,59 @@
 <!-- /app/views/admin/users/edit.html.erb -->
-<div class="container mt-4">
-  <h1>ユーザー情報編集</h1>
+<div class="container my-5">
+  <div class="row col-sm-6 mx-auto">
 
-  <%= form_for(@user, url: admin_user_path(@user), method: :patch) do |f| %>
-    <div class="form-group">
-      <%= f.label :email %>
-      <%= f.text_field :email, class: "form-control" %>
+    <div class="notice">
+      <% if @user.errors.any? %>
+        <div class="alert alert-danger" role="alert">
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
     </div>
 
-    <div class="form-group">
-      <%= f.label :name %>
-      <%= f.text_field :name, class: "form-control" %>
+    <div class="form">
+      <h2>プロフィール編集</h2>
+      <%= form_for(@user, url: admin_user_path(@user), method: :patch) do |f| %>
+        <!--メールアドレス-->
+        <div class="form-floating mb-3">
+          <%= f.email_field :email, class: "form-control", id: "floatingInput", placeholder: "name@example.com" %>
+          <label for="floatingInput"><span class="text-danger">*</span>メールアドレス <em>(公開されません)</em></label>
+        </div>
+        <!--アカウント名-->
+        <div class="form-floating mb-3">
+          <%= f.text_field :name, class: "form-control", id: "floatingInput", placeholder: "name" %>
+          <label for="floatingInput"><span class="text-danger">*</span>アカウント名 <em>(16文字以内)</em></label>
+        </div>
+        <!--自己紹介-->
+        <div class="form-floating mb-3">
+          <%= f.text_area :introduction, class: "form-control", id: "floatingInput", placeholder: "introduction" %>
+          <label for="floatingInput">自己紹介</label>
+        </div>
+        <!--バイク名-->
+        <div class="form-floating mb-3">
+          <%= f.text_field :bike_name, class: "form-control", id: "floatingInput", placeholder: "name@example.com" %>
+          <label for="floatingInput">バイク名</label>
+        </div>
+        <!--プロフィール画像-->
+        <div class="form-floating mb-3">
+          <%= f.file_field :profile_image, class: "form-control-file", accept: 'image/*' %>
+        </div>
+        <!--退会ステータス-->
+        <div class="form-check form-switch mb-3">
+          <%= f.label :is_deleted, class: "form-check-label" do %>
+            <%= f.check_box :is_deleted, class: "form-check-input" %> 退会チェック
+          <% end %>
+        </div>
+        <!--ボタン-->
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <%= f.submit "更新", class: "btn btn-outline-success btn-lg mt-2 mb-5" %>
+        </div>
+      <% end %>
     </div>
 
-    <div class="form-group">
-      <%= f.label :introduction %>
-      <%= f.text_area :introduction, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :bike_name %>
-      <%= f.text_field :bike_name, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :is_deleted %>
-      <%= f.check_box :is_deleted, class: "form-check-input" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.submit "更新", class: "btn btn-primary" %>
-    </div>
-  <% end %>
+  </div>
 </div>
+

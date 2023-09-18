@@ -4,14 +4,14 @@
     <h2>ユーザー一覧(管理者トップ)</h2>
 
     <% @users.each do |user| %>
-      <div class="col-md-2 mb-2">
+      <div class="col-xl-2 col-4 mb-2">
         <div class="card">
           <div class="card-header">
             <div><%= user.name %></div>
             <div></div>
           </div>
 
-          <div class="card-body">
+          <div class="card-body w-100">
             <div class="card-img-top">
               <%= image_tag user.get_profile_image, class: "img-fluid mx-auto d-block user-image", alt: "ユーザー画像" %>
             </div>

@@ -1,56 +1,103 @@
-<!-- /MotoTourReview/app/views/admin/posts/show.html.erb -->
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <h1><%= @post.title %></h1>
-      <p><%= @post.comment %></p>
-      <p>訪問日: <%= @post.visited_date %></p>
-      <p>カテゴリ: <%= @post.category.name %></p>
-      <p>投稿者: <%= @post.user.name %></p>
+<!-- /app/views/admin/posts/show.html.erb -->
+<div class='container px-5 px-sm-0'>
+  <div class='row my-5 gx-5'>
 
-      <h2>評価</h2>
-      <div id="star_<%= @post.id %>"></div>
-      <script>
-        $(document).on('turbolinks:load', function() {
-          let elem = document.querySelector('#star_<%= @post.id %>');
-          if (elem == null) return;
+    <!--フラッシュメッセージ-->
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success" role="alert">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
 
-          elem.innerHTML = "";
-          let opt = {
-            starOn: "<%= asset_path('star-on.png') %>",
-            starOff: "<%= asset_path('star-off.png') %>",
-            starHalf: "<%= asset_path('star-half.png') %>",
-            score: "<%= @post.star %>",
-            readOnly: true,
-          };
-          raty(elem, opt);
-        });
-      </script>
+    <div class='col-md-8 ml-5 mx-auto'>
+      <!--投稿表示-->
+      <div class="row">
+        <div class="card border border-secondary">
+          <div class='row'>
 
-      <%= link_to "修正", edit_admin_post_path(@post) %>
+            <!--ヘッダー(スポット名・訪問日)-->
+            <div class="card-header">
+              <div class="row d-md-flex justify-content-md-between align-items-center">
+                <div class="col-md-8 col-12 text-start">
+                  <h4 class="m-0"><%= @post.spot_name %></h4>
+                  <p class="m-0"><%= @post.formatted_address %></p>
+                </div>
+                <div class="col-md-4 col-12 text-md-end">
+                  <% if @post.is_private %>
+                    <div class="btn btn-warning btn-sm disabled">非公開</div>
+                  <% else %>
+                    <div class="btn btn-success btn-sm disabled">公開中</div>
+                  <% end %>
+                  <%= @post.visited_date %>
+                </div>
+              </div>
+            </div>
 
-      <h2>コメント</h2>
-      <% @post.comments.each do |comment| %>
-        <div class="media">
-          <div class="media-body">
-            <h5 class="mt-0"><%= comment.user.name %></h5>
-            <p><%= comment.comment %></p>
-            <% if comment.user == current_user %>
-              <%= link_to "削除", post_comment_path(@post, comment), method: :delete, data: { confirm: "このコメントを削除しますか？" }, class: "btn btn-danger btn-sm" %>
-            <% end %>
+            <!--ボディ(タイトル・コメント)-->
+            <div class="card-body">
+              <div class="row">
+                <div class="card-text col-12 mx-auto text-truncate">
+                  <div class="row d-flex align-items-start">
+                    <h5 class="col-12 mb-0"><b><%= @post.title %></b></h5><br>
+                    <p class="col-12 mb-0"><%= simple_format(@post.comment) %></p>
+                  </div>
+                  <div>
+                    <a class="btn btn-outline-warning btn-sm disabled"><%= @post.category.name %></a>
+                  </div>
+                  <div>
+                    <%= render "public/posts/static_rate", post: @post %>
+                  </div>
+                </div>
+                <!-- 編集ボタンを表示 -->
+                  <%= link_to "編集", edit_admin_post_path(@post), class: "btn btn-primary btn-sm" %>
+              </div>
+              <!--投稿画像-->
+              <div class="col-md-3 d-flex">
+                <% @post.images.each do |image| %>
+                  <a data-bs-toggle="modal" href="#imageModal">
+                    <%= image_tag image, height: 200 %>
+                  </a>
+                <% end %>
+              </div>
+            </div>
+
+            <!--フッター(ユーザー名・評価等)-->
+            <div class="card-footer d-md-flex justify-content-md-between align-items-center">
+              <div class="d-md-flex">
+                <div class=""><i class="fa-regular fa-user"></i>:<%= @post.user.name %> , 投稿日:<%= @post.updated_at.strftime('%Y-%m-%d') %> </div>
+                <div class="mx-2"><%= render "public/posts/static_rate", post: @post %></div>
+              </div>
+
+              <div class="d-flex align-items-center">
+                <p class="m-0"><i class="fa-regular fa-message"></i><%= @post.comments.count %> |</p>
+                <p class="m-0 btn btn-outline-secondary btn-sm disabled"><i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>Good! <%= @post.favorites.count %></p>
+              </div>
+            </div>
+
           </div>
         </div>
-      <% end %>
+      </div>
+    </div>
 
-      <h2>コメントを投稿</h2>
-      <%= form_for([@post, @comment]) do |f| %>
-        <div class="form-group">
-          <%= f.text_area :comment, placeholder: "コメントを入力してください", class: "form-control" %>
-        </div>
-        <%= f.submit "コメント投稿", class: "btn btn-primary" %>
-      <% end %>
+  </div>
+</div>
 
-      <%= link_to "一覧に戻る", admin_posts_path, class: "btn btn-secondary" %>
+<!-- モーダルダイアログ -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <% if @post.images.attached? %>
+          <% @post.images.each do |image| %>
+            <%= image_tag image, width: "100%" %>
+          <% end %>
+        <% else %>
+          <p>画像が添付されていません。</p>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      </div>
     </div>
   </div>
 </div>
