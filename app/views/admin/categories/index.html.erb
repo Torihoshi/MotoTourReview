@@ -17,22 +17,22 @@
 
       <h4 class="mb-3">カテゴリ一覧</h4>
       <ul class="list-group">
-        <% @categories.each do |category| %>
-          <li class="list-group-item">
-            <div class="d-flex align-items-center justify-content-between">
-              <div class="">
-                <%= category.name %>
-                <span class="badge bg-secondary rounded-pill">
-                  <%= @category_post_counts[category] %>
-                </span>
-              </div>
-              <div class="btn-group ">
-                <%= link_to "編集", edit_admin_category_path(category), class: "btn btn-primary btn-sm" %>
-                <%= link_to "削除", admin_category_path(category), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-danger btn-sm" %>
-              </div>
+      <% @categories.each do |category| %>
+        <li class="list-group-item">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="">
+              <%= link_to category.name, admin_posts_path(category_id: category.id) %>
+              <span class="badge bg-secondary rounded-pill">
+                <%= @category_post_counts[category] %>
+              </span>
             </div>
-          </li>
-        <% end %>
+            <div class="btn-group">
+              <%= link_to "編集", edit_admin_category_path(category), class: "btn btn-primary btn-sm" %>
+              <%= link_to "削除", admin_category_path(category), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-danger btn-sm" %>
+            </div>
+          </div>
+        </li>
+      <% end %>
       </ul>
 
       <div class="mt-3">

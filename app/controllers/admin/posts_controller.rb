@@ -4,11 +4,11 @@ class Admin::PostsController < ApplicationController
   before_action :authenticate_admin!
 
   def index
-    # レビュー一覧を表示する処理
-    @posts = if params[:category_id].present?
-      Post.where(category_id: params[:category_id])
+    if params[:category_id].present?
+      @category = Category.find(params[:category_id])
+      @posts = @category.posts
     else
-      Post.all
+      @posts = Post.all
     end
   end
 
